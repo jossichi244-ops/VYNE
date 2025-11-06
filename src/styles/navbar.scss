@@ -1,0 +1,209 @@
+/* Biến SCSS */
+$main-bg: #0d1117;
+$primary-color: #00e0ff;
+$secondary-color: #ff007f;
+$text-color: #c9d1d9;
+$navbar-bg: rgba(18, 26, 34, 0.9); // Hơi trong suốt
+
+/* Mixin cho Neon Glow */
+@mixin neon-glow($color, $radius: 5px) {
+  box-shadow: 0 0 $radius $color, 0 0 ($radius * 2) rgba($color, 0.5);
+  text-shadow: 0 0 $radius / 4 $color;
+}
+
+/* 💻 Navbar Chính */
+.cyber-navbar {
+  background-color: $navbar-bg;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba($primary-color, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo */
+.navbar-logo {
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: 800;
+  font-family: "Space Mono", monospace;
+
+  .logo-main {
+    color: $text-color;
+  }
+  .logo-glow {
+    color: $primary-color;
+    @include neon-glow($primary-color, 3px);
+    margin-left: 3px;
+  }
+}
+
+/* Links */
+.navbar-links {
+  display: flex;
+  gap: 30px;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-item {
+  color: $text-color;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $primary-color;
+    border-color: $primary-color;
+    transform: translateY(-2px); // Micro-animation
+  }
+}
+
+.active-link {
+  color: $primary-color;
+  border-color: $primary-color;
+  @include neon-glow($primary-color, 1px);
+}
+
+/* Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.action-button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.connect-glow {
+  background: rgba($primary-color, 0.2);
+  color: $primary-color;
+  border: 1px solid $primary-color;
+
+  &:hover {
+    background: $primary-color;
+    color: $main-bg;
+    @include neon-glow($primary-color, 10px);
+    transform: scale(1.05);
+  }
+}
+
+.disconnect-glow {
+  background: none;
+  color: $secondary-color;
+  border: 1px solid $secondary-color;
+
+  &:hover {
+    background: rgba($secondary-color, 0.2);
+    @include neon-glow($secondary-color, 5px);
+  }
+}
+
+/* Trạng thái ví */
+.wallet-indicator {
+  display: flex;
+  align-items: center;
+  color: $text-color;
+  font-size: 0.9em;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid rgba($text-color, 0.1);
+  border-radius: 5px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+  }
+}
+
+.status-dot-nav {
+  width: 8px;
+  height: 8px;
+  background-color: #39ff14; // Connected color
+  border-radius: 50%;
+  margin-right: 8px;
+  @include neon-glow(#39ff14, 4px);
+  animation: flicker 1.5s infinite alternate;
+}
+
+.wallet-name {
+  font-family: "Space Mono", monospace;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle {
+  display: none; // Mặc định ẩn trên desktop
+  background: none;
+  border: none;
+  color: $primary-color;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 800px) {
+  .cyber-navbar {
+    padding: 15px 20px;
+  }
+
+  .navbar-links {
+    // Ẩn links trên mobile, hiện khi menu được toggle
+    position: absolute;
+    top: 100%; // Đặt dưới navbar
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background-color: $navbar-bg;
+    border-top: 1px solid rgba($primary-color, 0.1);
+    padding: 10px 0;
+    transform: translateY(-200%); // Ẩn khỏi màn hình
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .navbar-links.open {
+    transform: translateY(0); // Hiện menu
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .nav-item {
+    padding: 10px 20px;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+
+    &:hover,
+    &.active-link {
+      border-left-color: $primary-color;
+    }
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .wallet-indicator {
+    display: none; // Tối giản trên mobile
+  }
+}
+
+// Keyframes được định nghĩa trong UserProfile.scss hoặc file style chung
+@keyframes flicker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.8;
+  }
+}

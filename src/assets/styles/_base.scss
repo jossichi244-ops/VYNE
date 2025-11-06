@@ -1,0 +1,44 @@
+// _base.scss
+
+@import 'variables';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Consolas', 'Roboto Mono', monospace; // Font đậm chất code
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: $spacing-base * 2;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    margin-bottom: $spacing-half;
+}
+
+// Reset cho các thẻ <hr>
+.section-divider {
+    border: none;
+    height: 1px;
+    margin: $spacing-base * 2 0;
+    background: linear-gradient(to right, 
+        rgba(var(--neon-blue), 0), 
+        rgba(var(--neon-blue), 0.5), 
+        rgba(var(--neon-blue), 0)
+    );
+}
+
+// Hiệu ứng chung cho các phần tử tương tác
+.neon-border-primary {
+    border: 1px solid var(--neon-blue);
+    @include neon-glow(var(--neon-blue), 3px, 0.4);
+    &:hover {
+        @include neon-glow(var(--neon-blue), 6px, 0.6);
+    }
+}

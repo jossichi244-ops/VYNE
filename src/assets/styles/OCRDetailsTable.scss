@@ -1,0 +1,160 @@
+/* ==============================================
+   OCRDetailsTable SCSS
+   - Tác giả: Senior Dev (50 năm kinh nghiệm)
+   - Mục tiêu: Readability, Robustness, Mobile-Friendly
+   ============================================== */
+
+@charset "UTF-8";
+
+// --- Variables (Sử dụng CSS Custom Properties để dễ tùy chỉnh) ---
+:root {
+  --color-primary: #007bff; // Xanh dương
+  --color-secondary: #6c757d; // Xám
+  --color-success: #28a745; // Xanh lá (cho Confidence cao)
+  --color-warning: #ffc107; // Vàng (cho Confidence trung bình/thấp)
+  --color-border: #dee2e6;
+  --color-background-header: #f8f9fa;
+  --color-background-alt-row: #f8f8f8;
+  --font-family-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --spacing-unit: 8px;
+  --max-width-table: 1000px;
+}
+
+// --- Base Container Styling ---
+.table-scroll-container {
+  overflow-x: auto; // Cho phép cuộn ngang trên thiết bị nhỏ
+  margin: var(--spacing-unit) 0;
+  border: 1px solid var(--color-border);
+  //   border-radius: var(--spacing-unit) * 0.5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+// --- No Details Message ---
+.no-details-message {
+  //   padding: var(--spacing-unit) * 2;
+  text-align: center;
+  color: var(--color-secondary);
+  font-style: italic;
+}
+
+// --- Table Core Styling ---
+.details-table {
+  width: 100%;
+  max-width: var(--max-width-table);
+  border-collapse: collapse; // Dùng border-collapse để các đường kẻ đẹp hơn
+  font-family: var(--font-family-sans);
+  font-size: 14px;
+  line-height: 1.4;
+
+  // Header Styling
+  .table-header {
+    background-color: var(--color-background-header);
+    position: sticky; // Giữ header khi cuộn dọc
+    top: 0;
+    z-index: 10;
+  }
+
+  th {
+    // padding: var(--spacing-unit) var(--spacing-unit) * 1.5;
+    text-align: left;
+    border-bottom: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 600;
+    white-space: nowrap; // Ngăn tiêu đề bị xuống dòng
+  }
+
+  // Row and Cell Styling
+  td {
+    // padding: var(--spacing-unit) * 1.5 var(--spacing-unit) * 1.5;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top; // Căn chỉnh văn bản ở trên cùng
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--color-background-alt-row); // Zebra Striping
+  }
+
+  // Hiệu ứng hover giúp dễ theo dõi hàng dữ liệu
+  tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.15s ease-in-out;
+  }
+}
+
+// --- Specific Cell and Content Styling ---
+
+// Final Text (Quan trọng nhất)
+.cell-final-text {
+  font-weight: 700;
+  color: #343a40; // Màu tối đậm để dễ đọc
+  min-width: 250px;
+}
+
+// Model Results (Cột so sánh)
+.cell-model-result {
+  color: #343a40;
+  min-width: 180px;
+  max-width: 250px;
+  white-space: normal; // Cho phép text xuống dòng
+  word-break: break-word; // Ngắt từ dài nếu cần
+
+  .confidence-score {
+    display: block; // Đẩy điểm tin cậy xuống dòng riêng
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 2px;
+    color: var(--color-secondary); // Màu xám mặc định
+  }
+}
+
+// Bounding Box (Vị trí)
+.cell-bbox {
+  font-family: monospace; // Dùng font monospace cho dữ liệu kỹ thuật
+  font-size: 12px;
+  color: var(--color-secondary);
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+// Confidence Score (Cho trường hợp không có Hybrid Model)
+.cell-confidence {
+  text-align: center;
+  font-weight: bold;
+  min-width: 80px;
+}
+
+// Ellipsis Row
+.table-ellipsis-row {
+  text-align: center !important;
+  font-style: italic;
+  background-color: #e9ecef;
+  color: var(--color-secondary);
+  padding: var(--spacing-unit);
+}
+
+// --- Logic tô màu điểm tin cậy (Dựa trên giá trị, áp dụng trong JS) ---
+/* Giả định: JS sẽ thêm class sau vào span.confidence-score dựa trên giá trị */
+.confidence-high {
+  color: var(--color-success) !important; // Conf > 0.8
+}
+
+.confidence-medium {
+  color: var(--color-warning) !important; // Conf 0.5 - 0.8
+}
+
+.confidence-low {
+  color: #dc3545 !important; // Conf < 0.5
+}
+
+// --- Responsive: Stack trên Mobile (Tùy chọn nâng cao) ---
+/*
+@media (max-width: 768px) {
+    .details-table {
+        // Có thể áp dụng phương pháp "data-table" trên mobile,
+        // nơi mỗi hàng tr trở thành một khối div được định dạng
+        // để hiển thị label/value thay vì table truyền thống.
+        // Tuy nhiên, với dữ liệu kỹ thuật này, cuộn ngang (overflow-x)
+        // thường là giải pháp tốt nhất để giữ nguyên cấu trúc.
+    }
+}
+*/

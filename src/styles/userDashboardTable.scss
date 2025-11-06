@@ -1,0 +1,259 @@
+/* Biến SCSS (Sử dụng lại từ UserProfile) */
+$main-bg: #0d1117;
+$primary-color: #00e0ff;
+$secondary-color: #ff007f;
+$text-color: #c9d1d9;
+$card-bg: rgba(18, 26, 34, 0.7);
+
+/* Mixin cho Hiệu ứng Neon Glow */
+@mixin neon-glow($color, $radius: 5px) {
+  box-shadow: 0 0 $radius $color, 0 0 ($radius * 2) rgba($color, 0.5);
+  text-shadow: 0 0 $radius / 4 $color;
+}
+
+// Định nghĩa Grid cho Bảng
+$col-grid-desktop: 1.5fr 1fr 0.8fr 0.5fr 0.8fr 0.7fr;
+$col-grid-mobile: 1fr; // Cột đơn cho mobile
+
+/* 🚀 Container Chính */
+.cyber-dashboard-container {
+  background-color: $card-bg;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  color: $text-color;
+  font-family: "Inter", sans-serif; // Hoặc 'Space Mono' cho kỹ thuật hơn
+}
+
+.dashboard-title {
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba($text-color, 0.1);
+  padding-bottom: 10px;
+
+  .neon-accent {
+    color: $primary-color;
+    @include neon-glow($primary-color, 3px);
+    font-size: 0.8em;
+  }
+}
+
+/* 📋 Header Bảng */
+.table-header {
+  display: grid;
+  grid-template-columns: $col-grid-desktop;
+  padding: 10px 0;
+  margin-bottom: 5px;
+  color: lighten($text-color, 5%);
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid $primary-color; // Điểm nhấn neon
+  @include neon-glow($primary-color, 1px);
+}
+
+.header-item {
+  padding: 0 5px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: $col-grid-desktop;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba($text-color, 0.1); // Đường kẻ mỏng
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s; // Chuyển động vi mô
+
+  &:hover {
+    background-color: rgba($secondary-color, 0.05);
+    border-left: 3px solid $secondary-color; // Hiệu ứng focus
+    transform: translateX(5px);
+  }
+}
+
+.row-item {
+  padding: 0 5px;
+  font-size: 0.9em;
+}
+
+/* 🌟 Hiệu ứng dữ liệu quan trọng */
+.address-glow {
+  color: $primary-color;
+  font-family: "Space Mono", monospace;
+  font-size: 0.8em;
+  // Giảm bớt glow để tránh làm rối mắt
+  @include neon-glow($primary-color, 1px);
+}
+
+.balance-value {
+  color: #39ff14; // Màu xanh lá cây cho số dư
+  font-weight: 700;
+  @include neon-glow(#39ff14, 2px);
+}
+
+/* Trạng thái */
+.status-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: flicker 1.5s infinite alternate;
+}
+
+.status-active {
+  color: #39ff14;
+  .status-dot {
+    background-color: #39ff14;
+    @include neon-glow(#39ff14, 3px);
+  }
+}
+
+.status-inactive {
+  color: $secondary-color;
+  .status-dot {
+    background-color: $secondary-color;
+    @include neon-glow($secondary-color, 3px);
+  }
+}
+
+/* Nút Action */
+.view-button {
+  background: none;
+  border: 1px solid $text-color;
+  color: $text-color;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $main-bg;
+    border-color: $primary-color;
+    @include neon-glow($primary-color, 5px);
+    transform: scale(1.05);
+  }
+}
+
+/* Phân loại căn lề */
+.right-align {
+  text-align: right;
+}
+.center-align {
+  text-align: center;
+}
+
+/* Footer */
+.dashboard-footer {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgba($primary-color, 0.1);
+  text-align: center;
+  .pagination-text {
+    font-size: 0.75em;
+    opacity: 0.6;
+  }
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 850px) {
+  // Trên tablet, giữ lại lưới nhưng thay đổi tỷ lệ
+  $col-grid-tablet: 1.5fr 1fr 0.8fr 0.8fr;
+
+  .table-header,
+  .table-row {
+    grid-template-columns: $col-grid-tablet;
+  }
+
+  // Ẩn cột ít quan trọng (TXNs và Action)
+  .tx-col,
+  .action-col {
+    display: none;
+  }
+
+  .dashboard-title {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 600px) {
+  .cyber-dashboard-container {
+    padding: 15px;
+    border-radius: 0;
+  }
+
+  // Mobile: Chuyển sang bố cục dạng Card cho từng User
+  .table-header {
+    display: none; // Ẩn hoàn toàn header
+  }
+
+  .table-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid rgba($primary-color, 0.3);
+    border-left: 3px solid $primary-color;
+    border-radius: 8px;
+
+    &:hover {
+      transform: none; // Hủy hiệu ứng hover translateX
+      box-shadow: 0 0 10px rgba($primary-color, 0.4);
+    }
+  }
+
+  .row-item {
+    width: 100%;
+    padding: 5px 0;
+
+    // Thêm Label cho dữ liệu trên mobile
+    &::before {
+      content: attr(data-label) ": ";
+      font-weight: 500;
+      color: rgba($text-color, 0.7);
+      margin-right: 5px;
+    }
+  }
+
+  // Gán data-label cho JSX
+  // NOTE: Bạn cần thêm `data-label` vào JSX (ví dụ: `<div data-label="Address" className="row-item address-col">...</div>`)
+  .address-col::before {
+    content: "Wallet Address: ";
+  }
+  .name-col::before {
+    content: "Username: ";
+  }
+  .balance-col::before {
+    content: "Balance: ";
+  }
+  .tx-col::before {
+    content: "TXNs: ";
+  }
+  .status-col::before {
+    content: "Status: ";
+  }
+  .action-col {
+    // Hiện lại nút Action ở cuối Card
+    display: block;
+    margin-top: 10px;
+    .view-button {
+      width: 100%;
+    }
+  }
+
+  .right-align,
+  .center-align {
+    text-align: left;
+  } // Mobile thường căn lề trái
+}

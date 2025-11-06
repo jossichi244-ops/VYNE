@@ -1,0 +1,312 @@
+// =========================================================
+// BeyondEDAViewer.scss - Phong cách cho Analysis Command Center
+// Thiết kế: Dark Mode, chuyên nghiệp, responsive cho Data Analyst
+// =========================================================
+
+// --- 1. Variables & Base Settings ---
+$color-bg-primary: #0a1121; // Nền tối sâu (Dark Navy)
+$color-bg-card: #141b2a; // Nền card
+$color-border-card: #2f3c50; // Border nhạt
+$color-text-primary: #e0e7ff; // Text chính (trắng xanh nhạt)
+$color-text-secondary: #94a3b8; // Text phụ/mô tả
+
+// Màu sắc nhấn mạnh (Accent Colors)
+$color-accent-blue: #63b3ed; // Xanh dương cho tiêu đề chính
+$color-success: #48bb78; // Xanh lá cho Significant/OK
+$color-warning: #f6ad55; // Vàng hổ phách cho Warning/Non-Significant
+$color-danger: #f56565; // Đỏ cho Error/Lỗi
+
+// Biến cho Biểu đồ Recharts
+$chart-grid-color: #4a5568;
+$chart-axis-color: #a0aec0;
+$line-treatment: #4299e1; // Xanh sáng
+$line-control: #e53e3e; // Đỏ/Cam (Counterfactual)
+
+// Breakpoints
+$breakpoint-lg: 1024px;
+$breakpoint-md: 768px;
+
+// --- 2. Mixins ---
+@mixin card-base {
+    background: $color-bg-card;
+    border: 1px solid $color-border-card;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    // Hiệu ứng hover nhẹ
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    }
+}
+
+// --- 3. Main Layout & Header ---
+.beyond-eda-viewer {
+    min-height: 100vh;
+    background-color: $color-bg-primary;
+    color: $color-text-primary;
+    font-family: 'Inter', sans-serif;
+    padding: 32px 16px; // Padding trên mobile
+
+    @media (min-width: $breakpoint-md) {
+        padding: 32px; // Padding trên desktop
+    }
+}
+
+.initial-loading-state {
+    text-align: center;
+    padding: 80px 0;
+    color: $color-text-secondary;
+    .loading {
+        font-size: 1.2rem;
+        // Có thể thêm animation cho class .loading ở đây
+    }
+}
+
+.viewer-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        // Hiệu ứng gradient text
+        background-image: linear-gradient(to right, $color-accent-blue, #3182ce);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 3rem;
+        }
+    }
+
+    .summary {
+        font-size: 1rem;
+        color: $color-text-secondary;
+        
+        .badge-status {
+            display: inline-block;
+            background-color: #2c5282;
+            color: #90cdf4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: $color-accent-blue;
+        }
+    }
+}
+
+// --- 4. Analysis Grid ---
+.analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: $breakpoint-lg) {
+        grid-template-columns: repeat(2, 1fr); // 2 cột trên desktop
+    }
+    
+    .full-width-card {
+        @media (min-width: $breakpoint-lg) {
+            grid-column: span 2; // Các card quan trọng (DiD, Cohort, Scenario) chiếm 2 cột
+        }
+    }
+
+}
+
+
+// --- 5. Analysis Card Base ---
+.analysis-card {
+    @include card-base;
+
+    .card-header {
+        margin-bottom: 24px;
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: $color-accent-blue;
+        }
+        .card-subtitle {
+            color: $color-text-secondary;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+
+// --- 6. Metric Card Styles (DiD) ---
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @media (min-width: $breakpoint-md) {
+        grid-template-columns: repeat(4, 1fr); // 4 cột trên màn hình lớn
+    }
+}
+
+.metric-card {
+    background: #1e293b;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    
+    &-header {
+        display: flex;
+        align-items: center;
+        color: $color-text-secondary;
+        margin-bottom: 8px;
+    }
+    
+    &-icon { 
+        margin-right: 8px; 
+        // Đảm bảo icon không bị ảnh hưởng bởi màu status (được định nghĩa riêng)
+        color: $color-text-secondary; 
+    } 
+
+    &-title { 
+        font-size: 0.9rem; 
+        font-weight: 500; 
+    }
+    
+    &-value { 
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        margin-bottom: 4px;
+    }
+    
+    &-subtext {
+        font-size: 0.75rem;
+        color: #64748b;
+    }
+}
+
+// Trạng thái cho Metric Card
+.card-status-success {
+    border-color: $color-success !important;
+    .metric-card-icon { color: $color-success; }
+}
+.card-status-warning {
+    border-color: $color-warning !important;
+    .metric-card-icon { color: $color-warning; }
+}
+
+
+// --- 7. Interpretation Box (DiD) ---
+.interpretation-box {
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    
+    &.interpretation-success {
+        background-color: rgba($color-success, 0.15);
+        border: 1px solid rgba($color-success, 0.5);
+        .interpretation-icon { color: $color-success; }
+    }
+    
+    &.interpretation-warning {
+        background-color: rgba($color-warning, 0.15);
+        border: 1px solid rgba($color-warning, 0.5);
+        .interpretation-icon { color: $color-warning; }
+    }
+    
+    &-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    
+    &-icon { margin-right: 12px; flex-shrink: 0; }
+    
+    &-title { font-size: 1.15rem; font-weight: 600; }
+    
+    &-narrative {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: $color-text-primary;
+    }
+    
+    .pre-trend-sub-warning {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: $color-warning;
+        display: flex;
+        align-items: center;
+        .sub-warning-icon { margin-right: 5px; height: 1em; width: 1em; }
+        font-weight: 600;
+    }
+}
+
+
+// --- 8. Chart Section (Recharts) ---
+.chart-section {
+    .chart-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        border-bottom: 1px solid $color-border-card;
+        padding-bottom: 8px;
+    }
+    
+    .chart-container {
+        height: 320px;
+        width: 100%;
+        background-color: #1a202c;
+        border-radius: 8px;
+        padding: 16px;
+        border: 1px solid #334155;
+    }
+    
+    // Style cho các phần tử Recharts
+    .chart-grid { stroke: $chart-grid-color !important; }
+    .chart-axis { 
+        stroke: $chart-axis-color !important; 
+        font-size: 12px;
+    }
+
+    // Line Colors
+    .line-treatment { stroke: $line-treatment; }
+    .line-control { stroke: $line-control; }
+    .reference-line-treatment { stroke: $color-warning; }
+
+    // Custom CSS Variables cho Tooltip (chỉ hoạt động với inline style trong JS, 
+    // nhưng ta vẫn định nghĩa chúng ở đây để dễ quản lý màu sắc)
+    :root {
+        --tooltip-bg: #1a202c;
+        --tooltip-border: #4a5568;
+        --tooltip-text: #e2e8f0;
+        --accent-color: $color-accent-blue;
+        --warning-color: $color-warning;
+    }
+}
+
+
+// --- 9. Error Card ---
+.did-error-card {
+    @include card-base;
+    background-color: rgba($color-danger, 0.15);
+    border-color: rgba($color-danger, 0.5);
+    
+    .did-error-header {
+        display: flex;
+        align-items: center;
+    }
+    .did-error-icon { color: $color-danger; margin-right: 12px; }
+    .did-error-title { font-size: 1.25rem; font-weight: 700; color: $color-danger; }
+    
+    .did-error-message {
+        margin-top: 12px;
+        color: rgba($color-danger, 0.8);
+    }
+}

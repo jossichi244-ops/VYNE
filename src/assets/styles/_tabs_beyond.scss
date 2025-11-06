@@ -1,0 +1,37 @@
+// src/components/BeyondEDAViewer/_tabs.scss
+
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid $color-border;
+  margin-bottom: $spacing-unit * 1.5;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: $color-text-secondary;
+  padding: ($spacing-unit * 0.75) ($spacing-unit);
+  cursor: pointer;
+  font-size: $spacing-unit * 0.9;
+  font-family: $font-family-main;
+  position: relative;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $color-text-white;
+  }
+
+  &--active {
+    color: $color-text-white;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.active-tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: $color-primary;
+}

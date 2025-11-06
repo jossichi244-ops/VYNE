@@ -1,0 +1,414 @@
+//======================================================================
+// SCHEMA EDITOR STYLES
+// Author: Senior Developer
+// Description: A professional, responsive, and maintainable stylesheet
+//              for the RJSF Schema Playground component.
+//======================================================================
+
+//-----------------------------------------------------
+// 1. CONFIGURATION & THEME
+//-----------------------------------------------------
+
+// 🔹 FONT STACK
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+$font-mono: 'Fira Code', 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+
+// 🔹 SIZING & SPACING
+$base-padding: 1rem;
+$base-radius: 6px;
+$base-gap: 1.5rem;
+
+// 🔹 TRANSITIONS
+$transition-speed: 200ms ease-in-out;
+
+// 🔹 CSS VARIABLES FOR DYNAMIC THEME (Dark Theme)
+:root {
+  // Background Colors
+  --bg-main: #1a1b26;      // Deep dark background
+  --bg-panel: #24283b;     // Lighter panel background
+  --bg-inset: #16161e;     // Even darker for inputs, etc.
+  --bg-hover: #3b4261;
+
+  // Text Colors
+  --text-primary: #c0caf5;
+  --text-secondary: #a9b1d6;
+  --text-faded: #565f89;
+  --text-heading: #e0e0e0;
+
+  // Border & Divider Colors
+  --border-color: #3b4261;
+  --border-focus: #7aa2f7;
+
+  // Accent Colors
+  --accent-primary: #7aa2f7;
+  --accent-secondary: #bb9af7;
+  --accent-success: #9ece6a;
+  --accent-warning: #e0af68;
+}
+
+//-----------------------------------------------------
+// 2. MIXINS & PLACEHOLDERS
+//-----------------------------------------------------
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%panel-base {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: $base-radius;
+  padding: $base-padding * 1.5;
+}
+
+//-----------------------------------------------------
+// 3. MAIN COMPONENT LAYOUT
+//-----------------------------------------------------
+
+.schema-editor {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: $font-sans;
+  padding: $base-gap;
+  border-radius: $base-radius * 2;
+  display: flex;
+  flex-direction: column;
+  gap: $base-gap;
+  width: 100vw;
+  margin: 2rem auto;
+  border: 1px solid var(--border-color);
+
+  h3, h4 {
+    color: var(--text-heading);
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+  }
+}
+
+//-----------------------------------------------------
+// 4. TOP HEADER & ACTIONS
+//-----------------------------------------------------
+
+.schema-top {
+  @include flex-between;
+  padding-bottom: $base-gap;
+  border-bottom: 1px solid var(--border-color);
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+
+    button {
+      background-color: var(--bg-panel);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: $base-radius;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all $transition-speed;
+
+      &:hover {
+        background-color: var(--bg-hover);
+        border-color: var(--accent-primary);
+        color: var(--text-primary);
+      }
+      
+      &:disabled {
+        background-color: var(--accent-success);
+        color: var(--bg-main);
+        border-color: var(--accent-success);
+        cursor: default;
+      }
+    }
+  }
+}
+
+//-----------------------------------------------------
+// 5. SCHEMA BODY (2-COLUMN LAYOUT)
+//-----------------------------------------------------
+
+.schema-body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: $base-gap;
+}
+
+// --- Left Panel: Field Toggles ---
+.left-panel {
+  @extend %panel-base;
+  max-height: 60vh;
+  overflow-y: auto;
+  
+  .field-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    li label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      border-radius: $base-radius;
+      cursor: pointer;
+      transition: background-color $transition-speed;
+
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+
+      .field-name {
+        font-weight: 500;
+        flex-grow: 1;
+      }
+      
+      .field-type {
+        font-family: $font-mono;
+        font-size: 0.8em;
+        color: var(--text-faded);
+        background-color: var(--bg-inset);
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+      }
+    }
+    
+    // Custom Checkbox
+    input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: all $transition-speed;
+      flex-shrink: 0;
+
+      &:checked {
+        background-color: var(--accent-primary);
+        border-color: var(--accent-primary);
+        
+        &::after {
+          content: '✔';
+          position: absolute;
+          color: var(--bg-main);
+          font-size: 14px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+}
+
+// --- Right Panel: JSON View ---
+.right-panel {
+  @extend %panel-base;
+  display: flex;
+  flex-direction: column;
+  
+  .json-view {
+    flex-grow: 1;
+    background-color: #282a36; // Monokai background for seamless look
+    border-radius: $base-radius;
+    padding: $base-padding;
+    overflow: auto;
+    
+    // Target ReactJson component
+    .react-json-view {
+      background-color: transparent !important;
+    }
+  }
+}
+
+//======================================================================
+// 6. DATA PREVIEW TABLE (ENHANCED UX VERSION)
+//======================================================================
+
+.data-preview {
+  @extend %panel-base;
+  display: flex;
+  flex-direction: column;
+
+  .no-data-msg {
+    color: var(--text-faded);
+    text-align: center;
+    padding: 3rem 2rem;
+    font-style: italic;
+    border: 2px dashed var(--border-color);
+    border-radius: $base-radius;
+    width: 100%;
+    margin: auto; // Center it within the flex container
+
+    &::before {
+      content: '🗂️'; // Emoji as a simple icon
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+  }
+}
+
+//--- Wrapper with intelligent scroll indicators ---
+.data-table-wrapper {
+  overflow-x: auto;
+  max-height: 400px;
+  // Add subtle shadows to indicate scrollability, a very pro touch
+  background:
+    // linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)),
+    // linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 100% 0,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0;
+  background-repeat: no-repeat;
+  background-color: transparent; // Match panel color
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+  border-radius: $base-radius;
+}
+
+
+.data-table {
+  width: 100%;
+  border-collapse: separate; // Use separate for better border control
+  border-spacing: 0;
+  font-size: 0.9rem;
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgba(var(--bg-inset), 0.95); // Slightly transparent for depth
+    backdrop-filter: blur(4px); // Glassmorphism effect
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--accent-primary);
+    white-space: nowrap;
+    transition: background-color $transition-speed;
+    cursor: default; // Default cursor
+
+    // Hint for sortable columns (if you add this feature)
+    &.sortable {
+      cursor: pointer;
+      &:hover {
+        background-color: var(--bg-hover);
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color $transition-speed, box-shadow $transition-speed;
+
+      &:nth-child(even) {
+        background-color: rgba(var(--bg-main), 0.5);
+      }
+
+      &:hover {
+        background-color: var(--bg-hover);
+        // "Lift" the row on hover for a premium feel
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    td {
+      padding: 0; // Remove padding from TD, move it to input for full control
+      border-bottom: 1px solid var(--border-color);
+      position: relative; // For positioning cell state indicators
+      white-space: nowrap;
+
+      // --- State-aware cells: The CORE of the UX upgrade ---
+
+      // 1. Cell with changed ("dirty") data
+      &.dirty-cell::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background-color: var(--accent-warning);
+        z-index: 2;
+        border-radius: 3px 0 0 3px;
+      }
+      
+      // 2. Cell with invalid data
+      &.invalid-cell {
+        input {
+          box-shadow: inset 0 0 0 2px rgba(var(--accent-error, 247, 119, 137), 0.5);
+          color: var(--accent-error, #f77789);
+        }
+      }
+
+      // --- Smart data alignment ---
+      &[data-type="numeric"] input {
+        text-align: right;
+        font-family: $font-mono;
+      }
+    }
+    
+    input {
+      // Input now controls the full cell space
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      border: 2px solid transparent; // Use thicker border for focus state
+      color: var(--text-primary);
+      padding: 0.75rem 1rem;
+      border-radius: 0;
+      font-family: $font-sans;
+      font-size: inherit;
+      outline: none;
+      transition: all $transition-speed;
+
+      &:focus {
+        background-color: var(--bg-inset);
+        border-color: var(--border-focus);
+        position: relative;
+        z-index: 2; // Ensure focused input is on top of other elements
+      }
+    }
+  }
+}
+
+//-----------------------------------------------------
+// 7. RESPONSIVE DESIGN
+//-----------------------------------------------------
+
+@media (max-width: 992px) {
+  .schema-body {
+    grid-template-columns: 250px 1fr; // Shrink sidebar on tablets
+  }
+}
+
+@media (max-width: 768px) {
+  .schema-editor {
+    padding: $base-gap * 0.75;
+  }
+  
+  .schema-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .schema-body {
+    grid-template-columns: 1fr; // Stack panels on mobile
+  }
+
+  .left-panel {
+    max-height: 30vh; // Constrain height on mobile
+  }
+}

@@ -1,0 +1,174 @@
+/* src/assets/styles/OCRToolPage.scss */
+
+// --- Biến Màu Senior ---
+$bg-dark: #070e1b; // Sâu hơn, gần như đen
+$primary-neon: #4f46e5; // Indigo sâu, tinh tế (thay vì Sky Blue)
+$secondary-neon: #ec4899; // Hồng/Magenta, đối lập nhưng hài hòa
+$text-light: #e5e7eb; // Màu trắng dịu
+$text-subtle: #94a3b8; // Màu chữ phụ
+
+// --- Mixin Nâng Cấp: Hiệu ứng Thủy tinh và Neon Sâu ---
+@mixin deep-neon-shadow($color, $size: 1rem, $intensity: 0.3) {
+    box-shadow: 
+        0 0 $size * 0.5 $color, 
+        0 0 $size $color, 
+        0 0 $size * 1.5 rgba($color, $intensity);
+}
+
+@mixin subtle-glow-border($color) {
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    position: relative;
+    
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px; // Độ dày của border glow
+        background: linear-gradient(45deg, rgba($color, 0.6), rgba($color, 0.1));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+}
+
+// --- Container Chung ---
+.ocr-page-container {
+    background-color: $bg-dark;
+    min-height: 100vh;
+    padding: 3rem 1.5rem; // Tăng padding để có nhiều không gian âm hơn
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.5s ease;
+    width: 100vw;
+}
+
+.page-title {
+    color: $text-light;
+    text-align: center;
+    font-size: 3rem; // Tăng kích thước
+    font-weight: 800;
+    margin-bottom: 3rem; // Tăng khoảng cách
+    letter-spacing: 0.1em; // Tăng tracking
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba($primary-neon, 0.8), 0 0 3px rgba($primary-neon, 0.4); // Neon sâu hơn
+
+    @media (max-width: 768px) {
+        font-size: 2.2rem;
+    }
+}
+
+// --- Content Wrapper (Khối Chính) ---
+.content-wrapper {
+    width: 100vw;
+    margin: 0 auto;
+    background-color: rgba(#1e293b, 0.6); // Background hơi trong suốt
+    border-radius: 1.5rem; // Bo góc lớn hơn
+    padding: 3rem;
+    
+    // Hiệu ứng Thủy tinh Mờ (Blurry Glass effect)
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    // Đường viền Glow cao cấp
+    @include subtle-glow-border($primary-neon);
+    @include deep-neon-shadow(rgba($primary-neon, 0.05), 2rem, 0.1); // Bóng lớn, mờ
+    transition: transform 0.3s ease-in-out;
+    
+    &:hover {
+        transform: translateY(-3px); // Micro-animation: Lift on hover
+    }
+
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+    }
+}
+
+// --- Section Header (Phân cấp) ---
+.section-header {
+    color: $secondary-neon;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+    
+    // Đường phân cách bằng gradient neon
+    border-bottom: 1px solid transparent;
+    background-image: linear-gradient(to right, rgba($secondary-neon, 0.5), rgba($secondary-neon, 0.1) 80%, transparent);
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+}
+
+// --- Loading State (Nâng cấp) ---
+.loading-indicator {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: rgba(#334155, 0.7);
+    border-radius: 0.75rem;
+    
+    // Viền gradient
+    @include subtle-glow-border($primary-neon);
+    
+    p {
+        color: $primary-neon;
+        font-size: 1.25rem;
+        font-weight: 600;
+        
+        // Micro-animation: Gradient shift & Pulsing glow
+        animation: pulse-neon 1.8s infinite alternate ease-in-out;
+        text-shadow: 0 0 5px rgba($primary-neon, 0.8);
+    }
+}
+
+@keyframes pulse-neon {
+    0% { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.02); @include deep-neon-shadow(rgba($primary-neon, 0.6), 0.5rem, 0.2); }
+}
+
+// --- Error State (Nâng cấp) ---
+.error-message {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    background-color: #3b070c; // Nền tối hơn, sâu hơn
+    border-left: 5px solid #f87171; // Màu đỏ nhẹ nhàng hơn
+    color: #fecaca; // Text dịu mắt
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        @include deep-neon-shadow(rgba(#f87171, 0.4), 0.5rem, 0.2);
+    }
+
+    .font-bold {
+        font-weight: 700;
+        color: #f87171;
+    }
+}
+
+// --- Responsive: Điều chỉnh khoảng cách cho Mobile ---
+@media (max-width: 576px) {
+    .ocr-page-container {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .content-wrapper {
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .section-header {
+        font-size: 1.3rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+}

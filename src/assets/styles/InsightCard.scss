@@ -1,0 +1,205 @@
+// InsightCard.scss
+
+// Define a palette of variables for easy color management
+$color-dark-bg: #1a1a2e;
+$color-light-bg: #f0f2f5;
+$color-card-dark: #2c2c3f;
+$color-card-light: #ffffff;
+$color-text-dark: #e0e0e0;
+$color-text-light: #333333;
+$color-border-dark: #4a4a60;
+
+// Status colors
+$color-info: #3e8eff; // Blue
+$color-success: #4ade80; // Green
+$color-warning: #ffbf00; // Yellow
+$color-error: #ff4d4d; // Red
+
+// Base mixin for consistent card styling
+@mixin card-base {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  .dark & {
+    background-color: $color-card-dark;
+    border: 1px solid $color-border-dark;
+    box-shadow: none;
+  }
+}
+
+// Mixin for the subtle glow effect
+@mixin border-glow($color) {
+  .card-border-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      transparent 50%,
+      $color 100%
+    );
+    opacity: 0.1;
+    z-index: 0;
+  }
+}
+
+// Main component styling
+.cyber-insight-card {
+  @include card-base;
+  background-color: $color-card-light;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+
+  // Hover states for animation
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  // Type-specific styling
+  &.info {
+    border-left: 4px solid $color-info;
+    @include border-glow($color-info);
+    .icon-wrapper .icon {
+      color: $color-info;
+    }
+  }
+
+  &.success {
+    border-left: 4px solid $color-success;
+    @include border-glow($color-success);
+    .icon-wrapper .icon {
+      color: $color-success;
+    }
+  }
+
+  &.warning {
+    border-left: 4px solid $color-warning;
+    @include border-glow($color-warning);
+    .icon-wrapper .icon {
+      color: $color-warning;
+    }
+  }
+
+  &.error {
+    border-left: 4px solid $color-error;
+    @include border-glow($color-error);
+    .icon-wrapper .icon {
+      color: $color-error;
+    }
+  }
+}
+
+// Icon styling
+.icon-wrapper {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .icon {
+    width: 100%;
+    height: 100%;
+    stroke-width: 2;
+  }
+}
+
+// Content styling
+.content {
+  flex-grow: 1;
+
+  .insight-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+    color: $color-text-light;
+
+    .dark & {
+      color: $color-text-dark;
+    }
+  }
+
+  .insight-message {
+    font-size: 0.875rem;
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+
+    .dark & {
+      color: #9ca3af;
+    }
+  }
+}
+.business-report-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+// Special card for Executive Summary
+.summary-card {
+  @extend .cyber-insight-card;
+  border-left: 4px solid #6366f1; /* indigo */
+  background-color: #f1f1ff;
+  .dark & {
+    background-color: #1e1e3f;
+    border-color: #6366f1;
+  }
+}
+
+// Styles for a group of insights (e.g., Key Drivers)
+.insight-group {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.executive-report {
+  background: #111827;
+  color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 25px rgba(0, 200, 255, 0.15);
+  margin-bottom: 1.5rem;
+
+  .report-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #38bdf8;
+  }
+
+  .report-section {
+    margin-bottom: 1.25rem;
+
+    .section-header {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fbbf24;
+    }
+
+    .section-content {
+      list-style: disc;
+      padding-left: 1.5rem;
+      line-height: 1.5;
+    }
+  }
+}

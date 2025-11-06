@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌌 Custom global styles */
+html,
+body {
+  @apply bg-gray-900 text-gray-100 font-sans;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-purple-600 rounded-md;
+}
+
+/* 🌈 Optional: smooth glow effects for neon UI */
+.neon-text {
+  text-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 20px #a855f7;
+}

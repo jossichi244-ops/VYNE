@@ -1,0 +1,471 @@
+/* src/assets/styles/ImpactAssessmentTerminal.scss */
+
+// ------------------------------------
+// 1. VARIABLE DEFINITIONS (Neon Theme)
+// ------------------------------------
+:root {
+    --bg-dark: #0a0e1a; /* Darkest blue-black */
+    --bg-card: #141a2f; /* Slightly lighter for cards */
+    --text-primary: #e0e6f7; /* Light grayish-blue for main text */
+    --text-secondary: #9aa9c4; /* Faded blue for subtext */
+    --text-faded: #5a6681; /* For minor details/reasons */
+
+    // Neon Colors
+    --accent-blue-neon: #00e0ff;
+    --accent-purple-neon: #b366ff;
+    --success-neon: #33ff99; /* Green for positive impact/status OK */
+    --warning-neon: #ffaa00; /* Orange for auto-detect/mild warning */
+    --error-neon: #ff4d4d; /* Red for failure */
+
+    // Shadows
+    --shadow-deep: 0 4px 10px rgba(0, 0, 0, 0.4);
+    --shadow-neon-blue: 0 0 10px rgba(0, 224, 255, 0.3), 0 0 5px rgba(0, 224, 255, 0.2);
+    --shadow-neon-success: 0 0 10px rgba(51, 255, 153, 0.4), 0 0 5px rgba(51, 255, 153, 0.2);
+}
+
+// ------------------------------------
+// 2. BASE STYLES & CONTAINER
+// ------------------------------------
+.impact-assessment-terminal {
+    font-family: 'Fira Code', 'Roboto Mono', monospace; /* Modern monospace font */
+    background-color: var(--bg-card);
+    border: 1px solid #2a344d;
+    border-radius: 12px;
+    box-shadow: var(--shadow-deep);
+    padding: 25px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    overflow: hidden; /* For animation containment */
+
+    .card-header {
+        margin-bottom: 20px;
+
+        .card-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-primary);
+            strong {
+                color: var(--accent-blue-neon);
+                text-shadow: 0 0 5px var(--accent-blue-neon);
+            }
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    }
+
+    .terminal-divider {
+        border: none;
+        border-top: 1px dashed #2a344d;
+        margin: 25px 0;
+    }
+}
+
+
+// ------------------------------------
+// 3. TERMINAL METRICS GRID (Key Metrics)
+// ------------------------------------
+.terminal-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+
+    .terminal-metric-card {
+        background: var(--bg-dark);
+        border: 1px solid #2a344d;
+        border-left: 4px solid var(--accent-blue-neon);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: var(--shadow-deep);
+        cursor: default;
+        transition: all 0.3s ease;
+
+        &.status-success {
+            border-left-color: var(--success-neon);
+        }
+        &.status-warning {
+            border-left-color: var(--warning-neon);
+        }
+
+        .metric-header-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .metric-icon-glow {
+                display: flex;
+                align-items: center;
+                margin-right: 10px;
+                // Icon glow effect
+                filter: drop-shadow(0 0 3px currentColor);
+            }
+
+            .metric-title {
+                font-size: 0.9em;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--text-secondary);
+            }
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--text-primary);
+            // Value neon shadow is inline style via component prop
+            line-height: 1.1;
+        }
+
+        .metric-subtext {
+            font-size: 0.8em;
+            color: var(--text-faded);
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+
+// ------------------------------------
+// 4. ERROR STATE STYLES
+// ------------------------------------
+.terminal-error-card {
+    .error-header {
+        display: flex;
+        align-items: center;
+        .error-icon {
+            color: var(--error-neon);
+            filter: drop-shadow(0 0 5px var(--error-neon));
+            margin-right: 10px;
+        }
+        .card-title {
+            color: var(--error-neon);
+            text-shadow: 0 0 5px var(--error-neon);
+        }
+    }
+    
+    .error-message {
+        color: var(--text-secondary);
+        font-size: 1.1em;
+        padding: 10px 0;
+    }
+    
+    .error-details {
+        background-color: var(--bg-dark);
+        border: 1px solid #3d4a66;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-size: 0.9em;
+        line-height: 1.6;
+        
+        strong {
+            color: var(--accent-purple-neon);
+            margin-right: 5px;
+        }
+    }
+
+    .candidate-list-summary {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #1b243e;
+        border-radius: 8px;
+        border: 1px solid #3d4a66;
+
+        > p { // CANDIDATE LOG header
+            display: flex;
+            align-items: center;
+            color: var(--accent-blue-neon);
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            strong { margin-left: 5px; }
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            border-left: 3px solid #3d4a66;
+            padding-left: 15px;
+
+            li {
+                font-size: 0.85em;
+                line-height: 1.8;
+                color: var(--text-secondary);
+                transition: color 0.2s;
+                
+                strong { color: var(--text-primary); }
+                .text-faded { color: var(--text-faded); }
+            }
+            .list-title {
+                color: var(--warning-neon);
+                font-weight: 700;
+                margin-bottom: 5px;
+                text-transform: uppercase;
+                font-size: 0.8em;
+            }
+        }
+    }
+}
+
+// ------------------------------------
+// 5. SUCCESS: DETECTION LOGIC BREAKDOWN
+// ------------------------------------
+.detection-logic-breakdown {
+    overflow: hidden;
+
+    .section-title-neon {
+        font-size: 1.2em;
+        color: var(--accent-blue-neon);
+        text-shadow: 0 0 5px rgba(0, 224, 255, 0.4);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .logic-note {
+        font-size: 0.9em;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+    }
+
+    .logic-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+
+        .grid-full {
+            grid-column: 1 / -1;
+        }
+
+        .logic-candidate-box {
+            background: var(--bg-dark);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #2a344d;
+
+            h4 {
+                font-size: 0.9em;
+                color: var(--text-primary);
+                text-transform: uppercase;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid #2a344d;
+            }
+            &.effect-box h4 { border-left: 5px solid var(--success-neon); padding-left: 10px; }
+            &.base-box h4 { border-left: 5px solid var(--accent-purple-neon); padding-left: 10px; }
+            &.pair-box h4 { border-left: 5px solid var(--accent-blue-neon); padding-left: 10px; }
+
+
+            ul {
+                list-style: none;
+                padding: 0;
+                
+                li {
+                    font-size: 0.85em;
+                    line-height: 1.6;
+                    color: var(--text-secondary);
+                    
+                    strong { color: var(--text-primary); }
+                    .reason-text { color: var(--text-faded); font-style: italic; }
+                }
+
+                .selected-candidate {
+                    background-color: #33ff9920; // Green tint
+                    padding: 3px 5px;
+                    margin: 2px -5px;
+                    border-radius: 4px;
+                    border-left: 3px solid var(--success-neon);
+                    color: var(--success-neon);
+                    strong { color: var(--success-neon); }
+                }
+
+                .selected-pair {
+                    background-color: #00e0ff20; // Blue tint
+                    padding: 5px;
+                    margin: 5px -5px;
+                    border-radius: 4px;
+                    border: 1px dashed var(--accent-blue-neon);
+                    color: var(--accent-blue-neon);
+                    strong { color: var(--accent-blue-neon); }
+                }
+            }
+        }
+        
+        .selection-info-note {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 10px;
+            background-color: #1b243e;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 5px solid var(--warning-neon);
+        }
+    }
+}
+
+
+// ------------------------------------
+// 6. SUCCESS: SAMPLE DATA TABLE
+// ------------------------------------
+.sample-preview-table {
+    margin-top: 30px;
+
+    .section-title-neon {
+        font-size: 1.2em;
+        color: var(--accent-purple-neon);
+        text-shadow: 0 0 5px rgba(179, 102, 255, 0.4);
+        margin-bottom: 15px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85em;
+        
+        thead th {
+            background-color: #1c2744;
+            color: var(--accent-blue-neon);
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 2px solid #2a344d;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #2a344d;
+
+            &:nth-child(even) {
+                background-color: #121931; // Alternate row shading
+            }
+            
+            &:hover {
+                background-color: #1c2744;
+                color: var(--success-neon);
+            }
+        }
+
+        tbody td {
+            padding: 10px;
+            color: var(--text-primary);
+        }
+    }
+}
+
+// ------------------------------------
+// 7. INTERPRETATION BOX
+// ------------------------------------
+.terminal-interpretation-box {
+    padding: 18px;
+    border-radius: 8px;
+    background-color: #1b243e;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    
+    .interpretation-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .interpretation-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+            color: inherit; /* will use border color */
+        }
+
+        .interpretation-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+    }
+
+    .interpretation-narrative {
+        font-size: 0.95em;
+        line-height: 1.5;
+        color: var(--text-secondary);
+    }
+    
+    // Specific styles for status colors (inherited from inline style)
+    &.pre-trend-ok { 
+        border-color: var(--success-neon);
+        .interpretation-icon { color: var(--success-neon); }
+    }
+    &.pre-trend-warning { 
+        border-color: var(--warning-neon); 
+        .interpretation-icon { color: var(--warning-neon); }
+    }
+
+    .pre-trend-sub-warning {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: rgba(255, 170, 0, 0.15); // Light orange background
+        border-left: 4px solid var(--warning-neon);
+        color: var(--warning-neon);
+        font-size: 0.9em;
+        line-height: 1.4;
+        display: flex;
+        align-items: flex-start;
+        
+        .sub-warning-icon {
+            margin-right: 10px;
+            min-width: 16px;
+            margin-top: 2px;
+        }
+        strong {
+            color: var(--text-primary);
+        }
+    }
+}
+
+// ------------------------------------
+// 8. RAW JSON / DEBUG SECTION
+// ------------------------------------
+.raw-json-section {
+    margin-top: 20px;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    
+    summary {
+        cursor: pointer;
+        padding: 5px;
+        color: var(--accent-purple-neon);
+        font-weight: 600;
+        outline: none;
+        &:hover { text-decoration: underline; }
+    }
+    
+    .raw-json-viewer {
+        background-color: #0d1222;
+        border: 1px solid #2a344d;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 300px;
+    }
+}
+
+// ------------------------------------
+// 9. RESPONSIVENESS
+// ------------------------------------
+@media (max-width: 768px) {
+    .impact-assessment-terminal {
+        padding: 15px;
+    }
+    .terminal-metric-grid {
+        grid-template-columns: 1fr;
+    }
+    .detection-logic-breakdown .logic-grid {
+        grid-template-columns: 1fr;
+    }
+}

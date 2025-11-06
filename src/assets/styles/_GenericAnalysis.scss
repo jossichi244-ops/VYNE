@@ -1,0 +1,192 @@
+// src/components/GenericAnalysis/_GenericAnalysis.scss
+
+// --- Variables ---
+$neon-cyan: #00f5ff;
+$neon-red: #ff4560;
+$neon-green: #69f0ae;
+$bg-deep-space: #0b0d1a;
+$surface-level-1: #1a1c2c;
+$surface-level-2: #24263b;
+$border-color: #3a3d54;
+$text-primary: #e0e6f0;
+$text-secondary: #8a94a6;
+$font-family: 'Consolas', 'Courier New', monospace; // Font monospace cho dữ liệu
+
+// Base styles for Dark Mode Holographic aesthetic
+.analysis-card.holographic-mode {
+  background: $surface-level-1;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 0 20px rgba($neon-cyan, 0.1), 0 0 40px rgba($bg-deep-space, 0.5);
+  position: relative;
+  overflow: hidden;
+  font-family: $font-family;
+  color: $text-primary;
+  max-width: 100%;
+  margin: 1rem auto;
+}
+
+// --- Header & Actions ---
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba($neon-cyan, 0.2);
+  margin-bottom: 1rem;
+  flex-wrap: wrap; // Responsive
+
+  .analysis-title {
+    font-size: 1.5rem;
+    color: $neon-cyan;
+    text-shadow: 0 0 8px rgba($neon-cyan, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    .title-icon {
+        animation: pulse-glow 2s infinite alternate;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem; // Responsive gap on small screens
+  }
+}
+
+@keyframes pulse-glow {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.btn-action {
+  background: $surface-level-2;
+  border: 1px solid $border-color;
+  color: $text-secondary;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $neon-cyan;
+    color: $neon-cyan;
+    background: rgba($neon-cyan, 0.1);
+  }
+}
+
+// --- JSON Viewer ---
+.json-viewer-content {
+  overflow-x: auto;
+  padding-right: 0.5rem;
+  max-height: 70vh; // Giới hạn chiều cao
+}
+
+.json-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+
+  &.nested-list {
+    padding-left: 1.5rem;
+    border-left: 1px dashed $border-color;
+    margin-left: 0.5rem;
+  }
+}
+
+.json-item-container, .json-item-primitive {
+  padding: 0.3rem 0;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+.json-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background-color: rgba($neon-cyan, 0.05);
+  }
+}
+
+.json-toggle-icon {
+  margin-right: 0.3rem;
+  color: $neon-cyan;
+  transition: transform 0.2s ease;
+  &.rotated {
+    transform: rotate(90deg);
+  }
+}
+
+// Key & Value Styling
+.json-key {
+  color: $text-secondary;
+  font-weight: 500;
+  margin-right: 0.5rem;
+
+  // Depth-based color coding (DA/DS principle)
+  &.json-key-level-0 { color: $neon-cyan; font-weight: 700; }
+  &.json-key-level-1 { color: lighten($neon-cyan, 10%); }
+  &.json-key-level-2 { color: $text-secondary; }
+  &.json-key-level-3 { color: darken($text-secondary, 10%); }
+}
+
+.json-value {
+  font-weight: 600;
+  
+  &.json-type-string {
+    color: $neon-green; // Strings (dữ liệu văn bản)
+  }
+  &.json-type-number {
+    color: $neon-red; // Numbers (giá trị tính toán)
+  }
+  &.json-type-boolean {
+    color: $neon-cyan; // Boolean (cờ/trạng thái)
+  }
+}
+
+.json-summary {
+    color: $text-secondary;
+    font-style: italic;
+    opacity: 0.7;
+    margin-left: 0.5rem;
+}
+
+// --- Collapsed State ---
+.analysis-collapsed-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: $neon-cyan;
+  border: 2px dashed rgba($neon-cyan, 0.4);
+  border-radius: 8px;
+  background-color: rgba($neon-cyan, 0.05);
+  font-size: 1.1rem;
+}
+
+.empty-state {
+    color: $text-secondary;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+// --- Responsive Adjustments ---
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,250 @@
+/* Biến SCSS - Tinh thần Cyber-Modern */
+$main-bg: #0d1117; // Nền tối (Dark Mode)
+$primary-color: #00e0ff; // Màu neon chính (Cyan)
+$secondary-color: #ff007f; // Màu neon phụ (Magenta/Pink)
+$text-color: #c9d1d9; // Màu chữ sáng
+$card-bg: rgba(18, 26, 34, 0.7); // Nền card trong suốt nhẹ
+
+/* Mixin cho Hiệu ứng Neon Glow */
+@mixin neon-glow($color, $radius: 5px) {
+  box-shadow: 0 0 $radius $color, 0 0 ($radius * 2) rgba($color, 0.5);
+  text-shadow: 0 0 $radius / 4 $color;
+}
+
+/* 💠 Component Chính */
+.cyber-profile-card {
+  background-color: $card-bg;
+  backdrop-filter: blur(10px); // Hiệu ứng làm mờ nền (quan trọng cho Web3 UI)
+  border: 1px solid rgba($primary-color, 0.3); // Viền mỏng phát sáng
+  border-radius: 12px;
+  padding: 30px 20px;
+  max-width: 400px; // Kích thước tiêu chuẩn cho card
+  margin: 20px auto;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; // Chuyển động vi mô khi hover
+
+  &:hover {
+    transform: translateY(-3px); // Nâng nhẹ card
+    @include neon-glow($primary-color, 8px); // Glow nhẹ hơn khi hover
+  }
+}
+
+/* 👤 Header và Avatar */
+.profile-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.avatar-container {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  border: 3px solid $primary-color; // Viền phát sáng
+  @include neon-glow($primary-color, 6px);
+  overflow: hidden;
+  position: relative;
+  // Hiệu ứng "glitch" nhẹ
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle,
+      rgba($primary-color, 0.2) 0%,
+      transparent 70%
+    );
+    animation: pulse-light 4s infinite ease-in-out;
+  }
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.username-neon {
+  color: $primary-color;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0 0 5px;
+  @include neon-glow($primary-color, 5px);
+}
+
+.wallet-info {
+  font-family: "Space Mono", monospace; // Font đơn giản, kỹ thuật
+  font-size: 0.85em;
+  color: $text-color;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid rgba($text-color, 0.2);
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1);
+    border-color: $primary-color;
+  }
+}
+
+.copy-icon {
+  margin-left: 8px;
+  // Thêm style cho icon
+}
+
+/* 📊 Metrics Grid */
+.profile-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.metric-item {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px 5px;
+  border-radius: 8px;
+  border-left: 2px solid $secondary-color; // Điểm nhấn
+
+  .metric-label {
+    display: block;
+    font-size: 0.75em;
+    color: lighten($text-color, 10%);
+    opacity: 0.7;
+    margin-bottom: 3px;
+  }
+
+  .metric-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: $secondary-color;
+    @include neon-glow($secondary-color, 3px);
+  }
+}
+
+/* ⚙️ Action Buttons */
+.profile-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.action-button {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  background: rgba(255, 255, 255, 0.05);
+  color: $text-color;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: scale(1.05); // Chuyển động vi mô
+  }
+}
+
+.primary-glow {
+  border-color: $primary-color;
+  color: $primary-color;
+
+  &:hover {
+    @include neon-glow($primary-color, 10px);
+    background: rgba($primary-color, 0.15);
+  }
+}
+
+.secondary-glow {
+  border-color: $secondary-color;
+  color: $secondary-color;
+
+  &:hover {
+    @include neon-glow($secondary-color, 10px);
+    background: rgba($secondary-color, 0.15);
+  }
+}
+
+.tertiary-glow {
+  border-color: $text-color;
+  color: $text-color;
+
+  &:hover {
+    @include neon-glow($text-color, 10px);
+    background: rgba($text-color, 0.15);
+  }
+}
+
+/* 💡 Status Indicator */
+.status-indicator {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.8em;
+  color: $text-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #39ff14; // Màu xanh lá cây (online/connected)
+  border-radius: 50%;
+  margin-right: 8px;
+  @include neon-glow(#39ff14, 4px);
+  animation: flicker 1.5s infinite alternate; // Chuyển động vi mô
+}
+
+/* 💫 Keyframes (Chuyển động Vi mô) */
+@keyframes flicker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulse-light {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 600px) {
+  .cyber-profile-card {
+    border-radius: 0; // Tràn hết màn hình trên mobile
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .profile-metrics-grid {
+    grid-template-columns: 1fr; // Chuyển thành 1 cột trên mobile
+    gap: 15px;
+  }
+
+  .profile-actions-bar {
+    flex-direction: column; // Nút xếp chồng lên nhau
+  }
+
+  .action-button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}

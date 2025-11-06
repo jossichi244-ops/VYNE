@@ -1,0 +1,224 @@
+/* assets/styles/DataInspectionPanel.scss */
+
+// Variables
+$primary-color: #3b82f6; // Blue
+$secondary-color: #ef4444; // Red for warnings
+$background-color: #f8f9fa;
+$card-bg-color: #ffffff;
+$text-color-primary: #1f2937;
+$text-color-secondary: #6b7280;
+$border-color: #e5e7eb;
+$shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+$shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+.inspection-panel-container {
+  font-family: "Inter", sans-serif;
+  padding: 1.5rem;
+  background-color: $background-color;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- Shared Card Styles --- */
+.chart-card,
+.columns-detail-card,
+.actions-card {
+  background-color: $card-bg-color;
+  border-radius: 8px;
+  box-shadow: $shadow-light;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+  }
+}
+
+.card-title {
+  font-size: 1.25rem; // h2
+  font-weight: 600;
+  color: $text-color-primary;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid $border-color;
+  padding-bottom: 0.5rem;
+}
+
+/* --- 1. Dataset Summary - Hero Card --- */
+.summary-hero-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  background: linear-gradient(
+    135deg,
+    $primary-color,
+    darken($primary-color, 15%)
+  );
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: $shadow-hover;
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .summary-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}
+
+/* --- 2 & 3. Charts Grid --- */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $text-color-primary;
+  margin-bottom: 1rem;
+}
+
+.recharts-wrapper {
+  // Styles for Recharts container
+  .recharts-cartesian-axis-tick-value {
+    font-size: 12px;
+  }
+}
+
+.custom-tooltip {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* --- 4. Columns Detail - Custom Accordion --- */
+.columns-detail-card {
+  padding: 1.5rem;
+
+  .columns-list {
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .column-item {
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .column-trigger {
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f1f5f9;
+    }
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  .column-name {
+    flex-grow: 1;
+    font-size: 1rem;
+    color: $text-color-primary;
+  }
+
+  .column-type {
+    font-size: 0.875rem;
+    color: $text-color-secondary;
+  }
+
+  .toggle-icon {
+    font-size: 0.75rem;
+    color: $text-color-secondary;
+    margin-left: auto;
+  }
+
+  .column-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 1rem;
+  }
+
+  .column-item.is-expanded {
+    .column-content {
+      max-height: 500px; /* arbitrary large value */
+      padding-bottom: 1rem;
+    }
+  }
+
+  .column-stats {
+    font-size: 0.875rem;
+    color: $text-color-secondary;
+    line-height: 1.5;
+
+    strong {
+      color: $text-color-primary;
+    }
+  }
+
+  .code-block {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: "Fira Code", "Monaco", monospace;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .top-values {
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+}
+
+/* --- 5. Suggested Actions --- */
+.actions-card {
+  .actions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      background-color: #ecf3fe;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      color: #1e3a8a;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

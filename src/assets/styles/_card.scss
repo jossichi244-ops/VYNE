@@ -1,0 +1,56 @@
+// src/components/BeyondEDAViewer/_card.scss
+
+.analysis-card {
+  background: linear-gradient(145deg, $color-surface, $color-surface-gradient);
+  border: 1px solid $color-border;
+  border-radius: $border-radius-card;
+  padding: $card-padding;
+  box-shadow: $shadow-card;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit * 0.75;
+    margin-bottom: $spacing-unit;
+  }
+
+  &__title {
+    font-size: $spacing-unit * 1.2;
+    font-weight: $font-weight-semibold;
+    color: $color-text-white;
+    margin: 0;
+  }
+
+  &__metric-highlight {
+    font-size: $spacing-unit * 2.25;
+    font-weight: $font-weight-bold;
+    color: $color-primary;
+    letter-spacing: -1px;
+    margin-bottom: $spacing-unit * 0.5;
+  }
+
+  &__metric-label {
+    font-size: $spacing-unit * 0.875;
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  // Modifiers cho các loại message
+  &__message {
+    padding: $spacing-unit;
+    border-radius: $border-radius-small;
+    margin-bottom: $spacing-unit;
+
+    &--error {
+      background-color: rgba($color-accent-red, 0.1);
+      color: lighten($color-accent-red, 20%);
+    }
+
+    &--hint {
+      background-color: rgba($color-accent-yellow, 0.1);
+      color: lighten($color-accent-yellow, 20%);
+    }
+  }
+}

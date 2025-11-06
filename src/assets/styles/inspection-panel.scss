@@ -1,0 +1,230 @@
+// src/assets/styles/inspection-panel.scss
+
+/* ============================================= */
+/* ==   COMPONENT: DATA INSPECTION PANEL      == */
+/* ============================================= */
+
+// Sử dụng lại các biến màu đã định nghĩa
+:root {
+  --color-background: #111827;
+  --color-panel-bg: #1f2937;
+  --color-panel-inset-bg: #374151; // Nền cho các card nhỏ bên trong
+  --color-code-bg: #111827;
+  --color-border: #374151;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-accent: #3b82f6;
+  --color-warning: #f87171; // Màu cảnh báo cho dữ liệu thiếu
+  --font-family-sans: "Inter", sans-serif;
+  --font-family-mono: "Fira Code", "JetBrains Mono", monospace;
+  --border-radius: 8px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+// Animation cho panel khi xuất hiện
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.data-inspection-panel {
+  // Kế thừa style panel chung nếu có, hoặc định nghĩa tại đây
+  background-color: var(--color-panel-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 1.5rem 2rem;
+  animation: fadeInSlideUp 0.5s ease-out forwards;
+
+  // Tiêu đề chính của Section
+  > h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  // Tiêu đề phụ trong các section nhỏ
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  // Khoảng cách giữa các section
+  .mt-6 {
+    margin-top: 2.5rem;
+  }
+
+  /* --- Overview Grid Cards --- */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+
+    .card {
+      position: relative;
+      background-color: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 1.25rem 1.5rem;
+      transition: var(--transition);
+      overflow: hidden;
+
+      // Đường kẻ màu trang trí bên trái
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: var(--color-accent);
+      }
+
+      h3 {
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+      }
+
+      p {
+        font-size: 1.25rem;
+        color: var(--color-text-primary);
+        margin: 0;
+
+        strong {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: var(--color-accent);
+        }
+      }
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: var(--color-accent);
+      }
+    }
+  }
+
+  /* --- Data Tables --- */
+  .inspection-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-size: 0.9rem;
+      vertical-align: top;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    thead th {
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background-color: lighten($color: #1f2937, $amount: 2%);
+    }
+
+    tbody tr {
+      transition: background-color 0.2s ease;
+      &:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+      &:hover {
+        background-color: var(--color-panel-inset-bg);
+      }
+    }
+
+    pre {
+      background-color: var(--color-code-bg);
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-family-mono);
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        position: relative;
+        padding-left: 1.25rem;
+        &::before {
+          // Custom bullet point
+          content: "—";
+          position: absolute;
+          left: 0;
+          color: var(--color-accent);
+        }
+      }
+    }
+  }
+
+  /* --- Chart Theming for Recharts --- */
+  .recharts-responsive-container {
+    // Trục và chữ
+    .recharts-text,
+    .recharts-cartesian-axis-tick-value {
+      fill: var(--color-text-secondary);
+      font-size: 0.8rem;
+    }
+    // Đường kẻ trục
+    .recharts-cartesian-axis-line {
+      stroke: var(--color-border);
+    }
+    // Lưới
+    .recharts-cartesian-grid-horizontal line,
+    .recharts-cartesian-grid-vertical line {
+      stroke: var(--color-border);
+    }
+    // Chú thích (Legend)
+    .recharts-legend-item-text {
+      color: var(--color-text-primary);
+    }
+    // Tooltip
+    .recharts-tooltip-wrapper {
+      .recharts-tooltip-label {
+        color: var(--color-text-primary);
+      }
+      border-radius: var(--border-radius) !important;
+      background-color: var(--color-background) !important;
+      border: 1px solid var(--color-border) !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    // Thanh bar
+    .recharts-bar-rectangle path {
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  // Text cho trường hợp không có dữ liệu
+  p {
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+}

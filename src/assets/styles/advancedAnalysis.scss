@@ -1,0 +1,262 @@
+/* ======================================================= */
+/* ==   COMPONENT: ADVANCED ANALYSIS PANEL (DARK THEME) == */
+/* ======================================================= */
+
+// --- 1. BIẾN MÀU VÀ THIẾT KẾ (DESIGN TOKENS) ---
+:root {
+  // Palette màu nền
+  --bg-primary: #111827; // Nền chính (gần như đen)
+  --bg-secondary: #1f2937; // Nền cho card, panel
+  --bg-tertiary: #374151; // Nền cho hover, input
+
+  // Palette màu chữ
+  --text-primary: #f9fafb; // Chữ chính, tiêu đề
+  --text-secondary: #9ca3af; // Chữ phụ, mô tả, nhãn trục
+  --text-muted: #6b7280; // Chữ mờ hơn
+
+  // Palette màu nhấn
+  --accent-primary: #3b82f6; // Xanh dương cho tương tác
+  --accent-success: #10b981; // Xanh lá cho kết quả tốt, có ý nghĩa
+  --accent-warning: #f59e0b; // Vàng cho cảnh báo
+  --accent-danger: #ef4444; // Đỏ cho lỗi, bất thường
+  --accent-purple: #8b5cf6; // Tím cho các cụm
+
+  // Các biến khác
+  --border-color: #374151;
+  --border-radius: 12px;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --transition-cubic: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Keyframes cho animation xuất hiện
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- 2. LAYOUT CHÍNH ---
+.advanced-analysis-panel {
+  font-family: var(--font-sans);
+  margin-top: 3rem;
+
+  .panel-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+
+    h2 {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.75rem;
+    }
+    .panel-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 60ch; // Giới hạn chiều rộng để dễ đọc
+    }
+  }
+
+  .advanced-section {
+    margin-bottom: 3rem;
+    // Animation cho cả section
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+
+    // Hiệu ứng xuất hiện lần lượt
+    @for $i from 1 through 6 {
+      &:nth-of-type(#{$i}) {
+        animation-delay: #{$i * 150}ms;
+      }
+    }
+
+    .section-header h3 {
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--accent-primary);
+    }
+  }
+}
+
+// --- 3. CARD & NỘI DUNG BÊN TRONG ---
+.chart-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-cubic);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-primary);
+  }
+
+  h4 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .text-muted {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// --- 4. BẢNG DỮ LIỆU (DATA TABLE) ---
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  thead th {
+    background-color: rgba(255, 255, 255, 0.03); // Nền mờ
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: var(--bg-tertiary);
+    }
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  .numeric-cell {
+    text-align: right;
+    font-family: "Fira Code", monospace;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+  }
+
+  // Highlight cho dòng có ý nghĩa thống kê
+  .highlight-row {
+    // Nền màu xanh lá cây rất mờ
+    background-color: rgba(16, 185, 129, 0.05);
+    // Viền trái màu xanh lá cây
+    border-left: 4px solid var(--accent-success);
+
+    td:first-child {
+      font-weight: 600;
+      color: var(--accent-success);
+    }
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+// --- 5. CÁC THÀNH PHẦN NHỎ (BADGES, TAGS) ---
+.cluster-badge {
+  background-color: var(--accent-purple);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px; // Hình con nhộng
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  &.sig {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: var(--accent-success);
+  }
+
+  &.not-sig {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: var(--accent-warning);
+  }
+}
+
+.summary-box {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-danger);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+
+  b {
+    color: var(--text-primary);
+  }
+}
+
+// --- 6. TÙY CHỈNH BIỂU ĐỒ (RECHARTS & PLOTLY) ---
+// Recharts
+.recharts-responsive-container {
+  .recharts-text,
+  .recharts-cartesian-axis-tick-value,
+  .recharts-legend-item-text {
+    fill: var(--text-secondary) !important;
+  }
+  .recharts-cartesian-axis-line,
+  .recharts-cartesian-grid-horizontal line,
+  .recharts-cartesian-grid-vertical line {
+    stroke: var(--border-color) !important;
+  }
+  .recharts-tooltip-wrapper {
+    background-color: var(--bg-primary) !important;
+    border-color: var(--border-color) !important;
+    border-radius: 8px !important;
+  }
+}
+
+// Plotly (cần layout object từ JS để có kết quả tốt nhất)
+.js-plotly-plot {
+  .plotly {
+    .g-xtitle,
+    .g-ytitle,
+    .legendtext {
+      fill: var(--text-secondary) !important;
+    }
+    .xtick text,
+    .ytick text {
+      fill: var(--text-secondary) !important;
+      font-size: 11px !important;
+    }
+  }
+}

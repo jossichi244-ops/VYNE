@@ -1,0 +1,114 @@
+/* Biến SCSS (sử dụng lại từ UserProfile) */
+$main-bg: #0d1117;
+$primary-color: #00e0ff;
+$secondary-color: #ff007f;
+$text-color: #c9d1d9;
+$modal-bg: rgba(18, 26, 34, 0.95);
+
+@mixin neon-glow($color, $radius: 5px) {
+  box-shadow: 0 0 $radius $color, 0 0 ($radius * 2) rgba($color, 0.5);
+  text-shadow: 0 0 $radius / 4 $color;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8); /* Nền tối mờ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.vneid-modal-content {
+  background-color: $modal-bg;
+  border: 1px solid $primary-color;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 450px;
+  width: 90%;
+  color: $text-color;
+  position: relative;
+  @include neon-glow($primary-color, 8px);
+  animation: modal-appear 0.3s ease-out;
+}
+
+.modal-title-neon {
+  color: $primary-color;
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 10px;
+  @include neon-glow($primary-color, 5px);
+}
+
+.modal-subtitle,
+.note-text {
+  font-size: 0.9em;
+  color: lighten($text-color, 5%);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: $primary-color;
+  }
+}
+
+.cyber-input {
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba($primary-color, 0.5);
+  color: $text-color;
+  border-radius: 5px;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 5px $primary-color;
+  }
+}
+
+.error-message-neon {
+  color: $secondary-color;
+  text-align: center;
+  margin: 15px 0;
+  @include neon-glow($secondary-color, 3px);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.verify-button {
+  flex-grow: 1.5;
+  // Sử dụng style action-button từ UserProfile
+}
+
+.cancel-button {
+  flex-grow: 1;
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

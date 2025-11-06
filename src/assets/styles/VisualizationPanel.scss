@@ -1,0 +1,193 @@
+/* ================================================= */
+/* ==   COMPONENT: VISUALIZATION PANEL (STEP 5)   == */
+/* ================================================= */
+
+// Import các biến toàn cục nếu có, hoặc định nghĩa lại để sử dụng
+// Giả sử các biến này đã có sẵn từ file descriptive-panel.scss
+:root {
+  --color-background: #111827;
+  --color-panel-bg: #1f2937;
+  --color-panel-inset-bg: #374151;
+  --color-border: #374151;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-accent: #3b82f6; // Xanh dương làm điểm nhấn
+  --color-accent-alt: #10b981; // Xanh lá cây cho các trạng thái tích cực
+  --border-radius: 12px; // Tăng nhẹ độ bo tròn cho hiện đại hơn
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Keyframes cho animation xuất hiện
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Main Panel Container --- */
+.visualization-panel {
+  // Tiêu đề chính của Panel
+  h2 {
+    color: var(--color-text-primary);
+    padding-bottom: 0.5rem;
+    // Tạo hiệu ứng gạch chân gradient tinh tế
+    background-image: linear-gradient(
+      to right,
+      var(--color-accent),
+      var(--color-accent-alt)
+    );
+    background-repeat: no-repeat;
+    background-size: 50% 3px;
+    background-position: left bottom;
+  }
+
+  /* --- Toggle Switch 3D Mode --- */
+  .toggle-switch-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+
+    input[type="checkbox"] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .switch {
+        background-color: var(--color-accent);
+        .switch-handle {
+          transform: translateX(20px);
+        }
+      }
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      background-color: var(--color-panel-inset-bg);
+      border-radius: 9999px;
+      transition: var(--transition);
+
+      .switch-handle {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+    }
+  }
+
+  /* --- Card Style --- */
+  .card {
+    background-color: var(--color-panel-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0; // Bắt đầu ẩn để animation hoạt động
+    animation: fadeInSlideUp 0.6s ease-out forwards;
+    position: relative;
+    overflow: hidden; // Giúp các hiệu ứng bên trong không bị tràn
+
+    // Staggered animation delay cho mỗi card
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 100}ms;
+      }
+    }
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-accent);
+    }
+
+    // Tiêu đề của mỗi card
+    h3.card-title {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+
+      // Thêm một icon hoặc pseudo-element để trang trí
+      &::before {
+        content: "📊"; // Emoji hoặc icon font
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+      }
+    }
+
+    .chart-container {
+      padding: 1.5rem;
+    }
+  }
+
+  /* --- Plotly Chart Theming --- */
+  .js-plotly-plot {
+    .plotly {
+      // Tùy chỉnh màu sắc chữ của Plotly
+      .g-xtitle,
+      .g-ytitle,
+      .legendtext,
+      .annotation-text {
+        fill: var(--color-text-secondary) !important;
+        font-family: "Inter", sans-serif !important;
+      }
+      .xtick text,
+      .ytick text {
+        fill: var(--color-text-secondary) !important;
+        font-size: 11px !important;
+      }
+      // Tùy chỉnh màu đường lưới
+      .gridlayer .gridline {
+        stroke: rgba(107, 114, 128, 0.2) !important; // Màu xám mờ
+      }
+    }
+  }
+
+  /* --- Recharts Theming --- */
+  .recharts-responsive-container {
+    .recharts-text,
+    .recharts-cartesian-axis-tick-value,
+    .recharts-legend-item-text {
+      fill: var(--color-text-secondary);
+      font-size: 0.8rem;
+      font-family: "Inter", sans-serif;
+    }
+    .recharts-cartesian-axis-line {
+      stroke: var(--color-border);
+    }
+    .recharts-cartesian-grid-horizontal line,
+    .recharts-cartesian-grid-vertical line {
+      stroke: rgba(55, 65, 81, 0.6); // Màu lưới đậm hơn một chút
+    }
+    .recharts-tooltip-wrapper {
+      .recharts-tooltip-label {
+        color: var(--color-text-primary);
+      }
+      border-radius: var(--border-radius) !important;
+      background-color: var(--color-background) !important;
+      border: 1px solid var(--color-border) !important;
+      box-shadow: var(--shadow-lg);
+    }
+  }
+}

@@ -1,0 +1,65 @@
+// src/assets/styles/mongodbPreview.scss
+
+.mongodb-preview-container {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  font-size: 13px;
+  padding: 1rem;
+  border-radius: 8px;
+  max-height: 600px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+.mongo-document {
+  margin-bottom: 1rem;
+  border-left: 2px solid #2d2d2d;
+  padding-left: 1rem;
+}
+
+.mongo-index {
+  color: #808080;
+  font-style: italic;
+  margin-right: 8px;
+}
+
+.mongo-key {
+  color: #9cdcfe;
+}
+
+.mongo-string {
+  color: #ce9178;
+}
+
+.mongo-number,
+.mongo-boolean {
+  color: #b5cea8;
+}
+
+.mongo-null {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.mongo-array {
+  color: #d4d4d4;
+}
+
+.mongo-brace-start,
+.mongo-brace-end {
+  color: #d4d4d4;
+}
+
+.mongo-comma {
+  color: #d4d4d4;
+}
+
+.mongo-unknown {
+  color: #ff6b6b;
+}
+
+.text-muted {
+  color: #808080;
+  font-style: italic;
+}

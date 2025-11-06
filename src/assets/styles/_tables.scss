@@ -1,0 +1,29 @@
+// src/components/BeyondEDAViewer/_tables.scss
+
+.data-table {
+  width: 100%;
+  font-size: $spacing-unit * 0.85;
+  border-collapse: collapse;
+
+  th, td {
+    padding: $spacing-unit * 0.6;
+    border-bottom: 1px solid darken($color-surface, 5%);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+  }
+}
+
+.cohort-table {
+  @extend .data-table;
+  font-size: $spacing-unit * 0.8;
+
+  th, td {
+    border: 1px solid $color-border;
+    text-align: center;
+  }
+}

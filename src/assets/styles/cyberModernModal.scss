@@ -1,0 +1,176 @@
+// --- ⚙️ Global SCSS Variables & Mixins ---
+$primary-neon: #00ffc8; // Vibrant Aqua/Cyan - Key Accent
+$secondary-neon: #ff007b; // Pink/Magenta - Secondary Accent/Error
+$bg-dark: #0a0a0d; // Near Black for the Dapp background
+$modal-surface: #1a1a2e; // Dark Purple-Blue for the Modal surface
+$font-stack: "SF Mono", "Roboto Mono", monospace; // High-tech, monospaced font
+$transition-speed: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); // Smooth, Easing transition
+$blur-intensity: 8px;
+
+@mixin neon-glow($color) {
+  box-shadow: 0 0 5px $color, 0 0 10px $color, 0 0 20px rgba($color, 0.5);
+}
+// --- 📐 Core Structure & Positioning ---
+.cyber-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); // Dark semi-transparent background
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  // Essential for the modern look: Backdrop Blur
+  backdrop-filter: blur($blur-intensity);
+  animation: fadeIn $transition-speed;
+}
+
+.cyber-modal-container {
+  position: relative;
+  background-color: $modal-surface;
+  color: #fff;
+  border: 1px solid rgba($primary-neon, 0.3); // Subtle neon border
+  border-radius: 8px;
+  padding: 24px;
+  font-family: $font-stack;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  // **1. The Main Neon Glow Effect**
+  @include neon-glow(rgba($primary-neon, 0.2));
+
+  // **2. Micro-Animation: Entry/Scale Up**
+  //   animation: scaleIn $transition-speed * 1.5;
+
+  // **3. Size Variations**
+  &.sm {
+    width: 300px;
+    max-width: 90%;
+  }
+  &.md {
+    width: 450px;
+    max-width: 90%;
+  }
+  &.lg {
+    width: 700px;
+    max-width: 90%;
+  }
+}
+
+// --- ✨ Header & Title Styling ---
+.cyber-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .cyber-modal-title {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: $primary-neon; // Title is the main neon color
+    text-shadow: 0 0 5px $primary-neon;
+  }
+}
+
+// --- ❌ Close Button: High-Tech Look ---
+.cyber-modal-close-btn {
+  background: none;
+  border: none;
+  color: $primary-neon;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color $transition-speed, text-shadow $transition-speed;
+  padding: 5px;
+  line-height: 1;
+
+  &:hover {
+    color: #fff;
+    text-shadow: 0 0 8px $primary-neon; // Stronger glow on hover
+    transform: rotate(90deg); // Micro-animation: subtle rotation
+  }
+}
+
+// --- ➖ Divider: Glowing Scan Line ---
+.cyber-modal-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba($primary-neon, 0.7) 50%,
+    transparent 100%
+  );
+  margin-bottom: 20px;
+  @include neon-glow(rgba($primary-neon, 0.5));
+}
+
+// --- 💡 The Outer Aura (Optional but effective) ---
+// Creates a light source effect behind the modal
+.cyber-modal-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba($primary-neon, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1; // Behind the container
+  animation: pulseGlow 5s infinite alternate; // Slow, subtle pulsation
+}
+// --- 📱 Responsiveness ---
+@media (max-width: 768px) {
+  .cyber-modal-container {
+    // Full width on small screens
+    width: 95% !important;
+    max-width: 95%;
+    padding: 16px;
+  }
+
+  .cyber-modal-header {
+    margin-bottom: 15px;
+
+    .cyber-modal-title {
+      font-size: 1.2rem; // Smaller title
+    }
+  }
+
+  .cyber-modal-close-btn {
+    font-size: 1.2rem;
+  }
+}
+// --- 🎥 Keyframe Animations ---
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95) translateY(20px);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}

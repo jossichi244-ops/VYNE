@@ -1,0 +1,286 @@
+// ScenarioAnalysis.scss (Thay thế ScenarioAnalysis.scss)
+
+@import 'variables';
+@import 'base';
+
+.scenario-impact-board {
+    width: 100%;
+    max-width: 1400px; // Giới hạn kích thước cho màn hình lớn
+    margin: 0 auto;
+    padding: $spacing-base * 3;
+    background-color: #0d0d26; // Hơi sáng hơn nền để tạo chiều sâu
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    
+    @include breakpoint-sm {
+        padding: 1rem;
+    }
+
+    // --- Header ---
+    .board-header {
+        margin-bottom: $spacing-base * 2;
+        .board-title {
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            color: var(--neon-blue);
+            @include text-glow(var(--neon-blue));
+            
+            .title-icon {
+                margin-right: $spacing-half;
+            }
+        }
+        .board-subtitle {
+            color: var(--text-muted);
+            margin-top: $spacing-half;
+        }
+        .header-divider {
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-blue), #1C1C3A);
+            margin-top: $spacing-base;
+        }
+    }
+
+    // --- Content Sections ---
+    .board-content {
+        display: flex;
+        flex-direction: column;
+
+        .section-title {
+            font-size: 1.25rem;
+            color: var(--neon-green);
+            margin-bottom: $spacing-base * 1.5;
+            display: flex;
+            align-items: center;
+            
+            svg {
+                margin-right: $spacing-half;
+                color: var(--neon-yellow);
+            }
+        }
+    }
+
+    // --- 1. OKR Card ---
+    .section-okr {
+        margin-bottom: $spacing-base * 2;
+        .okr-card {
+            padding: $spacing-base * 1.5;
+            border-radius: 6px;
+            background-color: #121230; // Nền riêng cho thẻ
+            @include neon-glow(var(--neon-blue), 4px, 0.3);
+
+            .card-subtitle-main {
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-size: 0.8rem;
+                color: var(--neon-yellow);
+                display: flex;
+                align-items: center;
+                margin-bottom: $spacing-half;
+                
+                svg {
+                    margin-right: 5px;
+                }
+            }
+            .okr-objective {
+                font-size: 1.5rem;
+                color: var(--text-color);
+                @include text-glow(var(--neon-blue));
+            }
+            .okr-divider {
+                margin: $spacing-base 0;
+                border: 0;
+                border-top: 1px dashed var(--border-subtle);
+            }
+            .okr-key-results-list {
+                list-style: none;
+                padding-left: 0;
+                .okr-kr-item {
+                    display: flex;
+                    align-items: flex-start;
+                    margin-bottom: $spacing-half;
+                    color: var(--text-light);
+                    .kr-icon {
+                        color: var(--neon-green);
+                        margin-right: $spacing-half;
+                        margin-top: 2px;
+                        flex-shrink: 0;
+                    }
+                    .kr-text {
+                        font-size: 0.95rem;
+                    }
+                }
+            }
+        }
+    }
+
+    // --- 2 & 3. Metrics & Drivers Grid ---
+    .section-metrics-drivers, .section-scenario-impact {
+        margin-bottom: $spacing-base * 2;
+    }
+
+    .metric-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $spacing-base;
+        
+        @include breakpoint-md {
+            grid-template-columns: repeat(2, 1fr); // 2 cột trên tablet
+        }
+        @include breakpoint-sm {
+            grid-template-columns: 1fr; // 1 cột trên mobile
+        }
+    }
+
+    .impact-metric-card {
+        padding: $spacing-base;
+        border-radius: 6px;
+        background-color: #121230;
+        border: 1px solid var(--border-subtle);
+        
+        // Micro-animation: Lift on hover
+        &:hover {
+            transform: translateY(-3px);
+            @include neon-glow(var(--neon-blue), 8px, 0.4);
+            cursor: default;
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: $spacing-base;
+            
+            .metric-icon {
+                margin-right: $spacing-half;
+                padding: 4px;
+                border-radius: 4px;
+                background: #1C1C3A;
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+            .metric-title {
+                color: var(--text-muted);
+                font-size: 0.9rem;
+            }
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            line-height: 1;
+            margin: 0;
+            
+            &.impact-positive-glow {
+                color: var(--neon-green);
+                @include text-glow(var(--neon-green));
+            }
+            &.impact-negative-glow {
+                color: var(--neon-pink);
+                @include text-glow(var(--neon-pink));
+            }
+        }
+        .metric-subtext {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: $spacing-half;
+        }
+    }
+
+    // --- 4. Time Series Chart ---
+    .section-time-series {
+        margin-bottom: $spacing-base * 2;
+    }
+    
+    .chart-container-impact {
+        padding: $spacing-base;
+        border-radius: 6px;
+        background-color: #121230;
+        border: 1px solid var(--border-subtle);
+        
+        .chart-title {
+            color: var(--neon-blue);
+            margin-bottom: $spacing-base;
+            display: flex;
+            align-items: center;
+            @include text-glow(var(--neon-blue));
+            
+            svg {
+                margin-right: $spacing-half;
+            }
+        }
+        
+        .chart-subtitle {
+            color: var(--neon-yellow);
+            font-size: 1rem;
+            margin-top: $spacing-base;
+            margin-bottom: $spacing-base;
+        }
+        
+        .chart-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: $spacing-base * 2;
+        }
+        
+        // Custom Recharts Styles
+        .recharts-wrapper {
+            @include neon-glow(var(--neon-blue), 2px, 0.2); // Tinh tế
+        }
+        .chart-axis, .chart-grid {
+            color: var(--text-muted);
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+    }
+
+    // --- 5. Narratives & Hypotheses ---
+    .section-narratives {
+        margin-bottom: $spacing-base * 2;
+
+        .narrative-summary {
+            padding: $spacing-base;
+            border-radius: 6px;
+            background-color: #121230;
+            border: 1px solid var(--border-subtle);
+            
+            .narrative-details {
+                cursor: pointer;
+                color: var(--neon-green);
+                margin-bottom: $spacing-half;
+                
+                summary {
+                    font-weight: bold;
+                    padding: $spacing-half;
+                    background-color: #1C1C3A;
+                    border-radius: 4px;
+                    transition: background-color 0.2s;
+                    
+                    &:hover {
+                        background-color: #25254D;
+                    }
+                }
+
+                .narrative-list {
+                    list-style: '→ ';
+                    padding: $spacing-base $spacing-base $spacing-base $spacing-base * 2;
+                    font-size: 0.9rem;
+                    
+                    li {
+                        margin-bottom: $spacing-half;
+                        border-left: 2px solid var(--border-subtle);
+                        padding-left: $spacing-half;
+                        .hypothesis-item {
+                            line-height: 1.4;
+                            color: var(--text-light);
+                            strong {
+                                color: var(--neon-yellow);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,274 @@
+// src/assets/styles/upload.scss
+:root {
+  // Bảng màu Dark Mode chuyên nghiệp
+  --color-background: #111827; // Nền chính (Xám đen đậm)
+  --color-panel-bg: #1f2937; // Nền cho các panel, card (Xám xanh đậm)
+  --color-border: #374151; // Viền
+  --color-border-dashed: #4b5563; // Viền đứt
+  --color-text-primary: #f9fafb; // Chữ chính (Trắng ngà)
+  --color-text-secondary: #9ca3af; // Chữ phụ (Xám nhạt)
+  --color-heading: #ffffff; // Tiêu đề (Trắng)
+  --color-accent: #3b82f6; // Màu nhấn cho button, link (Xanh dương)
+  --color-accent-hover: #2563eb; // Màu nhấn khi hover
+  --color-code-bg: #111827; // Nền cho khối code
+
+  // Font & Spacing
+  --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "Fira Code", "JetBrains Mono", ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --border-radius: 8px;
+  --transition: all 0.2s ease-in-out;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.page-upload-schema {
+  padding: 2rem;
+  font-family: var(--font-family-sans);
+
+  .upload-header {
+    margin-bottom: 2rem;
+    text-align: center;
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-heading);
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .upload-grid {
+    display: grid;
+    // grid-template-columns: 1fr 1.5fr; // Tăng không gian cho editor
+    gap: 2rem;
+    align-items: start;
+
+    // Các section bên dưới sẽ chiếm toàn bộ chiều rộng
+    > section {
+      grid-column: 1 / -1;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+// Kiểu chung cho các panel (DataInspection, Cleaning, etc.)
+.panel {
+  background-color: var(--color-panel-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+/* --- File Uploader --- */
+.file-uploader {
+  .drop-zone {
+    display: flex;
+    min-height: 250px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px dashed var(--color-border-dashed);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    cursor: pointer;
+    background-color: var(--color-panel-bg);
+    transition: var(--transition);
+
+    // &:hover {
+    //   border-color: var(--color-accent);
+    //   background-color: darken($color: #1f2937, $amount: 2%);
+    // }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: var(--color-text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: var(--color-accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+
+      // &:hover {
+      //   background-color: var(--color-accent-hover);
+      // }
+    }
+  }
+}
+
+/* --- Schema Editor --- */
+.schema-editor {
+  @extend .panel; // Kế thừa kiểu từ .panel
+  padding: 0; // Reset padding để tùy chỉnh bên trong
+
+  .schema-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .schema-body {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px; // Điều chỉnh lại cột
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .left-panel {
+    .field-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        transition: var(--transition);
+        cursor: pointer;
+
+        &:not(:last-child) {
+          margin-bottom: 4px;
+        }
+
+        // &:hover {
+        //   background-color: lighten($color: #1f2937, $amount: 5%);
+        // }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          .field-name {
+            font-weight: 500;
+            color: var(--color-text-primary);
+          }
+          .field-type {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            background-color: var(--color-border);
+            padding: 2px 6px;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  .center-panel {
+    .rjsf-preview {
+      border: 1px solid var(--color-border);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      background-color: var(--color-background);
+    }
+  }
+
+  .right-panel {
+    .json-view {
+      max-height: 520px;
+      overflow: auto;
+      background-color: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      font-family: var(--font-family-mono);
+      font-size: 0.875rem;
+    }
+  }
+}
+
+/* --- Data Understanding Table --- */
+.data-understanding-section {
+  @extend .panel;
+
+  .data-understanding {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+
+    thead th {
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr {
+      transition: var(--transition);
+      // &:hover {
+      //   background-color: lighten($color: #1f2937, $amount: 2%);
+      // }
+    }
+
+    pre {
+      background-color: var(--color-code-bg);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-family-mono);
+      font-size: 0.85rem;
+      white-space: pre-wrap; // Giúp xuống dòng
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+/* --- MongoDB Preview Panel --- */
+.mongodb-preview-section {
+  @extend .panel;
+  // Component MongoDBPreview có thể đã có style riêng
+  // Nếu chưa, bạn có thể thêm style cho nó ở đây
+}

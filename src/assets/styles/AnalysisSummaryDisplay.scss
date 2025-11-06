@@ -1,0 +1,160 @@
+/* --- Biến số cho thiết kế (Design Tokens) --- */
+:root {
+  // Màu sắc chủ đạo
+  --glow-color: #7c3aed; // Một màu tím sống động
+  --glow-color-highlight: #0891b2; // Một màu xanh cyan nổi bật
+  
+  // Nền
+  --bg-primary: #111827; // Nền tối (gần như đen)
+  --bg-secondary: #1f2937; // Nền cho các card
+
+  // Văn bản
+  --text-primary: #e5e7eb; // Màu chữ chính
+  --text-secondary: #9ca3af; // Màu chữ phụ, mờ hơn
+  --text-value: #ffffff; // Màu cho các con số quan trọng
+
+  // Khác
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+}
+
+/* --- Keyframes cho Animation --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Style chính cho Component --- */
+.analysis-summary-container {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 24px 32px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  animation: fadeIn 0.5s ease-out;
+  border: 1px solid var(--bg-secondary);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.summary-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.summary-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 24px;
+  // Mobile: 1 cột
+  grid-template-columns: 1fr;
+
+  // Tablet: 2 cột
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop nhỏ: 3 cột
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  // Desktop lớn: Có thể hiển thị 5 item trên một hàng
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid transparent; // Chuẩn bị cho hiệu ứng hover
+  transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  
+  // Animation xuất hiện tuần tự
+  opacity: 0;
+  animation: stagger-in 0.5s ease-out forwards;
+
+  // Delay cho từng card
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--glow-color);
+    box-shadow: 0 0 15px -2px var(--glow-color);
+  }
+
+  // Style cho thẻ được highlight
+  &.highlight {
+    &:hover {
+      border-color: var(--glow-color-highlight);
+      box-shadow: 0 0 20px -2px var(--glow-color-highlight);
+
+      .stat-icon {
+        color: var(--glow-color-highlight);
+        text-shadow: 0 0 10px var(--glow-color-highlight);
+      }
+    }
+  }
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: var(--glow-color);
+  transition: color var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+  text-shadow: 0 0 8px rgba(var(--glow-color), 0.7);
+}
+
+.stat-content {
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.stat-value {
+  color: var(--text-value);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
