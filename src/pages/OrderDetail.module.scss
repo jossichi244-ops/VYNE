@@ -1,0 +1,377 @@
+// File: src/components/OrderDetail_Web3.module.scss
+
+// --- BIẾN MÀU SẮC (THEME) ---
+$color-dark-bg: #0d1117; // Nền tối sâu
+$color-card-bg: rgba(22, 27, 34, 0.5); // Nền card mờ
+$color-border: rgba(48, 54, 61, 0.4); // Viền mờ
+$color-text-main: #c9d1d9; // Text chính
+$color-text-secondary: #8b949e; // Text phụ
+
+// Màu Neon Glow
+$color-neon-cyan: #00e0ff;
+$color-neon-emerald: #39ff14;
+$color-neon-pink: #ff1493;
+$color-neon-yellow: #ffeb3b;
+$color-neon-red: #ff3333;
+
+// Ánh sáng cho hiệu ứng Glassmorphism
+@mixin glassmorphism-effect {
+  background: $color-card-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid $color-border;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    border-color: rgba($color-neon-cyan, 0.5);
+    box-shadow: 0 0 15px rgba($color-neon-cyan, 0.3);
+  }
+}
+
+// Ánh sáng Neon Text
+@mixin neon-glow($color) {
+  text-shadow: 0 0 5px rgba($color, 0.7), 0 0 10px rgba($color, 0.5);
+}
+
+// Custom Scrollbar (cho trình duyệt hỗ trợ)
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($color-neon-cyan, 0.5);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba($color-dark-bg, 0.3);
+  }
+}
+
+// --- CONTAINER CHÍNH ---
+.orderDetailContainer {
+  font-family: "Space Mono", monospace; // Font đậm chất Cyber
+  background-color: $color-dark-bg;
+  color: $color-text-main;
+  padding: 30px;
+  border-radius: 12px;
+  min-height: 100vh;
+}
+
+// --- HEADER ---
+.header {
+  border-bottom: 2px solid $color-border;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  .h1 {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    color: $color-text-main;
+    @include neon-glow($color-neon-cyan);
+    .icon {
+      margin-right: 10px;
+      color: $color-neon-cyan;
+    }
+  }
+  .headerMeta {
+    font-size: 0.9rem;
+    color: $color-text-secondary;
+    margin-top: 5px;
+    .orderRef {
+      font-weight: bold;
+      color: $color-neon-emerald;
+    }
+    .orderId {
+      margin-left: 10px;
+    }
+  }
+}
+
+// --- GLASS CARD (SECTION) ---
+.glassCard {
+  @include glassmorphism-effect;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  position: relative; // Cho hiệu ứng ánh sáng
+}
+
+.sectionHeader {
+  font-size: 1.3rem;
+  color: $color-text-main;
+  border-bottom: 1px solid rgba($color-border, 0.5);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  .icon {
+    margin-right: 8px;
+    color: $color-neon-cyan;
+  }
+}
+
+// --- TRẠNG THÁI CHIP ---
+.statusChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  &.statusCompleted {
+    background: rgba($color-neon-emerald, 0.2);
+    color: $color-neon-emerald;
+    @include neon-glow($color-neon-emerald);
+  }
+  &.statusInTransit {
+    background: rgba($color-neon-cyan, 0.2);
+    color: $color-neon-cyan;
+    @include neon-glow($color-neon-cyan);
+  }
+  &.statusPending,
+  &.statusCancelled {
+    background: rgba($color-neon-yellow, 0.2);
+    color: $color-neon-yellow;
+  }
+  &.statusCancelled {
+    background: rgba($color-neon-red, 0.2);
+    color: $color-neon-red;
+  }
+  .chipIcon {
+    margin-right: 5px;
+  }
+}
+
+// --- DETAIL ROW ---
+.detailRow {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dotted rgba($color-border, 0.5);
+  &:last-child {
+    border-bottom: none;
+  }
+  .icon {
+    margin-right: 10px;
+    min-width: 18px;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap; // Để nội dung dài xuống hàng
+    .label {
+      font-weight: 500;
+      color: $color-text-secondary;
+      margin-right: 8px;
+    }
+    .value {
+      font-weight: 600;
+      word-break: break-word;
+      &.font-bold {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// --- HASH/WALLET STYLING ---
+.walletHash {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 2px 5px;
+  border-radius: 3px;
+  &:hover {
+    background-color: rgba($color-neon-cyan, 0.1);
+  }
+  .copyIcon {
+    margin-left: 5px;
+    color: $color-neon-cyan;
+    &:hover {
+      transform: scale(1.1);
+    }
+    &.copied {
+      color: $color-neon-emerald;
+      animation: flash-success 0.5s 3;
+    }
+  }
+  .linkIcon {
+    margin-left: 5px;
+    color: $color-neon-cyan;
+  }
+}
+
+@keyframes flash-success {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// --- LAYOUT GRIDS & SECTIONS ---
+.grid2Cols,
+.grid3Cols {
+  display: grid;
+  gap: 20px;
+  @media (min-width: 768px) {
+    &.grid2Cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &.grid3Cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+// Responsive cho grid (trên mobile thành 1 cột)
+@media (max-width: 767px) {
+  .grid2Cols,
+  .grid3Cols {
+    grid-template-columns: 1fr;
+  }
+  .orderDetailContainer {
+    padding: 15px;
+  }
+}
+
+// --- SELECTION BOX (Matched/Manual) ---
+.selectionBox {
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  .h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed rgba($color-border, 0.5);
+  }
+  &.matchedBox {
+    background-color: rgba($color-neon-emerald, 0.1);
+    border: 1px solid rgba($color-neon-emerald, 0.4);
+    .h3 {
+      color: $color-neon-emerald;
+    }
+  }
+  &.manualBox {
+    background-color: rgba($color-neon-yellow, 0.1);
+    border: 1px solid rgba($color-neon-yellow, 0.4);
+    .h3 {
+      color: $color-neon-yellow;
+    }
+  }
+  .detailRow {
+    border-bottom: 1px dotted rgba($color-border, 0.3);
+  }
+}
+
+// --- IMAGE PROOFS ---
+.hashListContainer {
+  .h3 {
+    font-size: 1rem;
+    color: $color-text-main;
+    margin-bottom: 10px;
+  }
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.imageWrapper {
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid $color-border;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0 10px rgba($color-neon-cyan, 0.5);
+  }
+}
+
+.imageThumbnail {
+  width: 100%;
+  height: 70px; // Chiều cao cố định
+  object-fit: cover;
+  display: block;
+}
+
+.moreImages {
+  font-size: 0.8rem;
+  color: $color-text-secondary;
+}
+
+// --- TRẠNG THÁI RỖNG/LỖI ---
+.emptyState,
+.errorState {
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .icon {
+    margin-right: 10px;
+  }
+}
+.emptyState {
+  background-color: rgba($color-neon-cyan, 0.1);
+  color: $color-neon-cyan;
+}
+.errorState {
+  background-color: rgba($color-neon-red, 0.1);
+  color: $color-neon-red;
+  border: 1px solid $color-neon-red;
+}
+
+// Loading Animation
+.loadingIcon {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// --- COLOR UTILITIES (Neon Glow) ---
+.color-cyan {
+  color: $color-neon-cyan !important;
+  @include neon-glow($color-neon-cyan);
+}
+.color-emerald {
+  color: $color-neon-emerald !important;
+  @include neon-glow($color-neon-emerald);
+}
+.color-pink {
+  color: $color-neon-pink !important;
+  @include neon-glow($color-neon-pink);
+}
+.color-yellow {
+  color: $color-neon-yellow !important;
+}
+.color-red {
+  color: $color-neon-red !important;
+  @include neon-glow($color-neon-red);
+}
+.color-gray-500 {
+  color: $color-text-secondary !important;
+}
+.color-white {
+  color: $color-text-main !important;
+}

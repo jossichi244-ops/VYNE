@@ -1,0 +1,306 @@
+// File: src/components/TransportOrderForm_Web3.module.scss
+
+// --- BIẾN MÀU SẮC (THEME) ---
+$color-dark-bg: #0d1117; // Nền tối sâu
+$color-form-bg: rgba(22, 27, 34, 0.6); // Nền form mờ
+$color-border: rgba(48, 54, 61, 0.4); // Viền mờ
+$color-text-main: #c9d1d9; // Text chính
+$color-text-secondary: #8b949e; // Text phụ
+
+// Màu Neon Glow
+$color-neon-cyan: #00e0ff;
+$color-neon-emerald: #39ff14;
+$color-neon-pink: #ff1493;
+$color-neon-yellow: #ffeb3b;
+$color-neon-red: #ff3333;
+
+// Mixin cho Glassmorphism
+@mixin glassmorphism-effect {
+  background: $color-form-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid $color-border;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin neon-glow($color) {
+  text-shadow: 0 0 5px rgba($color, 0.7), 0 0 10px rgba($color, 0.5);
+}
+
+// --- CONTAINER CHÍNH ---
+.orderFormContainer {
+  @include glassmorphism-effect;
+  max-width: 800px; // Mở rộng form một chút
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 15px;
+  font-family: "Space Mono", monospace;
+  background-color: $color-dark-bg; // Nền container
+  border-color: rgba($color-neon-cyan, 0.3);
+}
+
+// --- HEADER ---
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid $color-border;
+  .icon {
+    color: $color-neon-cyan;
+    margin-bottom: 10px;
+    @include neon-glow($color-neon-cyan);
+  }
+  .h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $color-neon-emerald;
+    @include neon-glow($color-neon-emerald);
+    margin-bottom: 5px;
+  }
+  .subtext {
+    color: $color-text-secondary;
+    font-size: 0.9rem;
+  }
+}
+
+// --- FORM SECTION VÀ GRID LAYOUT ---
+.formSection {
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid $color-border;
+}
+
+.sectionHeader {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: $color-neon-cyan;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba($color-neon-cyan, 0.3);
+  .icon {
+    margin-right: 8px;
+  }
+}
+
+.grid2Cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 10px;
+
+  // Responsive cho Grid
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// --- INPUT FIELD STYLING ---
+.inputGroup {
+  margin-bottom: 15px;
+  &.fullWidth {
+    grid-column: span 2;
+    @media (max-width: 600px) {
+      grid-column: span 1;
+    }
+  }
+}
+
+.label {
+  display: block;
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  margin-bottom: 5px;
+  font-weight: 500;
+  .required {
+    color: $color-neon-red;
+  }
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid $color-border;
+  background-color: rgba($color-dark-bg, 0.7);
+  color: $color-text-main;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-neon-cyan;
+    box-shadow: 0 0 8px rgba($color-neon-cyan, 0.6); // Neon Focus Glow
+  }
+}
+
+.select {
+  appearance: none; // Loại bỏ mũi tên mặc định
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9d1d9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.subGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 10px;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// --- HÀNG NGUY HIỂM (Conditional Field) ---
+.dangerousGoodsGroup {
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 1px solid rgba($color-text-secondary, 0.2);
+  transition: all 0.3s ease;
+
+  &.active {
+    background-color: rgba($color-neon-red, 0.05);
+    border-color: rgba($color-neon-red, 0.5);
+  }
+
+  .h4 {
+    font-size: 1rem;
+    color: $color-neon-red;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    @include neon-glow($color-neon-red);
+    svg {
+      margin-right: 5px;
+    }
+  }
+}
+
+// --- IMAGE PROOF & LOCATION ---
+.fileInput {
+  // Tùy chỉnh input type="file" để trông đẹp hơn
+  color: $color-neon-emerald;
+  border: 1px dashed rgba($color-neon-emerald, 0.5);
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: rgba($color-dark-bg, 0.5);
+  &:hover {
+    border-color: $color-neon-emerald;
+  }
+}
+
+.fileCount {
+  font-size: 0.8rem;
+  color: $color-neon-emerald;
+  margin-top: 5px;
+}
+
+.locationContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.locationButton {
+  padding: 10px 15px;
+  background-color: rgba($color-neon-yellow, 0.1);
+  color: $color-neon-yellow;
+  border: 1px solid $color-neon-yellow;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba($color-neon-yellow, 0.25);
+    box-shadow: 0 0 8px rgba($color-neon-yellow, 0.5);
+  }
+}
+
+.locationInfo {
+  font-size: 0.85rem;
+  color: $color-neon-cyan;
+  span {
+    font-weight: bold;
+  }
+}
+
+// --- DEVICE INFO ---
+.deviceInfoContainer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed $color-border;
+
+  .h4 {
+    font-size: 0.9rem;
+    color: $color-text-secondary;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  .deviceRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: $color-text-secondary;
+    padding: 4px 0;
+
+    .deviceValue {
+      color: $color-text-main;
+      font-family: monospace;
+      word-break: break-all;
+    }
+  }
+}
+
+// --- SUBMIT BUTTON ---
+.submitButton {
+  width: 100%;
+  padding: 15px;
+  margin-top: 30px;
+  background-color: $color-neon-pink;
+  color: $color-dark-bg;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  // Ánh sáng lấp lánh khi hover/submit
+  &:hover:not(:disabled) {
+    background-color: lighten($color-neon-pink, 10%);
+    box-shadow: 0 0 15px $color-neon-pink, 0 0 30px rgba($color-neon-pink, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: $color-text-secondary;
+    cursor: not-allowed;
+    color: rgba($color-dark-bg, 0.7);
+    animation: pulse 1.5s infinite; // Hiệu ứng Pulse khi đang submit
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}

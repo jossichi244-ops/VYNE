@@ -1,22 +1,95 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  /* Colors - Base */
+  --color-bg-deep: #0a111b; /* Deep Dark Background */
+  --color-bg-surface: #121a24; /* Card/Surface Background */
+  --color-border: #1e3048; /* Subtle Border/Divider */
+  --color-text-main: #e0f2ff; /* Primary Text (Light Blue) */
+  --color-text-subtle: #7e90a5; /* Secondary Text (Muted Blue-Gray) */
 
-/* 🌌 Custom global styles */
-html,
-body {
-  @apply bg-gray-900 text-gray-100 font-sans;
+  /* Colors - Neon Accents */
+  --color-neon-primary: #00e0ff; /* Cyan (Primary focus, Hash, Links) */
+  --color-neon-success: #39ff14; /* Green (Success, Completed) */
+  --color-neon-warning: #ffb700; /* Amber (Pending, Price) */
+  --color-neon-error: #ff5555; /* Red (Error, Disputed) */
+  --color-neon-secondary: #9a43ff; /* Violet (Secondary focus) */
 }
 
+/* --------------------------------------------------- */
+/* 🌌 Custom Global Styles & Typography */
+/* --------------------------------------------------- */
+
+html,
+body {
+  /* Áp dụng các biến CSS Root cho Tailwind */
+  @apply bg-[var(--color-bg-deep)] text-[var(--color-text-main)] font-sans;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Custom Font Fallback cho Web3 */
+.font-mono {
+  font-family: "Space Mono", "Inter", monospace;
+}
+
+/* 📜 Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[var(--color-bg-surface)];
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-purple-600 rounded-md;
+  /* Sử dụng màu Neon Secondary */
+  @apply bg-[var(--color-neon-secondary)] rounded-md;
+  border: 1px solid var(--color-border);
 }
 
-/* 🌈 Optional: smooth glow effects for neon UI */
+/* 🌠 Neon Glow Effects & Utility Classes */
+
+/* Hiệu ứng ánh sáng toàn cục cho các tiêu đề/hash/focus */
 .neon-text {
-  text-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 20px #a855f7;
+  color: var(--color-neon-primary);
+  text-shadow: 0 0 4px rgba(0, 224, 255, 0.6), 0 0 8px rgba(0, 224, 255, 0.4);
+}
+
+/* Sử dụng cho các phần tử tương tác (button, card) */
+.cyber-border-glow {
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease-out;
+}
+
+.cyber-border-glow:hover {
+  border-color: var(--color-neon-primary);
+  box-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* 🔗 Link Styling */
+a {
+  @apply text-[var(--color-neon-primary)] font-medium transition-colors duration-200;
+}
+
+a:hover {
+  @apply text-opacity-80;
+  text-decoration: underline;
+  text-shadow: 0 0 2px rgba(0, 224, 255, 0.5);
+}
+
+/* 🎛️ Component Base Styles (Containers/Cards) */
+.card-base {
+  @apply bg-[var(--color-bg-surface)] rounded-lg shadow-xl p-6 border border-[var(--color-border)];
+}
+
+/* 💡 Responsive Headings (Tăng tính hiện đại) */
+h1 {
+  @apply text-3xl md:text-5xl font-extrabold tracking-tight mb-4;
+}
+h2 {
+  @apply text-2xl md:text-3xl font-bold mb-3 border-b border-[var(--color-border)] pb-2;
+  color: var(--color-text-main);
 }

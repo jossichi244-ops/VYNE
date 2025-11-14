@@ -1,0 +1,174 @@
+// File: src/pages/UserDashboardPage_Web3.module.scss
+
+// --- BIẾN MÀU SẮC (THEME) ---
+$color-dark-bg: #0d1117; // Nền tối sâu
+$color-card-bg: rgba(22, 27, 34, 0.5); // Nền card mờ
+$color-border: rgba(48, 54, 61, 0.4); // Viền mờ
+$color-text-main: #c9d1d9; // Text chính
+$color-text-secondary: #8b949e; // Text phụ
+
+// Màu Neon Glow
+$color-neon-cyan: #00e0ff;
+$color-neon-emerald: #39ff14;
+$color-neon-pink: #ff1493;
+$color-neon-yellow: #ffeb3b;
+$color-neon-red: #ff3333;
+
+// Ánh sáng cho hiệu ứng Glassmorphism
+@mixin glassmorphism-effect {
+  background: $color-card-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid $color-border;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin neon-glow($color) {
+  text-shadow: 0 0 5px rgba($color, 0.7), 0 0 10px rgba($color, 0.5);
+}
+
+// --- CONTAINER CHÍNH ---
+.dashboardContainer {
+  min-height: 100vh;
+  background-color: $color-dark-bg;
+  color: $color-text-main;
+  padding: 40px 30px;
+  font-family: "Space Mono", monospace;
+}
+
+// --- HEADER ---
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid $color-border;
+  .h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $color-neon-cyan;
+    @include neon-glow($color-neon-cyan);
+    margin-bottom: 10px;
+  }
+  .subtext {
+    color: $color-text-secondary;
+    font-size: 1rem;
+  }
+}
+
+// --- GRID BỐ CỤC CHÍNH ---
+.contentGrid {
+  display: grid;
+  gap: 30px;
+
+  // Bố cục Màn hình lớn (Desktop)
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 2fr; /* Tỉ lệ 1:2 cho Users vs Orders */
+  }
+
+  // Bố cục Màn hình trung bình (Tablet)
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-template-columns: 1fr; /* Stack trên Tablet */
+  }
+
+  // Bố cục Màn hình nhỏ (Mobile)
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr; /* Stack trên Mobile */
+    padding: 0 10px;
+  }
+}
+
+// --- CARD DỮ LIỆU (GLASSMORHISM) ---
+.glassCard {
+  @include glassmorphism-effect;
+  padding: 25px;
+  border-radius: 12px;
+  height: 100%; // Quan trọng cho Grid layout
+  min-height: 400px;
+
+  // Hiệu ứng hover cho cả card, tạo sự rung động tinh tế
+  &:hover {
+    border-color: rgba($color-neon-emerald, 0.6);
+    box-shadow: 0 0 15px rgba($color-neon-emerald, 0.2);
+  }
+}
+
+.cardHeader {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: $color-neon-pink;
+  border-bottom: 1px solid rgba($color-border, 0.5);
+  padding-bottom: 10px;
+}
+
+// --- DETAIL VIEW VÀ NÚT QUAY LẠI ---
+.detailView {
+  // Đảm bảo OrderDetail chiếm đủ không gian
+  & > * {
+    width: 100%;
+  }
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  background: rgba($color-neon-cyan, 0.1);
+  color: $color-neon-cyan;
+  border: 1px solid $color-neon-cyan;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba($color-neon-cyan, 0.25);
+    box-shadow: 0 0 8px $color-neon-cyan;
+  }
+
+  // Ẩn chữ trên mobile, chỉ giữ lại icon
+  @media (max-width: 500px) {
+    padding: 8px 10px;
+    .backText {
+      display: none;
+    }
+  }
+}
+
+// --- TRẠNG THÁI RỖNG/LỖI ---
+.loadingState,
+.errorState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: $color-dark-bg;
+  color: $color-neon-cyan;
+}
+
+.loadingIcon {
+  margin-right: 15px;
+  animation: spin 1.5s linear infinite;
+  color: $color-neon-cyan;
+}
+
+.errorState {
+  color: $color-neon-red;
+}
+.errorIcon {
+  color: $color-neon-red;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

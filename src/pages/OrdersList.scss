@@ -1,0 +1,229 @@
+// File: src/components/OrdersList.scss - Phong cách Web3 Table
+
+// ===================================
+// VARIABLES & MIXINS
+// ===================================
+$cyber-bg-color: #0d1117;
+$cyber-table-bg: #161b22; // Nền table
+$cyber-header-bg: #1f2733; // Nền header
+$cyber-border-color: #2f405c;
+$cyber-glow-primary: #00bcd4; // Cyan
+$cyber-glow-secondary: #ff007f; // Magenta
+$text-color: #c9d1d9;
+$price-color: #2ecc71; // Xanh lá
+
+@mixin neon-glow($color, $radius: 5px) {
+  text-shadow: 0 0 $radius $color, 0 0 ($radius * 1.5) $color;
+}
+
+// ===================================
+// GENERAL LAYOUT
+// ===================================
+.web3-table-container {
+  background-color: $cyber-bg-color;
+  color: $text-color;
+  padding: 20px;
+  font-family: "Consolas", "Space Mono", monospace; // Font kỹ thuật số
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  min-height: 100vh;
+}
+
+.list-title {
+  border-bottom: 1px solid $cyber-border-color;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  .glow-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    @include neon-glow($cyber-glow-primary, 8px);
+  }
+  .order-count {
+    font-size: 0.9rem;
+    color: $cyber-glow-primary;
+  }
+}
+
+// Thông báo rỗng
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: $cyber-glow-secondary;
+  border: 1px dashed $cyber-border-color;
+  border-radius: 8px;
+}
+
+// ===================================
+// TABLE STYLES (Phong cách Bảng)
+// ===================================
+
+.table-wrapper {
+  overflow-x: auto; /* Quan trọng cho responsive */
+  border: 1px solid $cyber-border-color;
+  border-radius: 8px;
+  background-color: $cyber-table-bg;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 900px; /* Đảm bảo cuộn ngang trên mobile */
+
+  // Header
+  thead {
+    th {
+      background-color: $cyber-header-bg;
+      color: white;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid $cyber-glow-primary; /* Đường phân cách glow */
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  }
+
+  // Body - Dòng dữ liệu
+  tbody {
+    tr {
+      border-bottom: 1px solid $cyber-border-color;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+
+      // Hiệu ứng Hover - Tương tự như sàn DEX
+      &:hover {
+        background-color: rgba($cyber-glow-primary, 0.1);
+        box-shadow: 0 0 5px rgba($cyber-glow-primary, 0.4) inset;
+      }
+
+      // Dòng tự động khớp (Auto-Matched)
+      &.is-matched {
+        td.order-ref-cell {
+          color: $cyber-glow-primary;
+          font-weight: bold;
+        }
+      }
+
+      // Dòng chọn thủ công (Manual Selection)
+      &.is-manual {
+        td.order-ref-cell {
+          color: #f7b233; // Vàng hổ phách
+        }
+      }
+
+      td {
+        padding: 12px 15px;
+        vertical-align: middle;
+      }
+
+      .price-cell {
+        color: $price-color;
+        font-weight: bold;
+      }
+
+      .source-cell {
+        font-size: 0.8em;
+        opacity: 0.7;
+      }
+
+      .date-time-compact {
+        font-size: 0.85em;
+        color: #8b949e;
+      }
+    }
+  }
+}
+
+// ===================================
+// STATUS ICONS (Trong Bảng)
+// ===================================
+.order-status {
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  white-space: nowrap; // Không xuống dòng
+
+  // Định nghĩa màu sắc như cũ
+  .status-pending-payment {
+    background-color: rgba(243, 156, 18, 0.15); // Cam
+    color: #f39c12;
+  }
+  .status-paid {
+    background-color: rgba(46, 204, 113, 0.15); // Xanh lá
+    color: #2ecc71;
+  }
+  // ... các trạng thái khác giữ nguyên màu sắc ...
+  .status-in-transit {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+  }
+  .status-delivered,
+  .status-completed {
+    background-color: rgba(39, 174, 96, 0.15);
+    color: #27ae60;
+  }
+  .status-disputed {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+  }
+  .status-cancelled {
+    background-color: rgba(149, 165, 166, 0.15);
+    color: #95a5a6;
+  }
+  .status-unknown {
+    background-color: rgba(155, 89, 182, 0.15);
+    color: #9b59b6;
+  }
+}
+
+// ===================================
+// RESPONSIVE DESIGN
+// ===================================
+
+// Tablet (max-width 1024px)
+@media (max-width: 1024px) {
+  .hide-on-tablet {
+    display: none !important; // Ẩn cột "Nguồn"
+  }
+  .orders-table {
+    min-width: 700px; /* Giảm min-width */
+  }
+}
+
+// Mobile (max-width 768px)
+@media (max-width: 768px) {
+  .web3-table-container {
+    padding: 10px;
+  }
+
+  .list-title .glow-text {
+    font-size: 1.3rem;
+  }
+
+  // Ẩn cột Wallet trên mobile
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .orders-table {
+    min-width: 550px; /* Đảm bảo các cột quan trọng vẫn đủ rộng */
+    font-size: 0.85rem;
+  }
+
+  thead th,
+  tbody td {
+    padding: 8px 10px; // Giảm padding
+  }
+}

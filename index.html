@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tạo Tài liệu MSDS Mới (GHS Rev.9)</title>
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: var(--light-bg);
+        color: #333;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: var(--primary-color);
+        border-bottom: 3px solid var(--primary-color);
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+        font-size: 24px;
+      }
+
+      .section-header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+      }
+
+      input[type="text"]:focus,
+      input[type="date"]:focus,
+      input[type="number"]:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 1px var(--primary-color);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .flex-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+      }
+
+      .flex-row > .form-group {
+        flex: 1;
+        margin-bottom: 0; /* Remove redundant margin */
+      }
+
+      .btn-submit {
+        background-color: var(--success-color);
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.2s;
+        margin-top: 30px;
+        width: 100%;
+      }
+
+      .btn-submit:hover {
+        background-color: #218838;
+      }
+
+      .required::after {
+        content: " *";
+        color: var(--danger-color);
+        font-weight: normal;
+      }
+
+      /* Styling for the GHS Pictograms (Section 2) */
+      .pictogram-selection {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pictogram-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+
+      .pictogram-item input[type="checkbox"] {
+        margin-right: 8px;
+        width: auto;
+      }
+
+      .pictogram-item.selected {
+        background-color: #e0f7ff;
+        border-color: var(--primary-color);
+      }
+
+      /* Styling for the Substance List (Section 3) */
+      .substance-list {
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 15px;
+        margin-top: 10px;
+      }
+
+      .substance-item {
+        display: flex;
+        gap: 10px;
+        padding: 5px 0;
+        border-bottom: 1px dashed #eee;
+      }
+
+      .substance-item:last-child {
+        border-bottom: none;
+      }
+
+      .substance-item input {
+        flex: 1;
+      }
+
+      .substance-item .name-field {
+        flex: 2;
+      }
+      .substance-item .cas-field {
+        flex: 1.5;
+      }
+      .substance-item .concentration-field {
+        flex: 1;
+      }
+
+      .btn-add-substance {
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tạo Tài liệu MSDS Mới (GHS Rev.9) 📜</h1>
+      <form id="msdsForm">
+        <div class="section-header">Thông tin Chung</div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="product_name" class="required"
+              >Tên Sản phẩm/Hóa chất</label
+            >
+            <input
+              type="text"
+              id="product_name"
+              required
+              placeholder="Ví dụ: Acid Sulfuric 98%"
+              data-path="product_name" />
+          </div>
+          <div class="form-group">
+            <label for="product_id"
+              >SKU, CAS, hoặc Mã nội bộ (Product ID)</label
+            >
+            <input
+              type="text"
+              id="product_id"
+              placeholder="Ví dụ: CAS 7664-93-9"
+              data-path="product_id" />
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="issue_date">Ngày Phát hành (Issue Date)</label>
+            <input type="date" id="issue_date" data-path="issue_date" />
+          </div>
+          <div class="form-group">
+            <label for="revision_date" class="required"
+              >Ngày Cập nhật (Revision Date)</label
+            >
+            <input
+              type="date"
+              id="revision_date"
+              required
+              data-path="revision_date" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="document_cid" class="required"
+            >IPFS CID của File PDF MSDS</label
+          >
+          <input
+            type="text"
+            id="document_cid"
+            required
+            placeholder="QmW... (dữ liệu file PDF)"
+            data-path="document_cid" />
+        </div>
+
+        <div class="section-header">Thông tin Nhà Cung cấp (Supplier)</div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="supplier_name" class="required">Tên Nhà Cung Cấp</label>
+            <input
+              type="text"
+              id="supplier_name"
+              required
+              data-path="supplier.name" />
+          </div>
+          <div class="form-group">
+            <label for="supplier_country" class="required"
+              >Quốc gia (2 chữ cái, ví dụ: VN)</label
+            >
+            <input
+              type="text"
+              id="supplier_country"
+              required
+              pattern="^[A-Z]{2}$"
+              maxlength="2"
+              placeholder="Ví dụ: VN, US"
+              data-path="supplier.country" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="supplier_address" class="required">Địa chỉ</label>
+          <input
+            type="text"
+            id="supplier_address"
+            required
+            data-path="supplier.address" />
+        </div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="supplier_email">Email</label>
+            <input
+              type="text"
+              id="supplier_email"
+              placeholder="contact@supplier.com"
+              data-path="supplier.email" />
+          </div>
+          <div class="form-group">
+            <label for="supplier_phone">Điện thoại</label>
+            <input
+              type="text"
+              id="supplier_phone"
+              placeholder="+84..."
+              data-path="supplier.phone" />
+          </div>
+        </div>
+
+        <div class="section-header">Tuân thủ GHS</div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="ghs_version" class="required">Phiên bản GHS</label>
+            <select
+              id="ghs_version"
+              required
+              data-path="ghs_compliance.version">
+              <option value="Rev.9">Rev.9 (Khuyến nghị)</option>
+              <option value="Rev.10">Rev.10</option>
+              <option value="Rev.8">Rev.8</option>
+              <option value="Rev.7">Rev.7</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ghs_language">Ngôn ngữ MSDS (vd: vi, en-US)</label>
+            <input
+              type="text"
+              id="ghs_language"
+              placeholder="vi-VN"
+              pattern="^[a-z]{2}(-[A-Z]{2})?$"
+              data-path="ghs_compliance.language" />
+          </div>
+          <div class="form-group">
+            <label class="required">Tuân thủ</label>
+            <select
+              id="ghs_is_compliant"
+              required
+              data-path="ghs_compliance.is_compliant">
+              <option value="true">Có</option>
+              <option value="false">Không</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-header">
+          Phân loại Nguy hiểm & Vận tải (Section 14 & General)
+        </div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="un_number" class="required">UN Number (UNXXXX)</label>
+            <input
+              type="text"
+              id="un_number"
+              required
+              pattern="^UN[0-9]{4}$"
+              placeholder="Ví dụ: UN1203"
+              data-path="hazard_classification.un_number" />
+          </div>
+          <div class="form-group">
+            <label for="proper_shipping_name" class="required"
+              >Tên Vận chuyển Chính xác</label
+            >
+            <input
+              type="text"
+              id="proper_shipping_name"
+              required
+              data-path="hazard_classification.proper_shipping_name" />
+          </div>
+        </div>
+
+        <div class="flex-row">
+          <div class="form-group">
+            <label for="class_division" class="required"
+              >Hạng Nguy hiểm (Class/Division)</label
+            >
+            <input
+              type="text"
+              id="class_division"
+              required
+              pattern="^(1|2\.[0-9]|3|4\.[0-9]|5\.[0-9]|6\.[0-9]|7|8|9)$"
+              placeholder="Ví dụ: 3, 2.1, 4.3"
+              data-path="hazard_classification.class_division" />
+          </div>
+          <div class="form-group">
+            <label for="packing_group">Nhóm Đóng gói (Packing Group)</label>
+            <select
+              id="packing_group"
+              data-path="hazard_classification.packing_group">
+              <option value="">Không áp dụng</option>
+              <option value="I">I (Nguy hiểm cao)</option>
+              <option value="II">II (Nguy hiểm trung bình)</option>
+              <option value="III">III (Nguy hiểm thấp)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="net_quantity_kg" class="required"
+              >Khối lượng Tịnh (kg)</label
+            >
+            <input
+              type="number"
+              id="net_quantity_kg"
+              min="0"
+              step="any"
+              required
+              data-path="hazard_classification.net_quantity_kg" />
+          </div>
+        </div>
+
+        <div class="section-header">Section 2: Nhận dạng Nguy hiểm</div>
+        <div class="form-group">
+          <label for="signal_word">Từ Tín hiệu (Signal Word)</label>
+          <select id="signal_word" data-path="sections.section_2.signal_word">
+            <option value="">Chọn...</option>
+            <option value="Danger">Danger (Nguy hiểm)</option>
+            <option value="Warning">Warning (Cảnh báo)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="required">Biểu tượng GHS (Pictograms)</label>
+          <div class="pictogram-selection" id="ghs_pictograms_container"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="hazard_statements"
+            >Các câu Lệnh Nguy hiểm (Hazard Statements - H-phrases)</label
+          >
+          <textarea
+            id="hazard_statements"
+            placeholder="Mỗi câu lệnh trên một dòng."
+            data-path="sections.section_2.hazard_statements"></textarea>
+        </div>
+
+        <div class="section-header">
+          Section 3: Thành phần / Thông tin về các chất
+        </div>
+        <label class="required"
+          >Danh sách các chất cấu thành (Substances)</label
+        >
+        <div class="substance-list" id="substance_list">
+          <div class="substance-item" data-index="0">
+            <input
+              type="text"
+              class="name-field"
+              placeholder="Tên chất (bắt buộc)" />
+            <input
+              type="text"
+              class="cas-field"
+              placeholder="Số CAS (tùy chọn)" />
+            <input
+              type="number"
+              class="concentration-field"
+              min="0"
+              max="100"
+              step="any"
+              placeholder="Nồng độ % (bắt buộc)" />
+          </div>
+        </div>
+        <button type="button" class="btn-add-substance" id="btn_add_substance">
+          Thêm Chất
+        </button>
+
+        <button type="submit" class="btn-submit">Tạo Tài liệu MSDS</button>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("msdsForm");
+        const substanceListContainer =
+          document.getElementById("substance_list");
+        const btnAddSubstance = document.getElementById("btn_add_substance");
+        const pictogramsContainer = document.getElementById(
+          "ghs_pictograms_container"
+        );
+        const allPictograms = [
+          "Flame",
+          "Skull",
+          "Corrosion",
+          "Health",
+          "Environment",
+          "Explosion",
+          "Gas Cylinder",
+        ];
+
+        // 1. Initialize Pictograms
+        allPictograms.forEach((p) => {
+          const itemId = `pictogram_${p.toLowerCase().replace(" ", "_")}`;
+          const item = document.createElement("div");
+          item.className = "pictogram-item";
+          item.innerHTML = `
+                    <input type="checkbox" id="${itemId}" value="${p}">
+                    <label for="${itemId}">${p}</label>
+                `;
+          item.addEventListener("click", (e) => {
+            // Toggle checkbox state and selected class
+            const checkbox = item.querySelector("input");
+            if (e.target !== checkbox) {
+              checkbox.checked = !checkbox.checked;
+            }
+            item.classList.toggle("selected", checkbox.checked);
+          });
+          pictogramsContainer.appendChild(item);
+        });
+
+        // 2. Substance List Management (Section 3)
+        let substanceIndex = 1;
+        const createSubstanceItem = () => {
+          const item = document.createElement("div");
+          item.className = "substance-item";
+          item.setAttribute("data-index", substanceIndex++);
+          item.innerHTML = `
+                    <input type="text" class="name-field" placeholder="Tên chất (bắt buộc)">
+                    <input type="text" class="cas-field" placeholder="Số CAS (tùy chọn)">
+                    <input type="number" class="concentration-field" min="0" max="100" step="any" placeholder="Nồng độ % (bắt buộc)">
+                `;
+          return item;
+        };
+
+        btnAddSubstance.addEventListener("click", () => {
+          substanceListContainer.appendChild(createSubstanceItem());
+        });
+
+        // 3. Form Submission Handling (Simulated)
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const formData = {};
+
+          // Collect simple fields and deeply nested fields
+          document.querySelectorAll("[data-path]").forEach((input) => {
+            const path = input.getAttribute("data-path").split(".");
+            let current = formData;
+            path.forEach((key, index) => {
+              if (index === path.length - 1) {
+                let value = input.value.trim();
+
+                if (input.type === "number") {
+                  value = parseFloat(value);
+                } else if (input.type === "email") {
+                  value = value; // Keep as string, format validation handled by browser/schema
+                } else if (input.id === "ghs_is_compliant") {
+                  value = value === "true"; // Convert to boolean
+                }
+
+                if (value !== "" && value !== null && !isNaN(value)) {
+                  current[key] = value;
+                }
+              } else {
+                if (!current[key]) {
+                  current[key] = {};
+                }
+                current = current[key];
+              }
+            });
+          });
+
+          // Handle Array Fields: Pictograms (Section 2)
+          formData.sections.section_2.gsh_pictograms = Array.from(
+            pictogramsContainer.querySelectorAll("input:checked")
+          ).map((checkbox) => checkbox.value);
+
+          // Handle Array Fields: Hazard/Precautionary Statements (Section 2)
+          const hazardStatementsInput = document
+            .getElementById("hazard_statements")
+            .value.trim();
+          formData.sections.section_2.hazard_statements = hazardStatementsInput
+            ? hazardStatementsInput
+                .split("\n")
+                .map((s) => s.trim())
+                .filter((s) => s)
+            : [];
+
+          // Assuming other sections (4-13, 15, 16) are simple string fields not explicitly shown
+          // We must define required sections as empty strings if not present, otherwise schema will fail
+          // For this mockup, we'll only focus on the required complex sections.
+
+          // Handle Array Field: Substances (Section 3)
+          const substances = [];
+          substanceListContainer
+            .querySelectorAll(".substance-item")
+            .forEach((item) => {
+              const name = item.querySelector(".name-field").value.trim();
+              const concentration = item.querySelector(
+                ".concentration-field"
+              ).value;
+
+              if (name && concentration !== "") {
+                const cas_number = item
+                  .querySelector(".cas-field")
+                  .value.trim();
+                const sub = {
+                  name: name,
+                  concentration_percent: parseFloat(concentration),
+                };
+                if (cas_number) {
+                  sub.cas_number = cas_number;
+                }
+                substances.push(sub);
+              }
+            });
+          formData.sections.section_3.substances = substances;
+
+          // Final check for required complex objects (assuming all fields with 'required' class in HTML were filled)
+          if (!formData.sections) formData.sections = {};
+          if (!formData.sections.section_1)
+            formData.sections.section_1 = {
+              product_identifier: formData.product_name,
+              supplier_identification: formData.supplier.name,
+            };
+          if (!formData.sections.section_2) formData.sections.section_2 = {};
+          if (!formData.sections.section_14)
+            formData.sections.section_14 = {
+              un_number: formData.hazard_classification.un_number,
+              proper_shipping_name:
+                formData.hazard_classification.proper_shipping_name,
+              class_division: formData.hazard_classification.class_division,
+              packing_group:
+                formData.hazard_classification.packing_group || null,
+            };
+
+          // Add placeholder for other required sections as per schema's 'sections' required array
+          for (let i = 4; i <= 13; i++) {
+            if (!formData.sections[`section_${i}`]) {
+              formData.sections[`section_${i}`] =
+                "Nội dung Tóm tắt Section " + i;
+            }
+          }
+          if (!formData.sections.section_15)
+            formData.sections.section_15 = "Nội dung Tóm tắt Section 15";
+          if (!formData.sections.section_16)
+            formData.sections.section_16 = {
+              date_of_preparation: new Date().toISOString().slice(0, 10),
+              revision_number: 1,
+              other_information: "",
+            };
+
+          // Simulate Auto-filled required fields (based on the schema's 'private' function logic)
+          formData.created_by_company_id = "C001";
+          formData.created_by_wallet =
+            "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12";
+
+          // Display the resulting JSON object
+          console.log("Dữ liệu MSDS đã gửi (Mockup):", formData);
+          alert(
+            "Dữ liệu đã được tạo. Vui lòng xem trong Console để kiểm tra cấu trúc JSON."
+          );
+
+          // Log the final object
+          document.body.insertAdjacentHTML(
+            "beforeend",
+            `
+                    <pre style="background: #e9ecef; padding: 20px; border-radius: 4px; margin-top: 20px; white-space: pre-wrap; word-break: break-all;">
+                        <h2>JSON Output (Simulated):</h2>${JSON.stringify(
+                          formData,
+                          null,
+                          2
+                        )}
+                    </pre>
+                `
+          );
+        });
+      });
+    </script>
+  </body>
+</html>
