@@ -5,13 +5,18 @@
   --color-border: #1e3048; /* Subtle Border/Divider */
   --color-text-main: #e0f2ff; /* Primary Text (Light Blue) */
   --color-text-subtle: #7e90a5; /* Secondary Text (Muted Blue-Gray) */
-
-  /* Colors - Neon Accents */
+  --color-bg-deep-space: #0a0a1a;
+  --color-bg-nebula: #1a1a2e;
+  --color-glass-bg: rgba(26, 26, 46, 0.7); /* Semi-transparent Glass Effect */
   --color-neon-primary: #00e0ff; /* Cyan (Primary focus, Hash, Links) */
   --color-neon-success: #39ff14; /* Green (Success, Completed) */
   --color-neon-warning: #ffb700; /* Amber (Pending, Price) */
   --color-neon-error: #ff5555; /* Red (Error, Disputed) */
-  --color-neon-secondary: #9a43ff; /* Violet (Secondary focus) */
+  --color-neon-secondary: #9a43ff;
+  --color-text-primary: #f0f0f0;
+  --color-text-muted: #a0a0c0;
+  --card-border-radius: 16px;
+  --transition-speed: 0.3s;
 }
 
 /* --------------------------------------------------- */
@@ -26,11 +31,43 @@ body {
   min-width: 100vw;
   overflow-x: hidden;
   line-height: 1.6;
+  background-color: var(--color-bg-deep);
 }
-
-/* Custom Font Fallback cho Web3 */
+@keyframes subtleGradientPan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 .font-mono {
   font-family: "Space Mono", "Inter", monospace;
+}
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseNeonText {
+  0%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 10px var(--color-neon-primary),
+      0 0 20px var(--color-neon-primary), 0 0 30px var(--color-neon-secondary);
+  }
+  50% {
+    text-shadow: 0 0 6px #fff, 0 0 12px var(--color-neon-primary),
+      0 0 25px var(--color-neon-primary), 0 0 38px var(--color-neon-secondary);
+  }
 }
 
 /* 📜 Scrollbar Customization */
@@ -87,9 +124,112 @@ a:hover {
 
 /* 💡 Responsive Headings (Tăng tính hiện đại) */
 h1 {
-  @apply text-3xl md:text-5xl font-extrabold tracking-tight mb-4;
+  @apply text-3xl md:text-5xl font-extrabold tracking-tight mb-6;
+  /* Thêm hiệu ứng neon trực tiếp */
+  color: var(--color-neon-primary);
+  text-shadow: 0 0 4px rgba(0, 224, 255, 0.6), 0 0 8px rgba(0, 224, 255, 0.4);
 }
+
 h2 {
-  @apply text-2xl md:text-3xl font-bold mb-3 border-b border-[var(--color-border)] pb-2;
+  @apply text-2xl md:text-3xl font-bold tracking-tight mb-4 pb-2;
+  @apply border-b border-[var(--color-border)];
+  /* Tiêu đề cấp 2 có màu chính, không phát sáng */
   color: var(--color-text-main);
+}
+
+h3 {
+  @apply text-xl md:text-2xl font-semibold mb-4;
+  color: var(--color-text-main);
+}
+
+h4 {
+  @apply text-lg font-semibold mb-3;
+  color: var(--color-text-subtle);
+}
+
+h5 {
+  @apply text-base font-semibold mb-2;
+  color: var(--color-neon-secondary); /* Dùng màu phụ cho H5 */
+}
+
+h6 {
+  @apply text-sm font-semibold uppercase tracking-wider mb-2;
+  color: var(--color-text-subtle);
+}
+
+/* Paragraph (Đoạn văn) */
+p {
+  @apply mb-6 max-w-prose text-base lg:text-lg;
+  color: var(--color-text-main);
+  opacity: 0.9; /* Giảm nhẹ độ sáng của text */
+}
+
+/* 🔗 Link (Giữ nguyên từ trước, đã rất tốt) */
+a {
+  @apply text-[var(--color-neon-primary)] font-medium;
+  text-decoration: none;
+  transition: all var(--transition-speed) ease;
+}
+
+a:hover {
+  filter: brightness(0.9);
+  text-decoration: underline;
+  text-shadow: 0 0 4px rgba(0, 224, 255, 0.5);
+}
+
+/* 📜 Lists (Danh sách) */
+ul,
+ol {
+  @apply mb-6 ml-6 space-y-3;
+}
+
+ul {
+  @apply list-disc;
+}
+
+ol {
+  @apply list-decimal;
+}
+
+li {
+  @apply max-w-prose;
+  color: var(--color-text-main);
+  opacity: 0.9;
+}
+
+/* 💬 Blockquote (Trích dẫn) */
+blockquote {
+  @apply mb-6 p-4 italic;
+  @apply bg-[var(--color-bg-surface)] border-l-4 border-[var(--color-neon-primary)];
+  color: var(--color-text-subtle);
+}
+
+/* 💻 Code (Mã) */
+code {
+  /* Inline code */
+  @apply bg-[var(--color-border)] text-[var(--color-neon-warning)] font-mono text-sm px-1 py-0.5 rounded-sm;
+}
+
+pre {
+  /* Code block container */
+  @apply bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-lg p-4 mb-6 overflow-x-auto font-mono;
+}
+
+pre code {
+  /* Reset style cho code bên trong pre */
+  /* @apply bg-transparent text-inherit p-0 rounded-none; */
+  font-size: 0.95em;
+  color: var(--color-text-main);
+  text-shadow: none; /* Tắt text-shadow nếu có */
+}
+
+/* ➖ Horizontal Rule (Đường kẻ) */
+hr {
+  @apply border-0 h-px my-8;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border),
+    transparent
+  );
 }

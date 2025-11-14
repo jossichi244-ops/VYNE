@@ -1,6 +1,9 @@
+// File: src/pages/CreateOrderPage_Web3.jsx (Cập nhật)
+
 import React from "react";
 import TransportOrderForm from "../components/TransportOrderForm.jsx";
 import { getToken, getWalletAddress } from "../store/storage";
+import "./CreateOrderPage.scss"; // 💡 Import SCSS mới
 
 const CreateOrderPage = () => {
   const token = getToken();
@@ -8,17 +11,22 @@ const CreateOrderPage = () => {
 
   if (!token || !wallet) {
     return (
-      <div className="p-4 text-red-600 font-semibold">
-        Bạn chưa đăng nhập hoặc chưa kết nối ví Web3.
+      <div className="auth-required-message">
+        ⚠️ Bạn chưa đăng nhập hoặc chưa kết nối ví Web3. Vui lòng kết nối để tạo
+        đơn.{" "}
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Tạo Đơn Vận Chuyển</h1>
-
-      <TransportOrderForm token={token} senderWallet={wallet} />
+    <div className="create-order-container">
+      {" "}
+      <h1 className="page-header-title">
+        <span className="neon-glow-text">✨ Mở Hợp Đồng Vận Chuyển Mới</span>
+      </h1>{" "}
+      <div className="form-wrapper-card">
+        <TransportOrderForm token={token} senderWallet={wallet} />{" "}
+      </div>{" "}
     </div>
   );
 };

@@ -1,0 +1,222 @@
+/* === CreateOrderPage.scss === */
+/* Web3 Cyber-Modern Redesign */
+
+/* --- 1. Biến số & Bảng màu Cyber --- */
+:root {
+  --color-bg-deep-space: #0a0a1a;
+  --color-bg-nebula: #1a1a2e;
+  --color-glass-bg: rgba(26, 26, 46, 0.7); // Kính mờ
+  --color-neon-primary: #00e5ff; // Cyan điện tử
+  --color-neon-secondary: #ff00ff; // Magenta rực rỡ
+  --color-text-primary: #f0f0f0;
+  --color-text-muted: #a0a0c0;
+  --card-border-radius: 16px;
+  --transition-speed: 0.3s;
+}
+
+/* --- 2. Thiết lập Toàn cục & Nền tảng --- */
+@keyframes subtleGradientPan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* --- 3. Animation & Keyframes --- */
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseNeonText {
+  0%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 10px var(--color-neon-primary),
+      0 0 20px var(--color-neon-primary), 0 0 30px var(--color-neon-secondary);
+  }
+  50% {
+    text-shadow: 0 0 6px #fff, 0 0 12px var(--color-neon-primary),
+      0 0 25px var(--color-neon-primary), 0 0 38px var(--color-neon-secondary);
+  }
+}
+
+/* --- 4. Container Chính & Tiêu đề --- */
+.create-order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 90vh;
+  padding: 3rem 1rem;
+  box-sizing: border-box;
+  animation: fadeInFromBottom 0.8s ease-out;
+}
+
+.page-header-title {
+  font-size: 2.5rem; // Kích thước lớn
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  text-align: center;
+
+  .neon-glow-text {
+    color: #fff;
+    animation: pulseNeonText 2.5s ease-in-out infinite;
+  }
+}
+
+/* --- 5. Thẻ Biểu mẫu (The Crystal Card) --- */
+.form-wrapper-card {
+  width: 100%;
+  max-width: 750px; // Giới hạn chiều rộng trên desktop
+  background: var(--color-glass-bg);
+  border-radius: var(--card-border-radius);
+  border: 1px solid rgba(var(--color-neon-primary), 0.2); // Viền mờ
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); // Hỗ trợ Safari
+  transition: transform var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease,
+    border-color var(--transition-speed) ease;
+
+  &:hover {
+    transform: translateY(-5px); // Hiệu ứng "nâng lên"
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    border-color: rgba(var(--color-neon-primary), 0.7); // Viền sáng hơn
+  }
+
+  /* --- 6. Định kiểu cho Form (bên trong Card) --- */
+  /* Giả định TransportOrderForm sử dụng các thẻ HTML chuẩn */
+
+  /* Định kiểu cho các nhóm trường (ví dụ: fieldset, .form-group) */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    background: rgba(0, 0, 0, 0.3); // Nền input tối
+    border: 1px solid rgba(var(--color-neon-primary), 0.3);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    transition: all var(--transition-speed) ease;
+    box-sizing: border-box; /* Đảm bảo padding không làm vỡ layout */
+
+    &:focus,
+    &:focus-within {
+      outline: none;
+      border-color: var(--color-neon-primary); // Viền neon khi focus
+      background: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 15px rgba(var(--color-neon-primary), 0.5); // Hào quang
+    }
+
+    &::placeholder {
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  /* Định kiểu cho nút Submit (Giả sử có class .submit-button hoặc button[type="submit"]) */
+  .submit-button,
+  button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+    background: var(--color-neon-primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 0 20px rgba(var(--color-neon-primary), 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &:hover {
+      background: #fff; // Đổi màu
+      color: var(--color-neon-primary);
+      box-shadow: 0 0 30px rgba(#fff, 0.7);
+      transform: scale(1.02); // Phóng to nhẹ
+    }
+
+    &:active {
+      transform: scale(0.98); // Hiệu ứng nhấn
+    }
+  }
+}
+
+/* --- 7. Tin nhắn Yêu cầu Đăng nhập --- */
+.auth-required-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 60vh;
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+  background: var(--color-glass-bg);
+  border: 1px solid rgba(var(--color-neon-secondary), 0.3); // Viền đỏ/hồng
+  border-radius: var(--card-border-radius);
+  padding: 3rem;
+  margin: 2rem;
+  max-width: 600px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fadeInFromBottom 0.8s ease-out;
+}
+
+/* --- 8. Thiết kế Responsive --- */
+@media (max-width: 768px) {
+  .create-order-container {
+    padding: 1.5rem 0.5rem; // Giảm padding
+  }
+
+  .page-header-title {
+    font-size: 1.8rem; // Thu nhỏ tiêu đề
+    margin-bottom: 1.5rem;
+  }
+
+  .form-wrapper-card {
+    padding: 1.5rem; // Giảm padding card
+  }
+
+  .auth-required-message {
+    padding: 1.5rem;
+    margin: 1rem;
+    font-size: 1rem;
+  }
+}
