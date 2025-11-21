@@ -26,7 +26,7 @@ const CyberNavbar = () => {
 
   // ✅ Chỉ khai báo navItems 1 lần, ngoài render
   const navItems = [
-    // { name: "Dashboard", path: "/dashboard", requiresAuth: true },
+    { name: "Dashboard", path: "/dashboard", requiresAuth: true },
     { name: "User List", path: "/", requiresAuth: false },
     { name: "Profile", path: "/profile", requiresAuth: true },
     { name: "Tạo Đơn Hàng", path: "/orders/create", requiresAuth: true },

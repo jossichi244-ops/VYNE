@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
 import Login from "../pages/LoginPage";
-// import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Dashboard";
 import UserProfilePage from "../pages/UserProfilePage";
 import UserDashboardPage from "../pages/UserDashboardPage";
 import MainLayout from "../layouts/MainLayout";
@@ -22,7 +22,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register-company" element={<RegisterCompany />} />
-          {/* <Route
+          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -31,7 +31,7 @@ const AppRoutes = () => {
                 </MainLayout>
               </ProtectedRoute>
             }
-          /> */}
+          />
 
           <Route
             path="/profile"
