@@ -8,7 +8,7 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 const { Panel } = Collapse;
 
 // Helper to handle parsing and rendering of specific parts of the report.
@@ -67,25 +67,28 @@ const BusinessInsightsSection = ({ content }) => {
         currentSection = "timeSeries";
         insights.timeSeries.header = trimmedLine.replace(/^- /, "");
         currentBlock = null;
-      } 
+      }
       // --- Xác định block Key Drivers ---
       else if (trimmedLine.startsWith("- ✅ Kiểm định ANOVA")) {
         currentSection = "keyDrivers";
         currentBlock = {
           type: "anova",
-          data: { main: trimmedLine, details: [] }
+          data: { main: trimmedLine, details: [] },
         };
         insights.keyDrivers.anova.push(currentBlock.data);
       } else if (trimmedLine.startsWith("- ✅ Kiểm định Chi-square")) {
         currentSection = "keyDrivers";
         currentBlock = {
           type: "chi2",
-          data: { main: trimmedLine, details: [] }
+          data: { main: trimmedLine, details: [] },
         };
         insights.keyDrivers.chi2.push(currentBlock.data);
       }
       // --- Gán dòng con vào block hiện tại ---
-      else if (currentSection === "segmentation" && trimmedLine.startsWith("Nhóm")) {
+      else if (
+        currentSection === "segmentation" &&
+        trimmedLine.startsWith("Nhóm")
+      ) {
         insights.segmentation.groups.push(trimmedLine);
       } else if (
         currentSection === "timeSeries" &&
@@ -94,16 +97,17 @@ const BusinessInsightsSection = ({ content }) => {
           trimmedLine.startsWith("Phát hiện"))
       ) {
         insights.timeSeries.details.push(trimmedLine);
-      } else if (currentSection === "keyDrivers" ) {
-        if (currentBlock && (
-          trimmedLine.startsWith("→") ||
-          trimmedLine.startsWith("- Kết quả") ||
-          trimmedLine.startsWith("- **So what**") ||
-          trimmedLine.startsWith("- **Now what**") ||
-          trimmedLine.startsWith("- **Root cause**")
-        )) {
-        currentBlock.data.details.push(trimmedLine);
-      }
+      } else if (currentSection === "keyDrivers") {
+        if (
+          currentBlock &&
+          (trimmedLine.startsWith("→") ||
+            trimmedLine.startsWith("- Kết quả") ||
+            trimmedLine.startsWith("- **So what**") ||
+            trimmedLine.startsWith("- **Now what**") ||
+            trimmedLine.startsWith("- **Root cause**"))
+        ) {
+          currentBlock.data.details.push(trimmedLine);
+        }
       }
       // --- Nếu gặp dòng mới không phải →, reset block (an toàn) ---
       else if (currentSection === "keyDrivers" && trimmedLine.startsWith("-")) {

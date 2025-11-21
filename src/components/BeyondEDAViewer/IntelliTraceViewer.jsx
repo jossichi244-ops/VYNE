@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -9,11 +10,18 @@ import {
   FolderTree,
   Search,
   Minimize2,
-  Maximize2
+  Maximize2,
 } from "lucide-react";
 import "../../assets/styles/IntelliTraceViewer.scss";
 
-const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationDelay = 0 }) => {
+const DataNode = ({
+  label,
+  value,
+  level = 0,
+  globalOpen,
+  filter = "",
+  animationDelay = 0,
+}) => {
   const [open, setOpen] = useState(globalOpen);
   const isObject = typeof value === "object" && value !== null;
   const isArray = Array.isArray(value);
@@ -23,9 +31,13 @@ const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationD
     if (isObject) setOpen(globalOpen);
   }, [globalOpen]);
 
-  const icon = isArray ? <FolderTree size={14}/> :
-               isObject ? <Database size={14}/> :
-               <FileCode size={14}/> ;
+  const icon = isArray ? (
+    <FolderTree size={14} />
+  ) : isObject ? (
+    <Database size={14} />
+  ) : (
+    <FileCode size={14} />
+  );
 
   // 🧩 Highlight phần trùng với từ khóa tìm kiếm
   const highlightText = (text, query) => {
@@ -38,8 +50,11 @@ const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationD
           className="highlight-glow"
           initial={{ backgroundColor: "rgba(255,255,0,0.2)", color: "#FFD700" }}
           animate={{ backgroundColor: "rgba(255,255,0,0.1)", color: "#fff700" }}
-          transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-        >
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}>
           {part}
         </motion.span>
       ) : (
@@ -50,9 +65,11 @@ const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationD
 
   const formatValue = (val) => {
     if (typeof val === "number") return <span className="val-num">{val}</span>;
-    if (typeof val === "boolean") return <span className="val-bool">{String(val)}</span>;
+    if (typeof val === "boolean")
+      return <span className="val-bool">{String(val)}</span>;
     if (val === null) return <span className="val-null">null</span>;
-    if (typeof val === "string") return <span className="val-str">"{val}"</span>;
+    if (typeof val === "string")
+      return <span className="val-str">"{val}"</span>;
     return String(val);
   };
 
@@ -61,20 +78,16 @@ const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationD
       className={`data-node level-${level}`}
       initial={{ opacity: 0, y: 2 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: animationDelay }}
-    >
+      transition={{ duration: 0.25, delay: animationDelay }}>
       <div
         className={`data-node-header ${isObject ? "is-object" : ""}`}
         onClick={() => isObject && setOpen(!open)}
-        style={{ paddingLeft: `${level * 1.2}rem` }}
-      >
+        style={{ paddingLeft: `${level * 1.2}rem` }}>
         <span className="data-node-icon">{icon}</span>
-        <span className="data-node-label">
-          {highlightText(label, filter)}
-        </span>
+        <span className="data-node-label">{highlightText(label, filter)}</span>
         {isObject ? (
           <span className="data-node-toggle">
-            {open ? <ChevronDown size={14}/> : <ChevronRight size={14}/> }
+            {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           </span>
         ) : (
           <span className="data-node-value">{formatValue(value)}</span>
@@ -88,8 +101,7 @@ const DataNode = ({ label, value, level = 0, globalOpen, filter = "", animationD
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4 }}
-          >
+            transition={{ duration: 0.4 }}>
             {Object.entries(value).map(([k, v], i) => (
               <DataNode
                 key={i}
@@ -138,10 +150,9 @@ const IntelliTraceViewer = ({ data }) => {
       className="intellitrace-viewer"
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
+      transition={{ duration: 0.6 }}>
       <div className="intellitrace-header">
-        <Layers size={20} className="trace-icon"/>
+        <Layers size={20} className="trace-icon" />
         <h3 className="trace-title">Backend IntelliTrace Console</h3>
         <p className="trace-subtitle">
           Realtime backend data explorer — cascade animation & neon search.
@@ -149,15 +160,17 @@ const IntelliTraceViewer = ({ data }) => {
 
         <div className="trace-controls">
           <div className="search-bar">
-            <Search size={14}/>
+            <Search size={14} />
             <input
               placeholder="Tìm khóa dữ liệu..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
-          <button onClick={() => setGlobalOpen(!globalOpen)} className="btn-collapse">
-            {globalOpen ? <Minimize2 size={14}/> : <Maximize2 size={14}/> }
+          <button
+            onClick={() => setGlobalOpen(!globalOpen)}
+            className="btn-collapse">
+            {globalOpen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
             {globalOpen ? "Collapse All" : "Expand All"}
           </button>
         </div>

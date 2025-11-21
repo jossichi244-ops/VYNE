@@ -1,24 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import '../assets/styles/AnalysisSummaryDisplay.scss'; 
+import "../assets/styles/AnalysisSummaryDisplay.scss";
 
-import { FiZap, FiClock, FiLogIn, FiLogOut, FiFile, FiGrid } from 'react-icons/fi';
+import { FiZap, FiLogIn, FiLogOut, FiFile, FiGrid } from "react-icons/fi";
 
 const formatTime = (isoString) => {
-  if (!isoString) return 'N/A';
-  return new Date(isoString).toLocaleTimeString('en-GB', { 
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZone: 'UTC',
-  }) + ' UTC';
+  if (!isoString) return "N/A";
+  return (
+    new Date(isoString).toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "UTC",
+    }) + " UTC"
+  );
 };
 
 const StatCard = ({ icon, value, label, className }) => {
   if (!value && value !== 0) return null;
   return (
-    <div className={`stat-card ${className || ''}`}>
+    <div className={`stat-card ${className || ""}`}>
       <div className="stat-icon">{icon}</div>
       <div className="stat-content">
         <p className="stat-value">{value}</p>
@@ -36,7 +38,7 @@ StatCard.propTypes = {
 };
 
 const formatDuration = (seconds) => {
-  if (typeof seconds !== 'number' || isNaN(seconds)) return 'N/A';
+  if (typeof seconds !== "number" || isNaN(seconds)) return "N/A";
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
@@ -52,15 +54,23 @@ const AnalysisSummaryDisplay = ({ timing, metadata }) => {
   }
 
   const totalSeconds = timing?.total_seconds;
-  const formattedTotalTime = typeof totalSeconds === 'number' ? formatDuration(totalSeconds) : null;
+  const formattedTotalTime =
+    typeof totalSeconds === "number" ? formatDuration(totalSeconds) : null;
 
-  const formattedReceived = timing?.time_receive_data ? formatTime(timing.time_receive_data) : null;
-  const formattedDone = timing?.time_done_analysis ? formatTime(timing.time_done_analysis) : null;
+  const formattedReceived = timing?.time_receive_data
+    ? formatTime(timing.time_receive_data)
+    : null;
+  const formattedDone = timing?.time_done_analysis
+    ? formatTime(timing.time_done_analysis)
+    : null;
 
   const fileSize = metadata?.original_file_size_mb;
-  const formattedFileSize = typeof fileSize === 'number' ? `${fileSize.toFixed(2)} MB` : null;
+  const formattedFileSize =
+    typeof fileSize === "number" ? `${fileSize.toFixed(2)} MB` : null;
   const finalShape = metadata?.final_shape;
-  const formattedShape = Array.isArray(finalShape) ? `${finalShape[0].toLocaleString()} rows × ${finalShape[1]} cols` : null;
+  const formattedShape = Array.isArray(finalShape)
+    ? `${finalShape[0].toLocaleString()} rows × ${finalShape[1]} cols`
+    : null;
 
   return (
     <div className="analysis-summary-container">
