@@ -217,7 +217,7 @@ pre {
 
 pre code {
   /* Reset style cho code bên trong pre */
-  /* @apply bg-transparent text-inherit p-0 rounded-none; */
+  @apply bg-transparent text-inherit p-0 rounded-none;
   font-size: 0.95em;
   color: var(--color-text-main);
   text-shadow: none; /* Tắt text-shadow nếu có */

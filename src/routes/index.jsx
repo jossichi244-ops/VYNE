@@ -7,6 +7,7 @@ import UserProfilePage from "../pages/UserProfilePage";
 import UserDashboardPage from "../pages/UserDashboardPage";
 import MainLayout from "../layouts/MainLayout";
 import CreateOrderPage from "../pages/CreateOrderPage";
+import RegisterCompany from "../pages/company/RegisterCompany";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -20,7 +21,7 @@ const AppRoutes = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-
+          <Route path="/register-company" element={<RegisterCompany />} />
           {/* <Route
             path="/dashboard"
             element={
