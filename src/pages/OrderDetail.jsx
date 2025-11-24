@@ -16,7 +16,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import styles from "./OrderDetail.module.scss";
-
+import { truncateWalletAddress } from "../utils/format";
 // Hàm helper để định dạng thời gian
 const formatDate = (dateString) => {
   if (!dateString) return "N/A";
@@ -195,7 +195,9 @@ const OrderDetail_Web3 = ({ orderId }) => {
           tiết
         </h1>
         <div className={styles.headerMeta}>
-          <span className={styles.orderRef}>#{order.order_ref ?? "N/A"}</span>
+          <span className={styles.orderRef}>
+            #{truncateWalletAddress(order.order_ref)}
+          </span>
           <span className={styles.orderId}>
             ID: {truncateHash(order._id, 8, 4)}
           </span>

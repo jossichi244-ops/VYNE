@@ -36,8 +36,11 @@ const CyberNavbar = () => {
     <nav className="cyber-navbar">
       {/* Logo/Tên dự án */}
       <NavLink to="/" className="navbar-logo">
-        <span className="logo-main">VYNE</span>
-        <span className="logo-glow">APP</span>
+        <img
+          src="https://res.cloudinary.com/dgpbxb8dq/image/upload/v1755786774/ChatGPT_Image_May_25__2025__10_03_19_PM-removebg-preview_auiivy.png"
+          width="100"
+          height="100"
+          alt="VYNE Logo"></img>
       </NavLink>
 
       {/* Menu cho Desktop */}

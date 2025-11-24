@@ -2,10 +2,7 @@
 
 import React from "react";
 import "./OrdersList.scss"; // Vẫn sử dụng SCSS
-
-// Helper để format wallet (chỉ lấy 6 ký tự đầu và 4 ký tự cuối)
-const formatWallet = (wallet) =>
-  wallet ? `${wallet.substring(0, 6)}...${wallet.slice(-4)}` : "—";
+import { truncateWalletAddress } from "../utils/format";
 
 // Hàm tiện ích lấy thông tin chi phí/thời gian
 const getOrderDetails = (order) => {
@@ -128,13 +125,15 @@ const OrdersList = ({ orders, onSelectOrder }) => {
                   key={order._id}
                   onClick={() => onSelectOrder(order._id)}
                   className={order.is_matched ? "is-matched" : "is-manual"}>
-                  <td className="order-ref-cell">{order.order_ref || "—"}</td>
+                  <td className="order-ref-cell">
+                    {truncateWalletAddress(order.order_ref) || "—"}
+                  </td>
                   <td className="hide-on-mobile">
-                    {formatWallet(customerWallet)}
+                    {truncateWalletAddress(customerWallet)}
                   </td>
                   <td className="hide-on-mobile">
                     {carrierWallet
-                      ? formatWallet(carrierWallet)
+                      ? truncateWalletAddress(carrierWallet)
                       : "Chưa gán 🔒"}
                   </td>
                   <td className="price-cell">

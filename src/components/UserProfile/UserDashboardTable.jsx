@@ -1,6 +1,6 @@
 import React from "react";
 import "../../styles/userDashboardTable.scss";
-
+import { truncateWalletAddress } from "../../utils/format";
 const UserDashboardTable = ({ usersData = [] }) => {
   const handleViewUser = (wallet) => {
     console.log(`Viewing wallet: ${wallet}`);
@@ -64,7 +64,9 @@ const UserDashboardTable = ({ usersData = [] }) => {
             className="table-row"
             onClick={() => handleViewUser(user.wallet_address)}>
             <div className="row-item address-col">
-              <span className="address-glow">{user.wallet_address}</span>
+              <span className="address-glow">
+                {truncateWalletAddress(user.wallet_address)}
+              </span>
             </div>
 
             {/* ✅ SỬ DỤNG HÀM MỚI */}
