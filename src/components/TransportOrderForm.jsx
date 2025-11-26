@@ -1,423 +1,286 @@
-// File: src/components/TransportOrderForm_Web3.jsx
+// =======================
+// TransportOrderForm_Web3.jsx (Refactored)
+// =======================
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE } from "../constants/api";
+import { z } from "zod"; // ⭐ VALIDATE ĐẲNG CẤP
+
 import {
-  Copy,
+  Zap,
   DollarSign,
   Package,
   AlertTriangle,
-  Link,
   Clock,
-  MapPin,
-  Zap,
+  Copy,
 } from "lucide-react";
 
-// 💡 Import SCSS Module
 import styles from "../assets/styles/TransportOrderForm.scss";
 
-const TransportOrderForm = ({ token, senderWallet }) => {
+// =======================
+// ZOD VALIDATION SCHEMA
+// =======================
+const cargoSchema = z.object({
+  description: z.string().min(3, "Mô tả phải ≥ 3 ký tự"),
+  weight_kg: z.string().regex(/^\d+(\.\d+)?$/, "Chỉ nhập số"),
+  volume_cbm: z.string().optional(),
+  customs_hs_code: z.string().optional(),
+  packaging_type: z.enum(["container", "pallet", "drum", "bulk", "other"]),
+  is_dangerous_goods: z.boolean(),
+  un_class_number: z.string().optional(),
+  msds_document_cid: z.string().optional(),
+});
+
+// =======================
+// Form Input Component ✨
+// =======================
+const Input = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  required,
+  full,
+}) => (
+  <div className={`${styles.inputGroup} ${full ? styles.fullWidth : ""}`}>
+    <label className={styles.label}>
+      {label} {required && <span>*</span>}
+    </label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={label}
+      className={styles.input}
+      autoComplete="off"
+    />
+  </div>
+);
+
+// =======================
+// MAIN COMPONENT
+// =======================
+export default function TransportOrderForm({ token, senderWallet }) {
   const [toWallet, setToWallet] = useState("");
+  const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [cargo, setCargo] = useState({
     description: "",
     weight_kg: "",
     volume_cbm: "",
+    customs_hs_code: "",
     is_dangerous_goods: false,
+    packaging_type: "container",
     un_class_number: "",
     msds_document_cid: "",
-    customs_hs_code: "",
-    packaging_type: "container",
   });
 
-  const [images, setImages] = useState([]);
   const [deviceInfo, setDeviceInfo] = useState({
-    user_agent: navigator.userAgent,
     ip_address: "",
+    user_agent: navigator.userAgent,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [location, setLocation] = useState(null); // State để lưu trữ GPS
 
-  // Lấy IP và User Agent
+  const [location, setLocation] = useState(null);
+
+  // =======================
+  // GET IP 🛰️
+  // =======================
   useEffect(() => {
-    const fetchIP = async () => {
-      try {
-        const res = await axios.get("https://api.ipify.org?format=json");
-        setDeviceInfo((prev) => ({ ...prev, ip_address: res.data.ip }));
-      } catch (err) {
-        console.warn("Không lấy được IP:", err);
-      }
-    };
-    fetchIP();
+    axios
+      .get("https://api.ipify.org?format=json")
+      .then((res) => setDeviceInfo((p) => ({ ...p, ip_address: res.data.ip })));
   }, []);
 
-  // Lấy Vị trí GPS (Tùy chọn)
-  const fetchLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          alert("Lấy vị trí thành công.");
-        },
-        (error) => {
-          console.error("Lỗi lấy vị trí GPS:", error);
-          alert("Không lấy được vị trí GPS. Vui lòng bật Location Services.");
-        }
-      );
-    } else {
-      alert("Trình duyệt không hỗ trợ Geolocation.");
-    }
-  };
+  const fetchLocation = () =>
+    navigator.geolocation.getCurrentPosition(
+      (pos) =>
+        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => alert("Không thể lấy GPS. Hãy bật định vị.")
+    );
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setImages(files);
-  };
+  const handleUpload = (e) => setImages([...e.target.files]);
 
-  const submitOrder = async (e) => {
+  // =======================
+  // SUBMIT FORM 🚀
+  // =======================
+  const submit = async (e) => {
     e.preventDefault();
+
+    const check = cargoSchema.safeParse(cargo);
+    if (!check.success)
+      return alert("❌ Lỗi: " + check.error.issues[0].message);
+
     setIsSubmitting(true);
+    const fd = new FormData();
 
-    const formData = new FormData();
-    formData.append("from_wallet", senderWallet);
-    formData.append("to_wallet", toWallet);
+    fd.append("from_wallet", senderWallet);
+    fd.append("to_wallet", toWallet);
 
-    // Gửi từng property của cargo
-    Object.keys(cargo).forEach((key) => {
-      // Chuyển boolean thành string
-      const value =
-        typeof cargo[key] === "boolean" ? String(cargo[key]) : cargo[key];
-      if (value !== "" && value !== "false") {
-        // Loại bỏ giá trị rỗng/false không cần thiết
-        formData.append(`cargo[${key}]`, value);
-      }
-    });
+    Object.entries(cargo).forEach(([k, v]) =>
+      fd.append(`cargo[${k}]`, v ?? "")
+    );
 
-    // Gửi device_info
-    formData.append("device_info[user_agent]", deviceInfo.user_agent);
-    if (deviceInfo.ip_address) {
-      formData.append("device_info[ip_address]", deviceInfo.ip_address);
-    }
-
-    // Gửi location
+    fd.append("device_info[user_agent]", deviceInfo.user_agent);
+    if (deviceInfo.ip_address)
+      fd.append("device_info[ip_address]", deviceInfo.ip_address);
     if (location) {
-      formData.append("location[lat]", location.lat);
-      formData.append("location[lng]", location.lng);
-    } else {
-      formData.append("location", ""); // Gửi rỗng nếu không có
+      fd.append("location[lat]", location.lat);
+      fd.append("location[lng]", location.lng);
     }
 
-    // Hardcoded giá trị mặc định cho việc tạo Order
-    formData.append("token_used", "0x0000000000000000000000000000000000000000");
-    formData.append("amount_usd", 0);
+    fd.append("token_used", "0x0000000000000000000000000000000000000000");
+    fd.append("amount_usd", 0);
 
-    // Thêm file ảnh
-    images.forEach((file) => formData.append("images", file));
+    images.forEach((img) => fd.append("images", img));
 
     try {
-      const res = await axios.post(
-        `${API_BASE}/api/transport-orders`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // Axios tự set Content-Type: multipart/form-data với boundary
-          },
-        }
-      );
-
-      alert("✅ Giao dịch (Order) được ghi nhận thành công!");
-      console.log("Order Creation Response:", res.data);
-      // Reset form sau khi submit thành công
-      // setToWallet("");
-      // setCargo({ ...initialCargoState });
-      // setImages([]);
+      const res = await axios.post(`${API_BASE}/api/transport-orders`, fd, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("🎉 Order đã tạo thành công!");
+      console.log(res.data);
     } catch (err) {
-      console.error("❌ Lỗi tạo đơn:", err.response?.data || err.message);
-      alert(
-        "⚠️ Lỗi tạo đơn hàng: " +
-          (err.response?.data?.message || "Lỗi hệ thống")
-      );
+      alert("⚠ Lỗi: " + (err.response?.data?.message || "Server error"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Helper component cho Input field
-  const FormInput = ({
-    label,
-    name,
-    type = "text",
-    value,
-    onChange,
-    placeholder,
-    required = false,
-    isFull = false,
-  }) => (
-    <div className={`${styles.inputGroup} ${isFull ? styles.fullWidth : ""}`}>
-      <label className={styles.label}>
-        {label} {required && <span className={styles.required}>*</span>}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        className={styles.input}
-      />
-    </div>
-  );
-
+  // =======================
+  // UI RENDER
+  // =======================
   return (
-    <form onSubmit={submitOrder} className={styles.orderFormContainer}>
+    <form onSubmit={submit} className={styles.orderFormContainer}>
       <header className={styles.header}>
-        <Zap className={styles.icon} size={28} />
-        <h2 className={styles.h2}>Tạo Hợp đồng Vận chuyển Mới</h2>
-        <p className={styles.subtext}>
-          Khởi tạo giao dịch On-Chain cho lô hàng.
-        </p>
+        <Zap size={26} /> <h2>Tạo Hợp đồng vận chuyển</h2>
       </header>
 
-      {/* --- BLOCK 1: WALLET VÀ GIAO DỊCH (TRANSACTION) --- */}
-      <section className={`${styles.formSection} ${styles.glassSection}`}>
-        <h3 className={styles.sectionHeader}>
-          <DollarSign size={20} /> Thông tin Giao dịch
+      {/* BLOCK 1 — WALLET */}
+      <section className={styles.formSection}>
+        <h3>
+          <DollarSign size={18} /> Giao dịch
         </h3>
-        <div className={styles.grid2Cols}>
-          <FormInput
-            label="Ví Gửi (From Wallet)"
-            name="senderWallet"
-            value={senderWallet}
-            placeholder="0x..."
-            required={true}
-            isFull={true}
-            type="text"
-            onChange={() => {}} // Read-only
-          />
-          <FormInput
-            label="Ví Nhận (To Wallet)"
-            name="toWallet"
-            value={toWallet}
-            onChange={(e) => setToWallet(e.target.value)}
-            placeholder="0x..."
-            required={true}
-          />
-          <FormInput
-            label="Token (Contract Address)"
-            name="tokenUsed"
-            value="0x00... (Mặc định)"
-            placeholder="0x..."
-            type="text"
-            isFull={false}
-            onChange={() => {}} // Read-only (cho mockup)
-          />
-          <FormInput
-            label="Amount (USD) - Deposit"
-            name="amountUsd"
-            value="0 (Mặc định)"
-            placeholder="USD"
-            type="number"
-            isFull={false}
-            onChange={() => {}} // Read-only (cho mockup)
-          />
-        </div>
+
+        <Input label="Ví gửi" value={senderWallet} full disabled />
+        <Input
+          label="Ví nhận"
+          value={toWallet}
+          onChange={(e) => setToWallet(e.target.value)}
+          required
+        />
       </section>
 
-      {/* --- BLOCK 2: CARGO VÀ THÔNG SỐ VẬN TẢI --- */}
-      <section className={`${styles.formSection} ${styles.glassSection}`}>
-        <h3 className={styles.sectionHeader}>
-          <Package size={20} /> Thông số Lô hàng (Cargo)
+      {/* BLOCK 2 — CARGO */}
+      <section className={styles.formSection}>
+        <h3>
+          <Package size={18} /> Cargo
         </h3>
-        <div className={styles.grid2Cols}>
-          <FormInput
-            label="Mô tả"
-            name="description"
-            value={cargo.description}
-            onChange={(e) =>
-              setCargo({ ...cargo, description: e.target.value })
-            }
-            placeholder="Tên sản phẩm, số lượng..."
-            required={true}
-            isFull={true}
-          />
-          <FormInput
-            label="Cân nặng (Kg)"
-            name="weight_kg"
-            type="number"
-            value={cargo.weight_kg}
-            onChange={(e) => setCargo({ ...cargo, weight_kg: e.target.value })}
-            placeholder="Ví dụ: 500"
-            required={true}
-          />
-          <FormInput
-            label="Thể tích (CBM)"
-            name="volume_cbm"
-            type="number"
-            value={cargo.volume_cbm}
-            onChange={(e) => setCargo({ ...cargo, volume_cbm: e.target.value })}
-            placeholder="Ví dụ: 10.5"
-          />
-        </div>
 
-        <div className={styles.subGroup}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Loại Bao bì</label>
-            <select
-              className={styles.select}
-              value={cargo.packaging_type}
+        <Input
+          full
+          label="Mô tả"
+          value={cargo.description}
+          onChange={(e) => setCargo({ ...cargo, description: e.target.value })}
+        />
+        <Input
+          label="Cân nặng (KG)"
+          value={cargo.weight_kg}
+          onChange={(e) => setCargo({ ...cargo, weight_kg: e.target.value })}
+        />
+        <Input
+          label="Thể tích (CBM)"
+          value={cargo.volume_cbm}
+          onChange={(e) => setCargo({ ...cargo, volume_cbm: e.target.value })}
+        />
+
+        <label>Loại bao bì</label>
+        <select
+          className={styles.select}
+          value={cargo.packaging_type}
+          onChange={(e) =>
+            setCargo({ ...cargo, packaging_type: e.target.value })
+          }>
+          <option value="container">Container</option>
+          <option value="pallet">Pallet</option>
+          <option value="drum">Drum</option>
+          <option value="bulk">Rời</option>
+          <option value="other">Khác</option>
+        </select>
+
+        {/* Dangerous Goods */}
+        <h4>
+          <AlertTriangle size={14} /> Hàng nguy hiểm
+        </h4>
+        <select
+          value={cargo.is_dangerous_goods}
+          onChange={(e) =>
+            setCargo({
+              ...cargo,
+              is_dangerous_goods: e.target.value === "true",
+            })
+          }>
+          <option value="false">Không</option>
+          <option value="true">Có</option>
+        </select>
+
+        {cargo.is_dangerous_goods && (
+          <>
+            <Input
+              label="UN Number"
+              value={cargo.un_class_number}
               onChange={(e) =>
-                setCargo({ ...cargo, packaging_type: e.target.value })
-              }>
-              <option value="container">Container</option>
-              <option value="pallet">Pallet</option>
-              <option value="drum">Thùng</option>
-              <option value="bulk">Rời</option>
-              <option value="other">Khác</option>
-            </select>
-          </div>
-          <FormInput
-            label="Mã HS Hải quan"
-            name="customs_hs_code"
-            value={cargo.customs_hs_code}
-            onChange={(e) =>
-              setCargo({ ...cargo, customs_hs_code: e.target.value })
-            }
-            placeholder="Ví dụ: 8703.23"
-          />
-        </div>
-
-        {/* HÀNG NGUY HIỂM */}
-        <div
-          className={`${styles.dangerousGoodsGroup} ${
-            cargo.is_dangerous_goods ? styles.active : ""
-          }`}>
-          <h4 className={styles.h4}>
-            <AlertTriangle size={16} /> Hàng nguy hiểm (Dangerous Goods)
-          </h4>
-          <div className={styles.grid2Cols}>
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>Có phải hàng nguy hiểm?</label>
-              <select
-                className={styles.select}
-                value={String(cargo.is_dangerous_goods)}
-                onChange={(e) =>
-                  setCargo({
-                    ...cargo,
-                    is_dangerous_goods: e.target.value === "true",
-                  })
-                }>
-                <option value="false">Không (NO)</option>
-                <option value="true">Có (YES)</option>
-              </select>
-            </div>
-            {cargo.is_dangerous_goods && (
-              <FormInput
-                label="UN Class Number"
-                name="un_class_number"
-                value={cargo.un_class_number}
-                onChange={(e) =>
-                  setCargo({ ...cargo, un_class_number: e.target.value })
-                }
-                placeholder="Ví dụ: 1263"
-                required={cargo.is_dangerous_goods}
-              />
-            )}
-          </div>
-          {cargo.is_dangerous_goods && (
-            <FormInput
-              label="MSDS Document CID (IPFS)"
-              name="msds_document_cid"
+                setCargo({ ...cargo, un_class_number: e.target.value })
+              }
+            />
+            <Input
+              full
+              label="MSDS CID"
               value={cargo.msds_document_cid}
               onChange={(e) =>
                 setCargo({ ...cargo, msds_document_cid: e.target.value })
               }
-              placeholder="Qm..."
-              isFull={true}
             />
-          )}
-        </div>
+          </>
+        )}
       </section>
 
-      {/* --- BLOCK 3: BẰNG CHỨNG (PROOF OF PICKUP) --- */}
-      <section className={`${styles.formSection} ${styles.glassSection}`}>
-        <h3 className={styles.sectionHeader}>
-          <Copy size={20} /> Bằng chứng Nhận hàng (Proof of Pickup)
+      {/* BLOCK 3 — PROOF */}
+      <section className={styles.formSection}>
+        <h3>
+          <Copy size={18} /> Proof of Pickup
         </h3>
 
-        {/* Ảnh Proof */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <Link size={14} /> Ảnh Lô hàng (Images)
-          </label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
-            className={styles.fileInput}
-            required
-          />
-          {images.length > 0 && (
-            <p className={styles.fileCount}>Đã chọn: {images.length} ảnh</p>
-          )}
-        </div>
+        <input type="file" accept="image/*" multiple onChange={handleUpload} />
+        {images.length > 0 && <p>📸 {images.length} hình đã chọn</p>}
 
-        {/* GPS Location */}
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <MapPin size={14} /> Vị trí GPS (Geolocation)
-          </label>
-          <div className={styles.locationContainer}>
-            <button
-              type="button"
-              onClick={fetchLocation}
-              className={styles.locationButton}>
-              {location ? "Lấy lại Vị trí GPS" : "Lấy Vị trí GPS Hiện tại"}
-            </button>
-            {location && (
-              <p className={styles.locationInfo}>
-                Vị trí đã ghi nhận: Lat **{location.lat}**, Lng **{location.lng}
-                **
-              </p>
-            )}
-          </div>
-        </div>
+        {/* LOCATION */}
+        <button
+          type="button"
+          onClick={fetchLocation}
+          className={styles.locationButton}>
+          {location ? "Lấy lại GPS" : "Lấy GPS hiện tại"}
+        </button>
+        {location && (
+          <p>
+            Lat {location.lat} — Lng {location.lng}
+          </p>
+        )}
 
-        {/* Device Info */}
-        <div className={styles.deviceInfoContainer}>
-          <h4 className={styles.h4}>
-            <Clock size={16} /> Dữ liệu Thiết bị
-          </h4>
-          <div className={styles.deviceRow}>
-            <span>IP Address:</span>
-            <span className={styles.deviceValue}>
-              {deviceInfo.ip_address || "Đang lấy..."}
-            </span>
-          </div>
-          <div className={styles.deviceRow}>
-            <span>User Agent:</span>
-            <span className={styles.deviceValue}>
-              {deviceInfo.user_agent.substring(0, 50) + "..."}
-            </span>
-          </div>
-        </div>
+        {/* Device info */}
+        <h4>
+          <Clock size={14} /> Device Info
+        </h4>
+        <p>IP: {deviceInfo.ip_address || "đang lấy..."}</p>
+        <p>UserAgent: {deviceInfo.user_agent.slice(0, 40)}...</p>
       </section>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={styles.submitButton}>
-        {isSubmitting
-          ? "Đang Ghi nhận Hợp đồng..."
-          : "🔒 TẠO HỢP ĐỒNG VẬN CHUYỂN"}
+      <button className={styles.submitButton} disabled={isSubmitting}>
+        {isSubmitting ? "⏳ Đang xử lý..." : "🚀 TẠO HỢP ĐỒNG"}
       </button>
     </form>
   );
-};
-
-export default TransportOrderForm;
+}

@@ -1,172 +1,104 @@
-import React, { useState, useContext } from "react";
-import "../../styles/userProfile.scss";
-import VNeIDVerifyModal from "../VNeIDVerifyModal/VNeIDVerifyModal";
-import VerifyAppointment from "../verifyAppointment";
-import { AuthContext } from "../../context/AuthContext";
-import { motion, AnimatePresence } from "framer-motion";
-
-const UserProfile = ({ userData: initialUserData }) => {
-  const [userData, setUserData] = useState(initialUserData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
-  const [flowStep, setFlowStep] = useState("identity"); // "identity" | "appointment" | "done"
-
-  const { wallet: currentWalletAddress } = useContext(AuthContext);
-
-  if (!userData) {
-    return <div className="loading">Đang tải thông tin người dùng...</div>;
+import React from "react";
+import moment from "moment";
+import {
+  FaWallet,
+  FaUserCog,
+  FaCoins,
+  FaExchangeAlt,
+  FaCalendarAlt,
+  FaSignInAlt,
+  FaRedoAlt,
+} from "react-icons/fa"; // Cần cài đặt react-icons: npm install react-icons
+import "../../assets/styles/UserInfoCard.scss";
+const UserInfoCard = ({ user }) => {
+  if (!user || Object.keys(user).length === 0) {
+    return (
+      <div className="user-info-card-container fallback">
+        <div className="card-content">
+          <p className="loading-text">Đang chờ dữ liệu người dùng...</p>
+        </div>
+      </div>
+    );
   }
 
-  const handleVerifySuccess = (updatedUser) => {
-    setUserData(updatedUser);
-    setIsModalOpen(false);
-
-    // Nếu user được xác minh danh tính thành công, mở giai đoạn kế tiếp
-    setTimeout(() => {
-      setIsAppointmentOpen(true);
-      setFlowStep("appointment");
-    }, 600);
+  // Định dạng thời gian
+  const formatDate = (dateString) => {
+    return dateString ? moment(dateString).format("HH:mm DD/MM/YYYY") : "N/A";
   };
 
-  const handleAppointmentSuccess = (updatedUser) => {
-    setUserData(updatedUser);
-    setIsAppointmentOpen(false);
-    setFlowStep("done");
+  // Định dạng số dư
+  const formatBalance = (balance) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(balance);
   };
-
-  const isVerified =
-    userData.roles && Array.isArray(userData.roles)
-      ? userData.roles.includes("individual")
-      : false;
-
-  const isAppointed =
-    userData.roles && Array.isArray(userData.roles)
-      ? userData.roles.includes("owner")
-      : false;
 
   return (
-    <div className="cyber-profile-card">
-      <div className="profile-header">
-        <div className="avatar-container">
-          <motion.img
-            src={userData.avatarUrl || "/default-avatar.png"}
-            alt="User Avatar"
-            className="profile-avatar"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-          />
-        </div>
+    <div className="user-info-card-container">
+      <div className="card-content">
+        <div className="info-grid">
+          <div className="info-item">
+            <FaWallet className="info-icon" />
+            <span className="info-label">Địa chỉ Ví:</span>
+            <span
+              className="info-value wallet-address"
+              title={user.walletAddress}>
+              {user.walletAddress
+                ? `${user.walletAddress.substring(
+                    0,
+                    8
+                  )}...${user.walletAddress.substring(
+                    user.walletAddress.length - 6
+                  )}`
+                : "N/A"}
+            </span>
+          </div>
 
-        {/* Nút hành động tuỳ theo flow */}
-        <AnimatePresence mode="wait">
-          {!isVerified && flowStep === "identity" && (
-            <motion.button
-              key="verify-id"
-              className="action-button verify-identity-glow"
-              onClick={() => setIsModalOpen(true)}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}>
-              Verify Identity (VNeID)
-            </motion.button>
-          )}
+          <div className="info-item">
+            <FaUserCog className="info-icon" />
+            <span className="info-label">Vai trò:</span>
+            <span className="info-value">
+              {(user.roles && user.roles.join(", ")) || "Người dùng"}
+            </span>
+          </div>
 
-          {isVerified && !isAppointed && (
-            <motion.button
-              key="verify-appointment"
-              className="action-button schedule-verify-glow"
-              onClick={() => setIsAppointmentOpen(true)}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}>
-              Verify Appointment
-            </motion.button>
-          )}
+          <div className="info-item">
+            <FaCoins className="info-icon" />
+            <span className="info-label">Số dư:</span>
+            <span className="info-value balance-value">
+              {formatBalance(user.balance ?? 0)}
+            </span>
+          </div>
 
-          {isAppointed && (
-            <motion.div
-              key="verified"
-              className="verified-status"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}>
-              🎉 Đã xác minh bổ nhiệm thành công
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <div className="info-item">
+            <FaExchangeAlt className="info-icon" />
+            <span className="info-label">Giao dịch thành công:</span>
+            <span className="info-value">{user.transactions ?? 0}</span>
+          </div>
 
-        {/* Trạng thái xác minh */}
-        <p
-          className={`verification-status ${
-            isVerified ? "verified" : "unverified"
-          }`}>
-          {isAppointed
-            ? "👑 Owner Verified"
-            : isVerified
-            ? "✅ Identity Verified"
-            : "⚠️ Unverified Identity"}
-        </p>
+          <div className="info-item">
+            <FaCalendarAlt className="info-icon" />
+            <span className="info-label">Ngày tham gia:</span>
+            <span className="info-value">{formatDate(user.createdAt)}</span>
+          </div>
 
-        <div
-          className="wallet-info"
-          onClick={() =>
-            navigator.clipboard.writeText(
-              userData.walletAddress || currentWalletAddress || ""
-            )
-          }>
-          <span className="wallet-address">
-            {userData.walletAddress || currentWalletAddress || "Không rõ"}
-          </span>
-          <span className="copy-icon">📋</span>
+          <div className="info-item">
+            <FaSignInAlt className="info-icon" />
+            <span className="info-label">Đăng nhập cuối:</span>
+            <span className="info-value">{formatDate(user.lastLoginAt)}</span>
+          </div>
+
+          <div className="info-item">
+            <FaRedoAlt className="info-icon" />
+            <span className="info-label">Cập nhật cuối:</span>
+            <span className="info-value">{formatDate(user.updatedAt)}</span>
+          </div>
         </div>
       </div>
-
-      {/* Metrics */}
-      <div className="profile-metrics-grid">
-        <div className="metric-item">
-          <span className="metric-label">Token Balance</span>
-          <span className="metric-value">{userData.balance || "0 ETH"}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">Transactions</span>
-          <span className="metric-value">{userData.transactions || 0}</span>
-        </div>
-        <div className="metric-item">
-          <span className="metric-label">Member Since</span>
-          <span className="metric-value">
-            {userData.joined || "Chưa xác định"}
-          </span>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="profile-actions-bar">
-        <button className="action-button primary-glow">Send</button>
-        <button className="action-button secondary-glow">Swap</button>
-        <button className="action-button tertiary-glow">Settings</button>
-      </div>
-
-      <div className="status-indicator">
-        <span className="status-dot"></span>
-        <span className="status-text">Connected to Mainnet</span>
-      </div>
-
-      {/* Modal xác minh danh tính */}
-      <VNeIDVerifyModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        walletAddress={userData.walletAddress || currentWalletAddress}
-        onVerifySuccess={handleVerifySuccess}
-      />
-
-      {/* Modal đặt lịch xác minh bổ nhiệm */}
-      <VerifyAppointment
-        isOpen={isAppointmentOpen}
-        onClose={() => setIsAppointmentOpen(false)}
-        userData={userData}
-        onVerifySuccess={handleAppointmentSuccess}
-      />
     </div>
   );
 };
 
-export default UserProfile;
+export default UserInfoCard;

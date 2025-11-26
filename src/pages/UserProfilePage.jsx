@@ -1,42 +1,78 @@
 // src/pages/UserProfilePage.jsx
-import React, { useEffect, useState } from "react";
-import UserProfile from "../components/UserProfile/UserProfile";
+import React, { useState, useEffect, useCallback } from "react";
+import UserInfoCard from "../components/UserProfile/UserProfile";
+import OrderList from "../components/UserProfile/OrderList";
 import { fetchUserProfile } from "../services/user";
 
-const UserProfilePage = () => {
-  const [userData, setUserData] = useState(null);
+function UserProfilePage() {
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+  const [queryParams, setQueryParams] = useState({
+    page: 1,
+    limit: 10,
+    status: "",
+    sort: "created_at",
+    order: "desc",
+  });
+
+  const loadProfileData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await fetchUserProfile(queryParams);
+      console.log("📌 profileData chuẩn để UI dùng:", data);
+
+      setProfileData(data);
+    } catch (err) {
+      console.error("❌ Lỗi khi tải hồ sơ:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [queryParams]);
 
   useEffect(() => {
-    const loadUserProfile = async () => {
-      try {
-        setLoading(true);
-        const user = await fetchUserProfile();
-        console.log("✅ User profile loaded:", user);
-        setUserData({
-          walletAddress: user.wallet_address,
-          balance: user.balance,
-          transactions: user.transactions,
-          joined: user.created_at
-            ? new Date(user.created_at).toLocaleDateString()
-            : "N/A",
-        });
-      } catch (err) {
-        console.error("❌ Lỗi khi tải user:", err);
-        setError("Không thể tải thông tin người dùng");
-      } finally {
-        setLoading(false);
-      }
-    };
+    loadProfileData();
+  }, [loadProfileData]);
 
-    loadUserProfile();
-  }, []);
+  const handlePaginationChange = ({
+    newPage,
+    newLimit,
+    newStatus,
+    newSort,
+    newOrder,
+  }) => {
+    setQueryParams((prev) => ({
+      ...prev,
+      page: newPage ?? prev.page,
+      limit: newLimit ?? prev.limit,
+      status: newStatus ?? prev.status,
+      sort: newSort ?? prev.sort,
+      order: newOrder ?? prev.order,
+    }));
+  };
 
-  if (loading) return <div className="loading">Đang tải dữ liệu...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <div>Đang tải hồ sơ và đơn hàng...</div>;
+  if (!profileData) return <div>Không thể tải dữ liệu hồ sơ.</div>;
 
-  return <UserProfile userData={userData} />;
-};
+  const { user, orders, pagination } = profileData;
+
+  return (
+    <div className="user-profile-page">
+      <h2> Hồ Sơ Người Dùng</h2>
+      <UserInfoCard user={user} />
+
+      <hr />
+
+      <hr />
+
+      <h2>Danh Sách Đơn Hàng</h2>
+      <OrderList
+        orders={orders}
+        pagination={pagination}
+        onPaginationChange={handlePaginationChange}
+      />
+    </div>
+  );
+}
 
 export default UserProfilePage;
