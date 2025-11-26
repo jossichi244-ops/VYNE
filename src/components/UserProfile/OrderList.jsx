@@ -1,18 +1,18 @@
-// src/components/OrderList.js
-
+// src/components/OrderList.jsx
 import React from "react";
 import moment from "moment";
 import styles from "../../assets/styles/OrderList.module.scss";
+
 const OrderList = ({ orders = [], pagination = {}, onPaginationChange }) => {
-  // Thêm giá trị mặc định an toàn để tránh lỗi destructure
+  // --- Destructure pagination với giá trị mặc định ---
   const {
     page = 1,
-    limit = 10,
     sortField = "created_at",
     sortOrder = "desc",
     statusFilter = "",
     totalPages = 1,
     totalItems = orders.length,
+    limit = 10,
   } = pagination;
 
   // --- Event handlers ---
@@ -34,78 +34,64 @@ const OrderList = ({ orders = [], pagination = {}, onPaginationChange }) => {
 
   const getSortIcon = (field) => {
     if (sortField === field) {
-      return sortOrder === "asc" ? " \u25B2" : " \u25BC"; // ▲ hoặc ▼
+      return sortOrder === "asc" ? "▲" : "▼";
     }
     return "";
   };
 
   // --- Render ---
   return (
-    <div className={styles["order-list-container"]}>
-      <div className={styles.controls}>
-        <h3>🗄️ Nhật Ký Giao Dịch</h3>
-        <div className={styles["filter-group"]}>
-          <label htmlFor="status-filter">Lọc Trạng thái:</label>
+    <div className={styles.orderList}>
+      <div className={styles.header}>
+        <h3>🗄️ Nhật ký giao dịch</h3>
+        <div className={styles.filters}>
+          <label htmlFor="status-filter">Trạng thái:</label>
           <select
             id="status-filter"
             value={statusFilter}
             onChange={handleStatusFilterChange}>
             <option value="">-- Tất cả --</option>
-            <option value="pending">Đang chờ (Pending)</option>
-            <option value="in-transit">Đang Xử lý (Processing)</option>
-            <option value="completed">Hoàn thành (Completed)</option>
-            <option value="failed">Thất bại (Failed)</option>
+            <option value="pending">Đang chờ</option>
+            <option value="in-transit">Đang xử lý</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="failed">Thất bại</option>
           </select>
         </div>
       </div>
 
-      {/* Responsive Table Wrapper */}
-      <div className={styles["table-wrapper"]}>
-        <table className={styles["order-table"]}>
+      <div className={styles.tableWrapper}>
+        <table className={styles.orderTable}>
           <thead>
             <tr>
-              <th
-                onClick={() => handleSortChange("created_at")}
-                className={
-                  sortField === "created_at"
-                    ? styles[`sorted-${sortOrder}`]
-                    : ""
-                }>
+              <th onClick={() => handleSortChange("created_at")}>
                 Thời gian tạo {getSortIcon("created_at")}
               </th>
-              <th>Từ Ví</th>
-              <th>Đến Ví</th>
-              <th>Trạng thái {getSortIcon("status")}</th>
-              <th
-                onClick={() => handleSortChange("balance")}
-                className={
-                  sortField === "balance" ? styles[`sorted-${sortOrder}`] : ""
-                }>
+              <th>Từ ví</th>
+              <th>Đến ví</th>
+              <th onClick={() => handleSortChange("status")}>
+                Trạng thái {getSortIcon("status")}
+              </th>
+              <th onClick={() => handleSortChange("balance")}>
                 Giá trị {getSortIcon("balance")}
               </th>
             </tr>
           </thead>
-
           <tbody>
             {orders.length > 0 ? (
               orders.map((order) => (
                 <tr key={order._id}>
                   <td>{moment(order.created_at).format("DD/MM/YYYY HH:mm")}</td>
-                  <td
-                    className={styles["wallet-address"]}
-                    title={order.from_wallet}>
-                    {order.from_wallet?.substring(0, 6)}...
-                    {order.from_wallet?.substring(order.from_wallet.length - 4)}
+                  <td title={order.from_wallet} className={styles.wallet}>
+                    {order.from_wallet?.slice(0, 6)}...
+                    {order.from_wallet?.slice(-4)}
                   </td>
-                  <td
-                    className={styles["wallet-address"]}
-                    title={order.to_wallet}>
-                    {order.to_wallet?.substring(0, 6)}...
-                    {order.to_wallet?.substring(order.to_wallet.length - 4)}
+                  <td title={order.to_wallet} className={styles.wallet}>
+                    {order.to_wallet?.slice(0, 6)}...
+                    {order.to_wallet?.slice(-4)}
                   </td>
                   <td>
                     <span
-                      className={`${styles["status-badge"]} ${
+                      className={`${styles.statusBadge} ${
                         styles[
                           `status-${order.status
                             ?.toLowerCase()
@@ -115,13 +101,13 @@ const OrderList = ({ orders = [], pagination = {}, onPaginationChange }) => {
                       {order.status}
                     </span>
                   </td>
-                  <td style={{ color: "#0f0" }}>{order.balance} USD</td>
+                  <td style={{ color: "#0f0" }}>{order.balance || 0} USD</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className={styles["empty-row"]}>
-                  Không tìm thấy giao dịch nào.
+                <td colSpan="5" className={styles.emptyRow}>
+                  Không tìm thấy giao dịch nào
                 </td>
               </tr>
             )}
@@ -129,16 +115,14 @@ const OrderList = ({ orders = [], pagination = {}, onPaginationChange }) => {
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className={styles["pagination-controls"]}>
+      {/* --- Pagination Binance style --- */}
+      <div className={styles.pagination}>
         <button onClick={() => handlePageChange(page - 1)} disabled={page <= 1}>
           « Trang trước
         </button>
-
         <span>
-          Phạm vi: {page}/{totalPages} ({totalItems} mục)
+          Trang {page}/{totalPages} ({totalItems} mục, {limit} / trang)
         </span>
-
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= totalPages}>
