@@ -1,0 +1,261 @@
+/* =========================================================
+   OrderList.module.scss: Web3 Cyber-Modern Transaction Log Styles
+   ========================================================= */
+
+/* --- 1. Biến CSS & Fonts --- */
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap");
+
+$neon-blue: #0ff; /* Cyan */
+$neon-purple: #f0f; /* Magenta */
+$card-bg: rgba(25, 25, 45, 0.8);
+$text-color: #e0e0e0;
+$dim-text: #a0a0a0;
+$border-glow: rgba(0, 255, 255, 0.4);
+$table-border: rgba(255, 255, 255, 0.1);
+$hover-bg: rgba(0, 255, 255, 0.05);
+
+/* --- 2. Animations --- */
+@keyframes subtle-pulse {
+  0% {
+    box-shadow: 0 0 5px rgba($neon-blue, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba($neon-purple, 0.5);
+  }
+}
+
+/* --- 3. Container & Controls --- */
+.order-list-container {
+  font-family: "Share Tech Mono", monospace;
+  background: $card-bg;
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid $border-glow;
+  color: $text-color;
+  padding: 25px;
+  margin-top: 20px;
+  overflow: hidden; /* Quan trọng để chứa table */
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+
+  label {
+    color: $dim-text;
+    margin-right: 10px;
+  }
+
+  select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid $neon-blue;
+    border-radius: 4px;
+    color: $text-color;
+    padding: 8px 12px;
+    font-family: "Share Tech Mono", monospace;
+    transition: border-color 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: $neon-purple;
+      box-shadow: 0 0 8px $neon-purple;
+    }
+    /* Style cho option trong select */
+    option {
+      background-color: $card-bg;
+      color: $text-color;
+    }
+  }
+}
+
+/* --- 4. Table Styles --- */
+.table-wrapper {
+  overflow-x: auto; /* Cho phép cuộn ngang trên mobile */
+  width: 100%;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 700px; /* Đảm bảo bảng không quá hẹp trên mobile */
+
+  thead {
+    background: rgba(0, 255, 255, 0.1);
+
+    th {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 2px solid $neon-blue;
+      cursor: pointer;
+      color: $neon-blue;
+      transition: color 0.2s, background-color 0.2s;
+      font-size: 0.9em;
+
+      &:hover {
+        background-color: rgba(0, 255, 255, 0.2);
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.3s, box-shadow 0.3s;
+
+      &:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover {
+        background-color: $hover-bg;
+        box-shadow: inset 5px 0 0 $neon-purple; /* Neon highlight bên trái */
+      }
+
+      td {
+        padding: 10px 15px;
+        border-bottom: 1px dashed $table-border;
+        font-size: 0.85em;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+/* Sort Icons */
+.sorted-asc:after {
+  content: " \25B2"; /* ▲ */
+  color: $neon-purple;
+}
+.sorted-desc:after {
+  content: " \25BC"; /* ▼ */
+  color: $neon-purple;
+}
+
+/* Wallet Addresses */
+.wallet-address {
+  color: $dim-text;
+  font-size: 0.8em;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+}
+
+/* Status Colors (Neon) */
+.status-pending {
+  background-color: rgba(255, 153, 0, 0.2); /* Amber */
+  color: #ff9900;
+  border: 1px solid #ff9900;
+}
+.status-in-transit {
+  background-color: rgba(0, 255, 255, 0.2); /* Cyan */
+  color: $neon-blue;
+  border: 1px solid $neon-blue;
+}
+.status-completed {
+  background-color: rgba(0, 255, 0, 0.2); /* Green */
+  color: #0f0;
+  border: 1px solid #0f0;
+}
+.status-failed,
+.status-cancelled {
+  background-color: rgba(255, 0, 0, 0.2); /* Red */
+  color: #f00;
+  border: 1px solid #f00;
+}
+
+.empty-row td {
+  text-align: center !important;
+  padding: 30px;
+  color: $dim-text;
+  font-style: italic;
+  font-size: 1em;
+}
+
+/* --- 5. Pagination --- */
+.pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid $table-border;
+
+  span {
+    color: $dim-text;
+  }
+
+  button {
+    background: transparent;
+    border: 1px solid $neon-blue;
+    color: $neon-blue;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Share Tech Mono", monospace;
+
+    &:hover:not(:disabled) {
+      background: $neon-blue;
+      color: $card-bg;
+      box-shadow: 0 0 10px $neon-blue;
+    }
+
+    &:disabled {
+      border-color: $dim-text;
+      color: $dim-text;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+/* --- 6. Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .order-list-container {
+    padding: 15px;
+  }
+
+  /* Cho phép cuộn ngang (đã xử lý bằng .table-wrapper) */
+
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Đảm bảo chữ nhỏ hơn trên màn hình nhỏ */
+  .order-table {
+    min-width: 600px; /* Giữ kích thước tối thiểu để không bị nén quá mức */
+    font-size: 0.8em;
+
+    td,
+    th {
+      padding: 8px 10px;
+    }
+  }
+  .status-badge {
+    font-size: 0.7em;
+  }
+  .pagination-controls {
+    font-size: 0.9em;
+  }
+}
