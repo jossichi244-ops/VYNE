@@ -93,10 +93,6 @@ $border-radius: 6px;
   box-shadow: 0 0 8px rgba($error-color, 0.5);
 }
 
-// =======================
-// 3. INPUTS & SELECTS (Lồng SCSS)
-// =======================
-
 .form-group {
   margin-bottom: 20px;
 
@@ -146,9 +142,7 @@ $border-radius: 6px;
   }
 
   .select-field {
-    // Tùy chỉnh cho select box để trông hiện đại hơn
-    appearance: none; /* Bỏ giao diện mặc định */
-    background-image: url("data:image/svg+xml,..."); /* Có thể thêm SVG mũi tên custom */
+    appearance: none;
   }
 }
 
