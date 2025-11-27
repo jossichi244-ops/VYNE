@@ -8,6 +8,7 @@ import UserDashboardPage from "../pages/UserDashboardPage";
 import MainLayout from "../layouts/MainLayout";
 import CreateOrderPage from "../pages/CreateOrderPage";
 import RegisterCompany from "../pages/company/RegisterCompany";
+import NotFoundPage from "../pages/NotFoundPage";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -63,7 +64,7 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="*" element={<h2>404 - Not Found</h2>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

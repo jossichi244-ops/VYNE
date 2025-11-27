@@ -1,0 +1,336 @@
+$primary-glow: #00e6e6; // Cyan
+$secondary-glow: #e600e6; // Magenta
+$text-color: #e0e0e0;
+$background-dark: #0a0a1a;
+$card-background: rgba(15, 15, 30, 0.8);
+$border-color: rgba(0, 230, 230, 0.3);
+$transition-speed: 0.3s;
+
+// Constants
+$status-code-font-size: 8rem;
+$mobile-status-code-font-size: 5rem;
+$max-width-desktop: 600px;
+@mixin neon-glow($color: $primary-glow, $strength: 10px) {
+  color: $color;
+  text-shadow: 0 0 ($strength * 0.5) $color, 0 0 $strength $color,
+    0 0 ($strength * 3) rgba($color, 0.5);
+}
+
+@mixin pulse-animation($color: $primary-glow) {
+  box-shadow: 0 0 5px rgba($color, 0.4), 0 0 15px rgba($color, 0.4) inset;
+  animation: pulse-glow 3s infinite alternate;
+}
+@keyframes neon-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 5px var(--primary-glow), 0 0 10px var(--primary-glow);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: none;
+  }
+}
+@keyframes neon-flicker {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 5px var(--primary-glow), 0 0 10px var(--primary-glow);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: none;
+  }
+}
+
+@keyframes zero-spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 5px var(--primary-glow), 0 0 15px var(--primary-glow) inset;
+  }
+  50% {
+    box-shadow: 0 0 10px var(--primary-glow), 0 0 30px var(--primary-glow) inset;
+  }
+  100% {
+    box-shadow: 0 0 5px var(--primary-glow), 0 0 15px var(--primary-glow) inset;
+  }
+}
+
+@keyframes grid-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  } /* Di chuyển lưới */
+}
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// =======================
+// BASE STYLES
+// =======================
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $background-dark;
+  font-family: "Share Tech Mono", monospace, sans-serif;
+  color: $text-color;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.backgroundGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  // Giữ nguyên logic gradient complex và animation
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--border-color) 25%,
+      var(--border-color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--border-color) 75%,
+      var(--border-color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--border-color) 25%,
+      var(--border-color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--border-color) 75%,
+      var(--border-color) 76%,
+      transparent 77%,
+      transparent
+    );
+  background-size: 50px 50px;
+  opacity: 0.1;
+  animation: grid-animation 60s linear infinite;
+  z-index: 0;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 1;
+  background: $card-background;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: $max-width-desktop;
+  width: 100%;
+  @include pulse-animation($primary-glow); // Áp dụng Mixin
+}
+
+// =======================
+// STATUS CODE - NESTING
+// =======================
+
+.statusCode {
+  font-size: $status-code-font-size;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 10px;
+
+  .glowEffect {
+    @include neon-glow($primary-glow, 10px); // Áp dụng Mixin
+    animation: neon-flicker 2s ease-in-out infinite alternate;
+  }
+
+  .animatedZero {
+    position: relative;
+    @include neon-glow($secondary-glow, 10px); // Áp dụng Mixin
+    animation: zero-spin 4s linear infinite;
+    display: inline-block;
+  }
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  @include neon-glow($primary-glow, 8px); // Áp dụng Mixin
+}
+
+.message {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+// =======================
+// ACTIONS - NESTING
+// =======================
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+
+  // Base button style
+  .actionButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all $transition-speed ease;
+
+    // Primary Button
+    &:not(.secondary) {
+      background: linear-gradient(45deg, #00bfff, $primary-glow);
+      color: $background-dark;
+      border: 1px solid $primary-glow;
+      box-shadow: 0 0 10px rgba($primary-glow, 0.4);
+
+      &:hover {
+        background: linear-gradient(45deg, $primary-glow, #00bfff);
+        box-shadow: 0 0 15px $primary-glow, 0 0 25px rgba($primary-glow, 0.6);
+        transform: translateY(-3px);
+      }
+    }
+
+    // Secondary Button
+    &.secondary {
+      background: none;
+      color: $secondary-glow;
+      border: 1px solid $secondary-glow;
+      box-shadow: 0 0 10px rgba($secondary-glow, 0.4);
+
+      &:hover {
+        background: rgba($secondary-glow, 0.1);
+        box-shadow: 0 0 15px $secondary-glow,
+          0 0 25px rgba($secondary-glow, 0.6);
+        transform: translateY(-3px);
+      }
+    }
+  }
+}
+
+// =======================
+// FOOTER & SUPPORT
+// =======================
+
+.contactInfo {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  opacity: 0.8;
+
+  .supportLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: $primary-glow;
+    text-decoration: none;
+    margin-top: 5px;
+    font-weight: bold;
+    transition: text-shadow $transition-speed ease;
+
+    &:hover {
+      text-shadow: 0 0 5px $primary-glow;
+    }
+  }
+}
+
+.footer {
+  margin-top: 40px;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  .footerLoader {
+    animation: loader-spin 1s linear infinite;
+    color: $primary-glow;
+  }
+}
+
+// =======================
+// 🌐 RESPONSIVE DESIGN - NESTING
+// =======================
+
+// Small devices (phones, 600px and down)
+@media only screen and (max-width: 600px) {
+  .contentWrapper {
+    padding: 25px;
+    margin: 15px;
+  }
+
+  .statusCode {
+    font-size: $mobile-status-code-font-size; // Sử dụng biến SCSS
+    letter-spacing: 5px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .message {
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    flex-direction: column; // Stack buttons vertically
+    gap: 10px;
+
+    .actionButton {
+      width: 100%; // Full width buttons
+      padding: 10px 15px;
+    }
+  }
+}
+
+// Medium devices (tablets, 600px to 900px)
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+  .contentWrapper {
+    padding: 30px;
+    max-width: 500px;
+  }
+
+  .statusCode {
+    font-size: 6.5rem;
+    letter-spacing: 8px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+  }
+}
