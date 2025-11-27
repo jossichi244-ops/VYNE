@@ -1,12 +1,15 @@
-// src/App.jsx
+import { useEffect } from "react";
 import React from "react";
 import AppRoutes from "./routes";
-// import Navbar from "./layouts/Navbar";
+import { startUnloadTracking } from "./services/authTrackingService";
+
 import "./index.css";
 function App() {
+  useEffect(() => {
+    startUnloadTracking();
+  }, []);
   return (
     <>
-      {/* <Navbar /> */}
       <AppRoutes />
     </>
   );

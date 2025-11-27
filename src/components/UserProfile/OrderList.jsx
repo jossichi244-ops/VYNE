@@ -15,7 +15,6 @@ const OrderList = ({ orders = [], pagination = {}, onPaginationChange }) => {
     limit = 10,
   } = pagination;
 
-  // --- Event handlers ---
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       onPaginationChange({ newPage });
