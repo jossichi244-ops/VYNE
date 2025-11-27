@@ -1,0 +1,434 @@
+// companyDetails.module.scss
+
+// =======================
+// 1. BIẾN VÀ KEYFRAMES (Giữ nguyên)
+// =======================
+
+$primary-glow: #00e6e6; // Cyan (Approve, Success)
+$secondary-glow: #e600e6; // Magenta (Accent, Reject)
+$background-dark: #0a0a1a;
+$card-dark: #1e1e3f; // Nền tối cho modal
+$text-color: #f0f0f0;
+$border-color: rgba($primary-glow, 0.4);
+$error-color: #ff3333;
+
+$transition-speed: 0.3s;
+$border-radius: 8px;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// =======================
+// 2. MODAL & OVERLAY (Giữ nguyên)
+// =======================
+
+.detailsOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($background-dark, 0.85); // Nền tối mờ
+  backdrop-filter: blur(5px); // Hiệu ứng làm mờ
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.detailsCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  max-width: 650px; // ⭐ Tăng chiều rộng để chứa QR tốt hơn
+  width: 90%;
+  max-height: 90vh; // Giới hạn chiều cao
+  overflow-y: auto; // Cho phép cuộn nếu nội dung quá dài
+
+  background: $card-dark;
+  border: 1px solid $border-color;
+  border-radius: $border-radius * 2;
+  box-shadow: 0 0 25px rgba($primary-glow, 0.3); // Glow mạnh
+
+  padding: 25px;
+  font-family: "Share Tech Mono", monospace, sans-serif;
+  color: $text-color;
+
+  animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); // Pop-up animation
+
+  // Scrollbar Web3 Style
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba($background-dark, 0.5);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $primary-glow;
+    border-radius: 10px;
+    border: 2px solid $card-dark;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: lighten($primary-glow, 10%);
+  }
+}
+
+// Header (Giữ nguyên)
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba($primary-glow, 0.3);
+
+  h2 {
+    font-size: 1.5rem;
+    color: $primary-glow;
+    text-shadow: 0 0 5px rgba($primary-glow, 0.6);
+    margin: 0;
+  }
+
+  .closeButton {
+    background: none;
+    border: none;
+    color: $text-color;
+    cursor: pointer;
+    transition: color $transition-speed;
+
+    &:hover {
+      color: $secondary-glow;
+      filter: drop-shadow(0 0 5px $secondary-glow);
+    }
+  }
+}
+
+// =======================
+// 3. NỘI DUNG & HIỂN THỊ TRẠNG THÁI (Giữ nguyên)
+// =======================
+
+// Loading State
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px 0;
+  font-size: 1.1rem;
+}
+
+.loading .lucide-loader {
+  animation: spinner-rotate 1s linear infinite;
+  color: $primary-glow;
+  filter: drop-shadow(0 0 5px $primary-glow);
+}
+
+.error {
+  color: $error-color;
+  font-weight: bold;
+}
+
+// Content
+.content {
+  .detailItem {
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba($text-color, 0.1);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+
+    &:last-of-type {
+      // Chỉ áp dụng cho phần tử cuối cùng của detailItem
+      border-bottom: none;
+    }
+
+    strong {
+      color: rgba($text-color, 0.7);
+    }
+  }
+}
+
+// State Visualization (Trạng thái)
+.statusPill {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  display: inline-block;
+
+  &.pending {
+    background: rgba($secondary-glow, 0.15);
+    color: $secondary-glow;
+    box-shadow: 0 0 5px rgba($secondary-glow, 0.5);
+  }
+  &.approved {
+    background: rgba($primary-glow, 0.15);
+    color: $primary-glow;
+    box-shadow: 0 0 5px rgba($primary-glow, 0.5);
+  }
+  &.rejected {
+    background: rgba($error-color, 0.15);
+    color: $error-color;
+    box-shadow: 0 0 5px rgba($error-color, 0.5);
+  }
+}
+
+// =======================
+// 4. ACTION BUTTONS (Giữ nguyên)
+// =======================
+
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+
+  button {
+    padding: 10px 20px;
+    border-radius: $border-radius;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all $transition-speed;
+    text-transform: uppercase;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+      box-shadow: none !important;
+    }
+  }
+
+  .approveBtn {
+    border: 2px solid $primary-glow;
+    background: rgba($primary-glow, 0.1);
+    color: $primary-glow;
+    box-shadow: 0 0 10px rgba($primary-glow, 0.3);
+
+    &:hover:not(:disabled) {
+      background: rgba($primary-glow, 0.3);
+      box-shadow: 0 0 15px $primary-glow;
+      transform: translateY(-2px);
+    }
+  }
+
+  .rejectBtn {
+    border: 2px solid $secondary-glow;
+    background: rgba($secondary-glow, 0.1);
+    color: $secondary-glow;
+    box-shadow: 0 0 10px rgba($secondary-glow, 0.3);
+
+    &:hover:not(:disabled) {
+      background: rgba($secondary-glow, 0.3);
+      box-shadow: 0 0 15px $secondary-glow;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.loadingText,
+.success {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  padding: 8px;
+  border-radius: $border-radius;
+}
+.loadingText {
+  color: $text-color;
+  background-color: rgba($card-dark, 0.7);
+  border: 1px dashed rgba($text-color, 0.4);
+}
+.success {
+  color: $primary-glow;
+  border: 1px solid $primary-glow;
+  background-color: rgba($primary-glow, 0.1);
+  box-shadow: 0 0 8px rgba($primary-glow, 0.6);
+}
+
+// =======================
+// 5. QR CODES SECTION - MỚI
+// =======================
+
+.qrSection {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba($primary-glow, 0.2);
+
+  h3 {
+    font-size: 1.3rem;
+    color: $primary-glow;
+    text-shadow: 0 0 3px rgba($primary-glow, 0.5);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .qrIcon {
+      color: $secondary-glow;
+    }
+  }
+
+  .qrLoading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    color: rgba($text-color, 0.7);
+
+    .lucide-loader {
+      animation: spinner-rotate 1s linear infinite;
+      color: $secondary-glow;
+    }
+  }
+
+  .noQrCodes {
+    text-align: center;
+    padding: 20px;
+    color: rgba($text-color, 0.6);
+    font-style: italic;
+  }
+
+  .qrGrid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(120px, 1fr)
+    ); // Thích nghi với 10 QR
+    gap: 20px;
+    justify-content: center; // Căn giữa các QR nếu không đủ lấp đầy
+
+    .qrItem {
+      background: rgba($background-dark, 0.7);
+      border: 1px solid rgba($primary-glow, 0.2);
+      border-radius: $border-radius;
+      padding: 10px;
+      text-align: center;
+      transition: all $transition-speed;
+      box-shadow: 0 0 5px rgba($primary-glow, 0.1);
+      position: relative;
+      overflow: hidden;
+
+      &:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 0 15px rgba($primary-glow, 0.5),
+          0 0 25px rgba($secondary-glow, 0.3);
+        border-color: $primary-glow;
+      }
+
+      p {
+        margin: 5px 0;
+        font-size: 0.85rem;
+        color: rgba($text-color, 0.8);
+        word-break: break-word; // Ngắt chữ dài
+      }
+
+      img {
+        width: 100px; // Kích thước QR cố định
+        height: 100px;
+        object-fit: contain;
+        border: 1px solid rgba($text-color, 0.1);
+        border-radius: 4px;
+        margin-bottom: 5px;
+      }
+
+      .qrStatus {
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: capitalize;
+        padding: 2px 5px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-top: 5px;
+
+        &.active {
+          background-color: rgba($primary-glow, 0.2);
+          color: $primary-glow;
+        }
+        &.inactive {
+          background-color: rgba($error-color, 0.2);
+          color: $error-color;
+        }
+      }
+    }
+  }
+}
+
+// =======================
+// 6. RESPONSIVE DESIGN (Cập nhật)
+// =======================
+
+@media (max-width: 650px) {
+  .detailsCard {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .header h2 {
+    font-size: 1.3rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .content .detailItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+
+    strong {
+      font-size: 0.9rem;
+    }
+    span {
+      font-size: 0.95rem;
+    }
+  }
+
+  .qrSection .qrGrid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(100px, 1fr)
+    ); // Nhỏ hơn trên mobile
+    gap: 15px;
+  }
+
+  .qrSection .qrGrid .qrItem img {
+    width: 80px;
+    height: 80px;
+  }
+}
