@@ -1,6 +1,15 @@
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import {
+  FiGrid,
+  FiUsers,
+  FiUser,
+  FiPlusSquare,
+  FiLogOut,
+  FiMenu,
+  FiX,
+} from "react-icons/fi";
 import "../styles/navbar.scss";
 
 const CyberNavbar = () => {
@@ -8,88 +17,98 @@ const CyberNavbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // ⚡ Xác định walletAddress và username an toàn
   const walletAddress = token && wallet ? wallet : null;
   const username = walletAddress
-    ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(
-        walletAddress.length - 4
-      )}`
+    ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`
     : "Guest";
 
   const handleConnectWallet = () => {
-    if (token) {
-      navigate("/profile");
-    } else {
-      navigate("/login");
-    }
+    token ? navigate("/profile") : navigate("/login");
   };
 
-  // ✅ Chỉ khai báo navItems 1 lần, ngoài render
+  // ✅ Cập nhật navItems tích hợp OrderIntakeConsole
   const navItems = [
-    { name: "Dashboard", path: "/dashboard", requiresAuth: true },
-    { name: "User List", path: "/", requiresAuth: false },
-    { name: "Profile", path: "/profile", requiresAuth: true },
-    { name: "Tạo Đơn Hàng", path: "/orders/create", requiresAuth: true },
+    { name: "Dashboard", path: "/dashboard", requiresAuth: true, icon: FiGrid },
+    {
+      name: "Orders Intake",
+      path: "/orders/intake",
+      // requiresAuth: true,
+      icon: FiPlusSquare,
+    }, // Đường dẫn đến Console mới
+    { name: "User List", path: "/", requiresAuth: false, icon: FiUsers },
+    { name: "Profile", path: "/profile", requiresAuth: true, icon: FiUser },
   ];
 
   return (
-    <nav className="cyber-navbar">
-      {/* Logo/Tên dự án */}
-      <NavLink to="/" className="navbar-logo">
-        <img
-          src="https://res.cloudinary.com/dgpbxb8dq/image/upload/v1755786774/ChatGPT_Image_May_25__2025__10_03_19_PM-removebg-preview_auiivy.png"
-          width="100"
-          height="100"
-          alt="VYNE Logo"></img>
-      </NavLink>
+    <nav className="cyber-navbar-container">
+      <div className="navbar-glow-line"></div>
 
-      {/* Menu cho Desktop */}
-      <div className={`navbar-links ${isMenuOpen ? "open" : ""}`}>
-        {navItems.map((item) =>
-          item.requiresAuth && !token ? null : (
-            <NavLink
-              key={item.name}
-              to={item.path}
-              className={({ isActive }) =>
-                isActive ? "nav-item active-link" : "nav-item"
-              }
-              onClick={() => setIsMenuOpen(false)}>
-              {item.name}
-            </NavLink>
-          )
-        )}
-      </div>
+      <div className="navbar-content">
+        {/* Logo Section */}
+        <NavLink to="/" className="navbar-logo">
+          <div className="logo-hex">
+            <img
+              src="https://res.cloudinary.com/dgpbxb8dq/image/upload/v1755786774/ChatGPT_Image_May_25__2025__10_03_19_PM-removebg-preview_auiivy.png"
+              alt="VYNE Logo"
+            />
+          </div>
+          <span className="logo-text">
+            VYNE<span className="text-cyan">CORE</span>
+          </span>
+        </NavLink>
 
-      {/* Hành động & Nút Connect Wallet */}
-      <div className="navbar-actions">
-        {walletAddress ? (
-          <>
-            <div
-              className="wallet-indicator"
-              onClick={() => navigate("/profile")}
-              title={walletAddress}>
-              <span className="status-dot-nav"></span>
-              <span className="wallet-name">{username}</span>
+        {/* Desktop Navigation */}
+        <div className={`navbar-links ${isMenuOpen ? "is-open" : ""}`}>
+          {navItems.map((item) =>
+            item.requiresAuth && !token ? null : (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={({ isActive }) =>
+                  `nav-item ${isActive ? "active" : ""}`
+                }
+                onClick={() => setIsMenuOpen(false)}>
+                <item.icon className="nav-icon" />
+                <span className="nav-text">{item.name}</span>
+                <div className="active-glow"></div>
+              </NavLink>
+            ),
+          )}
+        </div>
+
+        {/* Action Controls */}
+        <div className="navbar-actions">
+          {walletAddress ? (
+            <div className="user-profile-group">
+              <div className="wallet-pill" onClick={() => navigate("/profile")}>
+                <div className="status-indicator">
+                  <div className="pulse-dot"></div>
+                </div>
+                <span className="wallet-address">{username}</span>
+              </div>
+              <button
+                className="logout-icon-btn"
+                onClick={logout}
+                title="Disconnect">
+                <FiLogOut />
+              </button>
             </div>
-            <button className="action-button disconnect-glow" onClick={logout}>
-              Disconnect
+          ) : (
+            <button
+              className="connect-wallet-btn"
+              onClick={handleConnectWallet}>
+              <div className="btn-shimmer"></div>
+              <span>CONNECT WALLET</span>
             </button>
-          </>
-        ) : (
-          <button
-            className="action-button connect-glow"
-            onClick={handleConnectWallet}>
-            Connect Wallet
-          </button>
-        )}
+          )}
 
-        {/* Nút Toggle cho Mobile */}
-        <button
-          className="menu-toggle"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {/* Icon Menu nếu cần */}
-          {isMenuOpen ? "✖" : "☰"}
-        </button>
+          {/* Mobile Toggle */}
+          <button
+            className="mobile-toggle"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
       </div>
     </nav>
   );

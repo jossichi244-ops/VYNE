@@ -9,6 +9,7 @@ import MainLayout from "../layouts/MainLayout";
 import CreateOrderPage from "../pages/CreateOrderPage";
 import RegisterCompany from "../pages/company/RegisterCompany";
 import NotFoundPage from "../pages/NotFoundPage";
+import OrderIntakeConsole from "../pages/OrderIntake/OrderIntakeConsole";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -50,6 +51,14 @@ const AppRoutes = () => {
             element={
               <MainLayout>
                 <UserDashboardPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/orders/intake"
+            element={
+              <MainLayout>
+                <OrderIntakeConsole />
               </MainLayout>
             }
           />

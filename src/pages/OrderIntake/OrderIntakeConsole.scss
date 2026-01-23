@@ -1,0 +1,244 @@
+// Variables
+$cyan: #00f0ff;
+$green: #2dff8f;
+$red: #ff4d4d;
+$bg-black: #06090f;
+$glass: rgba(255, 255, 255, 0.02);
+$border: rgba(255, 255, 255, 0.06);
+
+.logistics-console-theme {
+  min-height: 100vh;
+  background-color: $bg-black;
+  color: #e2e8f0;
+  padding: 1.5rem;
+  position: relative;
+  overflow-x: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+
+  .ambient-fog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at 50% -20%,
+      rgba($cyan, 0.08),
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.console-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.console-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @media (max-width: 1200px) {
+    grid-template-cols: 1fr;
+  }
+}
+
+.panel-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: #475569;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+
+  .tag-icon {
+    color: $cyan;
+  }
+}
+
+// Workspace Styling
+.workspace-panel {
+  .content-scroller {
+    min-height: 600px;
+  }
+}
+
+// Empty State for Zalo/Chat
+.empty-state-terminal {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @extend .glass-panel;
+  border-style: dashed;
+
+  .terminal-loader {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: $cyan;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite ease-in-out;
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+    }
+  }
+
+  p {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: #94a3b8;
+  }
+  small {
+    font-size: 0.6rem;
+    margin-top: 0.5rem;
+    color: #475569;
+  }
+}
+
+// Sidebar Preview Panel
+.sticky-sidebar {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.decision-terminal {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid $border;
+  border-radius: 24px;
+
+  .btn-primary-commit {
+    position: relative;
+    width: 100%;
+    padding: 1.25rem;
+    background: $cyan;
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba($cyan, 0.4);
+    }
+
+    .shimmer {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      animation: shimmer 2s infinite;
+    }
+  }
+
+  .secondary-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .btn-outline,
+    .btn-danger {
+      padding: 0.75rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid $border;
+      color: #94a3b8;
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+      }
+    }
+
+    .btn-danger {
+      background: rgba($red, 0.05);
+      border: 1px solid rgba($red, 0.2);
+      color: $red;
+      &:hover {
+        background: rgba($red, 0.1);
+      }
+    }
+  }
+
+  .system-footprint {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.55rem;
+    font-family: "JetBrains Mono", monospace;
+    color: #334155;
+  }
+}
+
+// Shared Classes
+.glass-panel {
+  background: $glass;
+  backdrop-filter: blur(10px);
+  border: 1px solid $border;
+  border-radius: 24px;
+}
+
+// Animations
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}

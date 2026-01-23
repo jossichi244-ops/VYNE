@@ -1,209 +1,238 @@
-/* Biến SCSS */
-$main-bg: #0d1117;
-$primary-color: #00e0ff;
-$secondary-color: #ff007f;
-$text-color: #c9d1d9;
-$navbar-bg: rgba(18, 26, 34, 0.9); // Hơi trong suốt
+$cyan: #00f0ff;
+$bg-nav: rgba(6, 9, 15, 0.85);
+$border-nav: rgba(255, 255, 255, 0.08);
 
-/* Mixin cho Neon Glow */
-@mixin neon-glow($color, $radius: 5px) {
-  box-shadow: 0 0 $radius $color, 0 0 ($radius * 2) rgba($color, 0.5);
-  text-shadow: 0 0 $radius / 4 $color;
-}
-
-/* 💻 Navbar Chính */
-.cyber-navbar {
-  background-color: $navbar-bg;
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba($primary-color, 0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
+.cyber-navbar-container {
   position: sticky;
   top: 0;
   z-index: 1000;
-}
-
-/* Logo */
-.navbar-logo {
-  text-decoration: none;
-  font-size: 1.5em;
-  font-weight: 800;
-  font-family: "Space Mono", monospace;
-
-  .logo-main {
-    color: $text-color;
-  }
-  .logo-glow {
-    color: $primary-color;
-    @include neon-glow($primary-color, 3px);
-    margin-left: 3px;
-  }
-}
-
-/* Links */
-.navbar-links {
-  display: flex;
-  gap: 30px;
-  transition: all 0.3s ease-in-out;
-}
-
-.nav-item {
-  color: $text-color;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 5px 0;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-
-  &:hover {
-    color: $primary-color;
-    border-color: $primary-color;
-    transform: translateY(-2px); // Micro-animation
-  }
-}
-
-.active-link {
-  color: $primary-color;
-  border-color: $primary-color;
-  @include neon-glow($primary-color, 1px);
-}
-
-/* Actions */
-.navbar-actions {
+  background: $bg-nav;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid $border-nav;
+  padding: 0 1.5rem;
+  height: 70px;
   display: flex;
   align-items: center;
-  gap: 15px;
-}
 
-.action-button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease-out;
-}
-
-.connect-glow {
-  background: rgba($primary-color, 0.2);
-  color: $primary-color;
-  border: 1px solid $primary-color;
-
-  &:hover {
-    background: $primary-color;
-    color: $main-bg;
-    @include neon-glow($primary-color, 10px);
-    transform: scale(1.05);
-  }
-}
-
-.disconnect-glow {
-  background: none;
-  color: $secondary-color;
-  border: 1px solid $secondary-color;
-
-  &:hover {
-    background: rgba($secondary-color, 0.2);
-    @include neon-glow($secondary-color, 5px);
-  }
-}
-
-/* Trạng thái ví */
-.wallet-indicator {
-  display: flex;
-  align-items: center;
-  color: $text-color;
-  font-size: 0.9em;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid rgba($text-color, 0.1);
-  border-radius: 5px;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba($primary-color, 0.1);
-  }
-}
-
-.status-dot-nav {
-  width: 8px;
-  height: 8px;
-  background-color: #39ff14; // Connected color
-  border-radius: 50%;
-  margin-right: 8px;
-  @include neon-glow(#39ff14, 4px);
-  animation: flicker 1.5s infinite alternate;
-}
-
-.wallet-name {
-  font-family: "Space Mono", monospace;
-}
-
-/* Menu Toggle (Mobile) */
-.menu-toggle {
-  display: none; // Mặc định ẩn trên desktop
-  background: none;
-  border: none;
-  color: $primary-color;
-  font-size: 1.5em;
-  cursor: pointer;
-}
-
-/* 📱 Responsive Design */
-@media (max-width: 800px) {
-  .cyber-navbar {
-    padding: 15px 20px;
-  }
-
-  .navbar-links {
-    // Ẩn links trên mobile, hiện khi menu được toggle
+  .navbar-glow-line {
     position: absolute;
-    top: 100%; // Đặt dưới navbar
+    bottom: -1px;
     left: 0;
     width: 100%;
-    flex-direction: column;
-    background-color: $navbar-bg;
-    border-top: 1px solid rgba($primary-color, 0.1);
-    padding: 10px 0;
-    transform: translateY(-200%); // Ẩn khỏi màn hình
-    pointer-events: none;
-    opacity: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $cyan, transparent);
+    opacity: 0.3;
   }
+}
 
-  .navbar-links.open {
-    transform: translateY(0); // Hiện menu
-    pointer-events: auto;
-    opacity: 1;
-  }
+.navbar-content {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .nav-item {
-    padding: 10px 20px;
-    border-bottom: none;
-    border-left: 3px solid transparent;
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
 
-    &:hover,
-    &.active-link {
-      border-left-color: $primary-color;
+  .logo-hex {
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 0 8px rgba($cyan, 0.4));
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 
-  .menu-toggle {
-    display: block;
-  }
-
-  .wallet-indicator {
-    display: none; // Tối giản trên mobile
+  .logo-text {
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: #fff;
+    .text-cyan {
+      color: $cyan;
+    }
   }
 }
 
-// Keyframes được định nghĩa trong UserProfile.scss hoặc file style chung
-@keyframes flicker {
-  from {
+.navbar-links {
+  display: flex;
+  gap: 8px;
+
+  .nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+
+    .nav-icon {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &.active {
+      color: $cyan;
+      .active-glow {
+        position: absolute;
+        bottom: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: $cyan;
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 -4px 12px $cyan;
+      }
+    }
+  }
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .user-profile-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .wallet-pill {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid $border-nav;
+    padding: 6px 14px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      border-color: $cyan;
+      background: rgba($cyan, 0.05);
+    }
+
+    .status-indicator {
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+        animation: pulse-green 2s infinite;
+      }
+    }
+
+    .wallet-address {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+  }
+
+  .connect-wallet-btn {
+    background: $cyan;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 0.75rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba($cyan, 0.4);
+    }
+  }
+
+  .logout-icon-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    transition: 0.3s;
+    &:hover {
+      color: #ef4444;
+      transform: translateX(3px);
+    }
+  }
+}
+
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
     opacity: 1;
   }
-  to {
-    opacity: 0.8;
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+// Mobile Responsive
+@media (max-width: 1024px) {
+  .mobile-toggle {
+    display: block;
+  }
+  .navbar-links {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: #0b0f1a;
+    flex-direction: column;
+    padding: 2rem;
+    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.is-open {
+      left: 0;
+    }
+
+    .nav-item {
+      font-size: 1.2rem;
+      padding: 1rem;
+      .active-glow {
+        display: none;
+      }
+    }
   }
 }

@@ -1,0 +1,376 @@
+// Variables & Mixins
+$primary-glow: #00f0ff;
+$success-glow: #10b981;
+$error-glow: #ef4444;
+$bg-dark: #06090f;
+$glass-bg: rgba(255, 255, 255, 0.03);
+$glass-border: rgba(255, 255, 255, 0.08);
+
+@mixin glass-effect {
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  border: 1px solid $glass-border;
+  border-radius: 20px;
+}
+
+// Global Dashboard Styles
+.logistics-dashboard {
+  min-height: 100vh;
+  background-color: $bg-dark;
+  color: #fff;
+  font-family: "Inter", system-ui, sans-serif;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  // Background Animations
+  .glow-sphere {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    filter: blur(100px);
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+
+    &.sphere-1 {
+      top: -10%;
+      left: -10%;
+      background: $primary-glow;
+    }
+    &.sphere-2 {
+      bottom: -10%;
+      right: -10%;
+      background: #7000ff;
+    }
+  }
+}
+
+.connector-container {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Header Status Card
+.status-card {
+  @include glass-effect;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    border-color: rgba($primary-glow, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .node-info {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .icon-wrapper {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $primary-glow;
+
+      .main-icon {
+        font-size: 1.5rem;
+        z-index: 2;
+      }
+
+      .pulse-ring {
+        position: absolute;
+        inset: -2px;
+        border: 2px solid $primary-glow;
+        border-radius: 18px;
+        opacity: 0.3;
+        animation: pulse 2s infinite;
+      }
+
+      .status-dot-active {
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        width: 12px;
+        height: 12px;
+        background: $success-glow;
+        border: 3px solid $bg-dark;
+        border-radius: 50%;
+        box-shadow: 0 0 10px $success-glow;
+      }
+    }
+
+    .text-group {
+      .label-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.25rem;
+
+        .node-type {
+          font-weight: 700;
+          letter-spacing: 0.5px;
+        }
+        .status-tag {
+          font-size: 0.65rem;
+          padding: 2px 8px;
+          background: rgba($success-glow, 0.1);
+          color: $success-glow;
+          border-radius: 100px;
+          border: 1px solid rgba($success-glow, 0.2);
+          text-transform: uppercase;
+        }
+      }
+      .endpoint {
+        font-size: 0.8rem;
+        color: #64748b;
+        font-family: "JetBrains Mono", monospace;
+      }
+    }
+  }
+
+  .action-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .metrics {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      .metric-icon {
+        color: $success-glow;
+      }
+    }
+
+    .btn-disconnect {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s;
+
+      &:hover {
+        background: rgba($error-glow, 0.15);
+        border-color: $error-glow;
+        color: $error-glow;
+        box-shadow: 0 0 15px rgba($error-glow, 0.2);
+      }
+    }
+  }
+}
+
+// Diff Viewer Section
+.diff-viewer-section {
+  @include glass-effect;
+  overflow: hidden;
+
+  .viewer-header {
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid $glass-border;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      h3 {
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #94a3b8;
+      }
+      .sync-icon {
+        color: $primary-glow;
+        font-size: 1rem;
+      }
+    }
+
+    .conflict-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fbbf24;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: rgba(#fbbf24, 0.1);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+  }
+
+  .diff-grid {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .diff-row {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 1.25rem;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.focused {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba($primary-glow, 0.2);
+      transform: scale(1.01);
+    }
+
+    .row-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .comparison-slots {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1.5rem;
+
+      .slot {
+        .slot-tag {
+          font-size: 0.6rem;
+          font-weight: 700;
+          display: block;
+          margin-bottom: 0.4rem;
+          opacity: 0.5;
+        }
+        .value-box {
+          background: rgba(0, 0, 0, 0.2);
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.85rem;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        &.erp .value-box {
+          color: #f87171;
+          border-left: 3px solid #f87171;
+        }
+        &.standard .value-box {
+          color: $primary-glow;
+          border-left: 3px solid $primary-glow;
+        }
+      }
+
+      .divider-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+
+        .line {
+          width: 1px;
+          height: 15px;
+          background: rgba(255, 255, 255, 0.1);
+        }
+        .status-indicator {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          &.match {
+            background: $success-glow;
+            box-shadow: 0 0 8px $success-glow;
+          }
+          &.mismatch {
+            background: $error-glow;
+            box-shadow: 0 0 8px $error-glow;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 2s linear infinite;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .status-card .card-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .comparison-slots {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+
+    .divider-icon {
+      flex-direction: row !important;
+      width: 100%;
+      .line {
+        width: 100% !important;
+        height: 1px !important;
+      }
+    }
+  }
+}

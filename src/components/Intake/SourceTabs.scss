@@ -1,0 +1,210 @@
+$nav-bg: rgba(11, 15, 26, 0.4);
+$border-color: rgba(255, 255, 255, 0.05);
+$text-dim: #64748b;
+
+.logistics-source-nav {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  background: $nav-bg;
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid $border-color;
+  overflow-x: auto;
+
+  // Ẩn scrollbar nhưng vẫn scroll được
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tabs-container {
+  display: flex;
+  gap: 0.5rem;
+  min-width: max-content;
+}
+
+.tab-item {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  border-radius: 14px;
+  overflow: hidden;
+
+  .tab-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .icon-slot {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-dim;
+    transition: all 0.3s ease;
+
+    .main-icon {
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+
+    .icon-glow-ring {
+      position: absolute;
+      inset: -4px;
+      background: var(--active-color);
+      opacity: 0.2;
+      filter: blur(8px);
+      border-radius: 50%;
+    }
+  }
+
+  .label-group {
+    text-align: left;
+
+    .tab-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: $text-dim;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .active-indicator-text {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.6rem;
+      font-weight: 900;
+      color: var(--active-color);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: all 0.3s ease;
+
+      .pulse-mini {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  // Active State logic
+  &.is-active {
+    .icon-slot {
+      color: var(--active-color);
+    }
+    .tab-label {
+      color: #fff;
+    }
+    .active-indicator-text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .bottom-border {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+
+  &:hover:not(.is-active) {
+    .tab-label {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .icon-slot {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+.tab-bg-highlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  z-index: 1;
+
+  .shimmer-effect {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+    animation: shimmer 3s infinite;
+  }
+}
+
+.bottom-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--active-color);
+  box-shadow: 0 0 10px var(--active-color);
+  transition:
+    width 0.4s ease,
+    opacity 0.3s;
+  opacity: 0;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  30%,
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes pulse-mini {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse-mini {
+  animation: pulse-mini 1.5s infinite;
+}
+
+// Responsive cho Mobile
+@media (max-width: 640px) {
+  .tab-item {
+    padding: 0.75rem 1rem;
+    .label-group .active-indicator-text {
+      display: none;
+    }
+    .tab-label {
+      font-size: 0.7rem;
+    }
+  }
+}
