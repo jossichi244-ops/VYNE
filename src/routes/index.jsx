@@ -10,6 +10,7 @@ import CreateOrderPage from "../pages/CreateOrderPage";
 import RegisterCompany from "../pages/company/RegisterCompany";
 import NotFoundPage from "../pages/NotFoundPage";
 import OrderIntakeConsole from "../pages/OrderIntake/OrderIntakeConsole";
+import CheckoutPromisePage from "../pages/CheckoutPromisePage";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -34,7 +35,6 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/profile"
             element={
@@ -45,7 +45,6 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/"
             element={
@@ -61,6 +60,14 @@ const AppRoutes = () => {
                 <OrderIntakeConsole />
               </MainLayout>
             }
+          />{" "}
+          <Route
+            path="/checkout"
+            element={
+              <MainLayout>
+                <CheckoutPromisePage />
+              </MainLayout>
+            }
           />
           <Route
             path="/orders/create"
@@ -72,7 +79,6 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

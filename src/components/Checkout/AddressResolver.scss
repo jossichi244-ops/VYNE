@@ -1,0 +1,235 @@
+$cyan: #00f0ff;
+$amber: #ffab00;
+$bg-inner: rgba(0, 0, 0, 0.3);
+$border-glass: rgba(255, 255, 255, 0.08);
+
+.address-resolver-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid $border-glass;
+  border-radius: 24px;
+  padding: 1.5rem;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba($cyan, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .geo-icon-box {
+      position: relative;
+      color: $cyan;
+      font-size: 1.2rem;
+
+      .pulse-ring {
+        position: absolute;
+        inset: -4px;
+        border: 1px solid $cyan;
+        border-radius: 50%;
+        animation: geo-pulse 2s infinite;
+      }
+    }
+
+    .title-stack {
+      .eyebrow {
+        font-size: 0.6rem;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 1px;
+      }
+      .main-title {
+        font-size: 0.85rem;
+        color: #fff;
+        font-weight: 900;
+      }
+    }
+  }
+
+  .zone-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba($cyan, 0.1);
+    color: $cyan;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    border: 1px solid rgba($cyan, 0.2);
+
+    .tag-icon {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 1.25rem;
+
+  .input-wrapper {
+    position: relative;
+    z-index: 2;
+    background: $bg-inner;
+    border: 1px solid $border-glass;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    &:focus-within {
+      border-color: $cyan;
+      box-shadow: 0 0 15px rgba($cyan, 0.2);
+    }
+
+    .geo-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      &::placeholder {
+        color: #475569;
+      }
+    }
+
+    .btn-locate {
+      background: rgba($cyan, 0.1);
+      border: none;
+      color: $cyan;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        background: $cyan;
+        color: #000;
+      }
+    }
+  }
+
+  .input-glow {
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $cyan, transparent);
+    filter: blur(2px);
+  }
+}
+
+.geo-metadata {
+  .meta-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: rgba($amber, 0.05);
+    border: 1px solid rgba($amber, 0.1);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+
+    .icon-wrapper {
+      color: $amber;
+      font-size: 1.1rem;
+    }
+    .text-wrapper {
+      .label {
+        display: block;
+        font-size: 0.6rem;
+        font-weight: 900;
+        color: $amber;
+        margin-bottom: 2px;
+      }
+      .value {
+        font-size: 0.75rem;
+        color: #fff;
+        opacity: 0.8;
+        font-style: italic;
+      }
+    }
+  }
+
+  .meta-grid {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 4px;
+
+    .mini-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #64748b;
+      .mini-icon {
+        color: $cyan;
+      }
+    }
+
+    .divider {
+      width: 4px;
+      height: 4px;
+      background: #334155;
+      border-radius: 50%;
+    }
+  }
+}
+
+// Decorations
+.card-foot-ui {
+  .corner-tl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid $cyan;
+    border-left: 2px solid $cyan;
+    opacity: 0.3;
+  }
+  .corner-br {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid $cyan;
+    border-right: 2px solid $cyan;
+    opacity: 0.3;
+  }
+}
+
+@keyframes geo-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}

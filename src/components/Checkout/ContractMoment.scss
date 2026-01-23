@@ -1,0 +1,166 @@
+$green: #2dff8f;
+$bg-dark: rgba(10, 20, 15, 0.6);
+$border-green: rgba(45, 255, 143, 0.25);
+
+.contract-moment-wrapper {
+  position: relative;
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: $bg-dark;
+  border: 1px solid $border-green;
+  border-radius: 28px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba($green, 0.05);
+}
+
+.hologram-bg {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba($green, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.assurance-container {
+  position: relative;
+  z-index: 2;
+}
+
+.assurance-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 1.25rem;
+
+  .shield-icon-wrapper {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    background: $green;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    box-shadow: 0 0 20px rgba($green, 0.4);
+
+    .shield-icon {
+      z-index: 2;
+    }
+    .glow-flare {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0.3;
+      filter: blur(10px);
+      border-radius: 18px;
+    }
+  }
+
+  .contract-title {
+    .verified-tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.6rem;
+      font-weight: 900;
+      color: $green;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    h4 {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+  }
+}
+
+.contract-body {
+  .agreement-text {
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+
+    .eta-highlight {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 8px;
+      background: rgba($green, 0.1);
+      color: $green;
+      border-radius: 6px;
+      font-weight: 800;
+      border: 1px solid rgba($green, 0.2);
+    }
+  }
+
+  .penalty-clause {
+    display: flex;
+    gap: 8px;
+    font-size: 0.7rem;
+    color: #64748b;
+    line-height: 1.4;
+    font-style: italic;
+
+    .info-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: $green;
+    }
+  }
+}
+
+.contract-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "JetBrains Mono", monospace;
+
+  .security-lock {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.6rem;
+    color: #475569;
+  }
+
+  .contract-id {
+    font-size: 0.6rem;
+    color: rgba($green, 0.5);
+  }
+}
+
+.tech-accents {
+  .line-y {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, $green, transparent);
+    opacity: 0.3;
+  }
+  .dots-x {
+    position: absolute;
+    left: 20px;
+    bottom: 15px;
+    width: 30px;
+    height: 4px;
+    border-top: 2px dotted rgba($green, 0.2);
+  }
+}

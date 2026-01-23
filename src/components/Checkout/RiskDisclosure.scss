@@ -1,0 +1,170 @@
+$amber: #ffab00;
+$risk-bg: rgba(255, 171, 0, 0.03);
+$border-soft: rgba(255, 171, 0, 0.15);
+
+.risk-disclosure-panel {
+  position: relative;
+  margin-top: 1.5rem;
+  background: $risk-bg;
+  border: 1px solid $border-soft;
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+
+  .scanning-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba($amber, 0.05) 1px, transparent 1px);
+    background-size: 12px 12px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.risk-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba($amber, 0.08);
+  border-bottom: 1px solid $border-soft;
+  position: relative;
+  z-index: 1;
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .status-blink {
+      width: 6px;
+      height: 6px;
+      background: $amber;
+      border-radius: 50%;
+      box-shadow: 0 0 10px $amber;
+      animation: blink 1s infinite;
+    }
+
+    .warning-icon {
+      color: $amber;
+      font-size: 1rem;
+    }
+    .banner-text {
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: $amber;
+      letter-spacing: 1.5px;
+    }
+  }
+
+  .risk-count {
+    font-size: 0.55rem;
+    font-weight: 800;
+    color: rgba($amber, 0.6);
+    background: rgba($amber, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid $border-soft;
+  }
+}
+
+.risk-list {
+  padding: 1.25rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.risk-item {
+  display: flex;
+  gap: 14px;
+
+  .risk-icon-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .icon-container {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba($amber, 0.1);
+      color: $amber;
+      border: 1px solid rgba($amber, 0.2);
+
+      &.weather {
+        background: rgba(0, 240, 255, 0.05);
+        color: #00f0ff;
+        border-color: rgba(0, 240, 255, 0.2);
+      }
+    }
+
+    .connector-line {
+      width: 1px;
+      flex: 1;
+      background: linear-gradient(to bottom, rgba($amber, 0.2), transparent);
+      margin-top: 8px;
+    }
+  }
+}
+
+.risk-content {
+  flex: 1;
+
+  .risk-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+
+    .risk-type {
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .impact-badge {
+      font-size: 0.55rem;
+      font-weight: 900;
+      color: $amber;
+      border: 1px solid rgba($amber, 0.3);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+  }
+
+  .risk-msg {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+
+  .system-note {
+    margin-top: 6px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: darken($amber, 10%);
+    letter-spacing: 0.5px;
+
+    .blink-text {
+      animation: blink 1.5s infinite;
+      margin-right: 4px;
+    }
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}

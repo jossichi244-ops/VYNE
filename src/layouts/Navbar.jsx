@@ -9,10 +9,11 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiTruck,
 } from "react-icons/fi";
 import "../styles/navbar.scss";
 
-const CyberNavbar = () => {
+const Navbar = () => {
   const { token, logout, wallet } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +35,13 @@ const CyberNavbar = () => {
       path: "/orders/intake",
       // requiresAuth: true,
       icon: FiPlusSquare,
-    }, // Đường dẫn đến Console mới
+    },
+    {
+      name: "Delivery Promise", // ✅ Thêm mục Checkout/Promise vào đây
+      path: "/checkout",
+      requiresAuth: false,
+      icon: FiTruck,
+    },
     { name: "User List", path: "/", requiresAuth: false, icon: FiUsers },
     { name: "Profile", path: "/profile", requiresAuth: true, icon: FiUser },
   ];
@@ -114,4 +121,4 @@ const CyberNavbar = () => {
   );
 };
 
-export default CyberNavbar;
+export default Navbar;
