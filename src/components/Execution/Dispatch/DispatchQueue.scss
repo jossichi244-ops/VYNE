@@ -1,0 +1,204 @@
+/* --- Variables (Kế thừa từ ExecutionPage) --- */
+.dq-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+}
+
+/* --- Toolbar --- */
+.dq-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+
+  .dq-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+
+    .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--ex-text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .value {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--ex-primary);
+      font-family: var(--ex-font-mono, monospace);
+    }
+  }
+
+  .dq-filter-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--ex-text-muted);
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: var(--ex-primary);
+      color: var(--ex-text-main);
+    }
+  }
+}
+
+/* --- List Container --- */
+.dq-list-container {
+  flex: 1;
+  /* Scroll xử lý ở component cha hoặc tại đây nếu cần */
+}
+
+.dq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* --- Queue Item (The Row) --- */
+.dq-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+
+  /* Status Strip (Left border effect) */
+  &__status-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--ex-text-muted); /* Default */
+
+    &[data-status="URGENT"] {
+      background-color: var(--ex-danger);
+      box-shadow: 0 0 8px var(--ex-danger);
+    }
+    &[data-status="READY"] {
+      background-color: var(--ex-success);
+    }
+    &[data-status="PENDING"] {
+      background-color: var(--ex-accent);
+    }
+  }
+
+  /* Interaction States */
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateX(2px);
+  }
+
+  &.is-selected {
+    background-color: rgba(0, 180, 216, 0.1);
+    border-color: rgba(0, 180, 216, 0.4);
+
+    .dq-item__status-line {
+      width: 4px;
+      background-color: var(--ex-primary);
+    }
+
+    .custom-check-box {
+      background-color: var(--ex-primary);
+      border-color: var(--ex-primary);
+      box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+    }
+  }
+}
+
+/* --- Inner Item Content --- */
+.dq-item__checkbox {
+  display: flex;
+  align-items: center;
+
+  .hidden-checkbox {
+    display: none;
+  }
+
+  .custom-check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--ex-text-muted);
+    border-radius: 4px;
+    transition: all 0.2s;
+    position: relative;
+  }
+}
+
+.dq-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* Fix flex text truncation */
+}
+
+.dq-item__id {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--ex-text-main);
+
+  .icon-tiny {
+    font-size: 0.75rem;
+    color: var(--ex-text-muted);
+  }
+}
+
+.dq-item__route {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--ex-text-muted);
+
+  .text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.dq-item__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dq-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+
+  &.carrier-tag {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--ex-text-main);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
