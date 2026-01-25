@@ -10,6 +10,7 @@ import {
   FiMenu,
   FiX,
   FiTruck,
+  FiAirplay,
 } from "react-icons/fi";
 import "../styles/navbar.scss";
 
@@ -35,6 +36,12 @@ const Navbar = () => {
       path: "/orders/intake",
       // requiresAuth: true,
       icon: FiPlusSquare,
+    },
+    {
+      name: "CSE",
+      path: "/carrier-control",
+      // requiresAuth: true,
+      icon: FiAirplay,
     },
     {
       name: "Delivery Promise", // ✅ Thêm mục Checkout/Promise vào đây
