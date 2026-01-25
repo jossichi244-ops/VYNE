@@ -1,0 +1,148 @@
+$cyan: #00e5ff;
+$emerald: #2dff8f;
+$indigo: #6366f1;
+$amber: #f59e0b;
+
+.cyber-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cyber-stat-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 1.25rem;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+
+    .card-scanner {
+      animation: scan 2s linear infinite;
+    }
+  }
+
+  // Phân loại màu sắc chuyên sâu
+  &.emerald {
+    --accent: #{$emerald};
+  }
+  &.cyan {
+    --accent: #{$cyan};
+  }
+  &.indigo {
+    --accent: #{$indigo};
+  }
+  &.amber {
+    --accent: #{$amber};
+  }
+
+  .icon-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background: rgba(var(--accent), 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    margin-bottom: 1rem;
+
+    .main-icon {
+      font-size: 22px;
+      filter: drop-shadow(0 0 5px var(--accent));
+      z-index: 2;
+    }
+    .icon-pulse {
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      border-radius: inherit;
+      opacity: 0.2;
+      animation: pulse 2s infinite;
+    }
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    font-weight: 900;
+    color: #64748b;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .value-group {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: #fff;
+      font-style: italic;
+      margin: 0;
+    }
+    .trend-badge {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 9px;
+      font-weight: 900;
+      color: var(--accent);
+      background: rgba(var(--accent), 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  }
+
+  .data-trace {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    .trace-line {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .trace-dot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20%;
+      height: 100%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    scale: 1;
+    opacity: 0.2;
+  }
+  100% {
+    scale: 1.5;
+    opacity: 0;
+  }
+}
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(300%);
+  }
+}

@@ -1,0 +1,152 @@
+$cyan: #00e5ff;
+$emerald: #2dff8f;
+$amber: #ffb000;
+$glass: rgba(255, 255, 255, 0.02);
+
+.capacity-pulse-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: $glass;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba($cyan, 0.2);
+    transform: scale(1.02);
+  }
+}
+
+.carrier-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .icon-vortex {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+
+    .truck-icon {
+      z-index: 2;
+      font-size: 14px;
+    }
+
+    .ping-nucleus {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: $emerald;
+      border-radius: 50%;
+      top: 4px;
+      right: 4px;
+      z-index: 3;
+      box-shadow: 0 0 8px $emerald;
+    }
+
+    .ping-wave {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: $emerald;
+      border-radius: 50%;
+      top: 4px;
+      right: 4px;
+      animation: ping-expand 2s infinite;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    .name {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    .status-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 7px;
+      font-weight: 900;
+      color: #475569;
+      margin-top: 2px;
+    }
+  }
+}
+
+.energy-cells {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  position: relative;
+  padding-right: 45px; // Space for the percentage
+
+  .cell {
+    width: 4px;
+    height: 14px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+
+    &.active {
+      background: $cyan;
+      .cell-glow {
+        position: absolute;
+        inset: 0;
+        background: $cyan;
+        filter: blur(4px);
+        opacity: 0.4;
+      }
+    }
+  }
+
+  .capacity-value {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 900;
+    color: $cyan;
+    font-style: italic;
+
+    .zap-icon {
+      font-size: 10px;
+    }
+  }
+}
+
+// Intensity variants
+.low .capacity-value {
+  color: $amber;
+}
+.low .cell.active {
+  background: $amber;
+  .cell-glow {
+    background: $amber;
+  }
+}
+
+@keyframes ping-expand {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}

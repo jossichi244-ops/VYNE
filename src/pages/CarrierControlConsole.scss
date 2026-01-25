@@ -1,0 +1,454 @@
+/* --- Design Tokens & Variables --- */
+:root {
+  --ccc-bg-deep: #05070a;
+  --ccc-bg-panel: rgba(20, 25, 35, 0.4);
+  --ccc-neon-cyan: #00e5ff;
+  --ccc-neon-green: #2dff8f;
+  --ccc-neon-alert: #ff4b4b;
+  --ccc-text-main: #ffffff;
+  --ccc-text-muted: #8b9bb4;
+
+  --ccc-glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --ccc-glass-blur: blur(12px);
+  --ccc-shadow-glow: 0 0 20px rgba(0, 229, 255, 0.15);
+
+  --ccc-font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --ccc-font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  --ccc-anim-ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- Global Reset & Base --- */
+.ccc-wrapper {
+  min-height: 100vh;
+  background-color: var(--ccc-bg-deep);
+  background-image:
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(0, 229, 255, 0.03) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(45, 255, 143, 0.02) 0%,
+      transparent 40%
+    );
+  color: var(--ccc-text-main);
+  font-family: var(--ccc-font-sans);
+  padding: 1.5rem;
+  box-sizing: border-box;
+
+  @media (min-width: 1024px) {
+    padding: 2.5rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.ccc-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* --- Header Section --- */
+.ccc-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+
+  @media (min-width: 1280px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__status-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--ccc-neon-cyan);
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0;
+
+    @media (min-width: 768px) {
+      font-size: 3.5rem;
+    }
+
+    &--light {
+      color: rgba(255, 255, 255, 0.15);
+      font-style: normal;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+
+    @media (min-width: 1280px) {
+      width: auto;
+    }
+  }
+}
+
+/* --- Common Components & Panels --- */
+.ccc-glass-panel {
+  background: var(--ccc-bg-panel);
+  backdrop-filter: var(--ccc-glass-blur);
+  border: var(--ccc-glass-border);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  transition:
+    transform 0.3s var(--ccc-anim-ease),
+    border-color 0.3s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.ccc-sla-panel {
+  flex: 1;
+  min-width: 200px;
+
+  @media (min-width: 768px) {
+    flex: none;
+  }
+}
+
+.ccc-readiness-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: 2rem;
+  padding: 1.5rem;
+}
+
+/* --- Typography Helpers --- */
+.ccc-label-mini {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ccc-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.ccc-label-muted {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ccc-text-muted);
+}
+
+.ccc-text-success {
+  color: var(--ccc-neon-green);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.ccc-text-highlight {
+  color: var(--ccc-neon-cyan);
+  font-weight: 900;
+  font-style: italic;
+}
+
+.ccc-data-value {
+  font-family: var(--ccc-font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+/* --- Icons & Animations --- */
+.ccc-icon-pulse {
+  position: relative;
+  font-size: 1.25rem;
+  color: var(--ccc-neon-cyan);
+
+  svg {
+    animation: spin-slow 10s linear infinite;
+  }
+}
+
+.ccc-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  background: var(--ccc-neon-cyan);
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(4px);
+  animation: pulse 2s infinite;
+}
+
+.ccc-icon-success {
+  color: var(--ccc-neon-green);
+}
+.ccc-icon-neon {
+  color: var(--ccc-neon-cyan);
+}
+.ccc-flex-center {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* --- Layout Grid --- */
+.ccc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  &__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+/* --- Sections --- */
+.ccc-section {
+  &--stats {
+    margin-bottom: 2rem;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      white-space: nowrap;
+      margin: 0;
+    }
+  }
+}
+
+.ccc-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 100%
+  );
+}
+
+/* --- Sub-Grids --- */
+.ccc-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ccc-monitor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ccc-monitor-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- Action Card (The "Dispatcher") --- */
+.ccc-action-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 229, 255, 0.1) 0%,
+    rgba(0, 229, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 2rem;
+  padding: 2rem;
+  overflow: hidden;
+  box-shadow: var(--ccc-shadow-glow);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.25);
+
+    .ccc-action-card__bg-icon {
+      transform: scale(1.1) rotate(5deg);
+      opacity: 0.1;
+    }
+  }
+
+  &__bg-icon {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    font-size: 10rem;
+    color: var(--ccc-text-main);
+    opacity: 0.05;
+    transition: all 0.7s var(--ccc-anim-ease);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.ccc-data-rows {
+  margin-bottom: 2rem;
+}
+
+.ccc-data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+}
+
+/* --- Dispatch Button --- */
+.ccc-btn-dispatch {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: var(--ccc-neon-cyan);
+  color: #000;
+  font-family: var(--ccc-font-sans);
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -5px rgba(0, 229, 255, 0.4);
+  transition: all 0.3s var(--ccc-anim-ease);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -5px rgba(0, 229, 255, 0.6);
+    background-color: #fff;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #334;
+    color: #889;
+    box-shadow: none;
+  }
+}
+
+.ccc-footer-note {
+  margin-top: 1rem;
+  font-size: 0.55rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ccc-text-muted);
+  opacity: 0.7;
+}
+
+/* --- Keyframe Animations --- */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* --- SLA Status Flex Alignment --- */
+.ccc-sla-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

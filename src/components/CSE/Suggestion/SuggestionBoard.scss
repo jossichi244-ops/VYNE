@@ -1,0 +1,116 @@
+$cyan: #00e5ff;
+$dark-surface: rgba(255, 255, 255, 0.01);
+$border-dim: rgba(255, 255, 255, 0.05);
+
+.suggestion-shell {
+  padding: 1rem;
+  background: $dark-surface;
+  border-radius: 32px;
+  border: 1px solid $border-dim;
+  position: relative;
+}
+
+.shell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem 1.5rem;
+  border-bottom: 1px solid $border-dim;
+  margin-bottom: 1.5rem;
+
+  .main-title {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    .ai-status {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba($cyan, 0.1);
+      border-radius: 10px;
+      color: $cyan;
+
+      .pulse-dot {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 6px;
+        height: 6px;
+        background: #2dff8f;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #2dff8f;
+        animation: pulse-simple 2s infinite;
+      }
+    }
+
+    h3 {
+      font-size: 0.7rem;
+      font-weight: 900;
+      color: $cyan;
+      letter-spacing: 2.5px;
+      margin: 0;
+    }
+    p {
+      font-size: 0.55rem;
+      color: #475569;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 8px;
+    font-weight: 900;
+    color: #64748b;
+  }
+}
+
+.candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.shell-footer {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.5rem;
+  font-weight: 900;
+  color: #334155;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  .zap-icon {
+    color: $cyan;
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-simple {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}

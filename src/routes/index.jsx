@@ -11,6 +11,7 @@ import RegisterCompany from "../pages/company/RegisterCompany";
 import NotFoundPage from "../pages/NotFoundPage";
 import OrderIntakeConsole from "../pages/OrderIntake/OrderIntakeConsole";
 import CheckoutPromisePage from "../pages/CheckoutPromisePage";
+import CarrierControlConsole from "../pages/CarrierControlConsole";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -60,12 +61,21 @@ const AppRoutes = () => {
                 <OrderIntakeConsole />
               </MainLayout>
             }
-          />{" "}
+          />
           <Route
             path="/checkout"
             element={
               <MainLayout>
                 <CheckoutPromisePage />
+              </MainLayout>
+            }
+          />
+
+          <Route
+            path="/carrier-control"
+            element={
+              <MainLayout>
+                <CarrierControlConsole />
               </MainLayout>
             }
           />

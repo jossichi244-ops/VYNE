@@ -1,0 +1,223 @@
+$cyan: #00f0ff;
+$red: #ff4d4d;
+$emerald: #2dff8f;
+
+.inventory-radar-terminal {
+  position: relative;
+  background: #0a0e1a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 1.5rem;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+
+  &.alert-mode {
+    border-color: rgba($red, 0.3);
+    box-shadow: inset 0 0 20px rgba($red, 0.05);
+  }
+}
+
+// Radar Background Grid
+.radar-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.15;
+
+  .circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #fff;
+    border-radius: 50%;
+    &.c1 {
+      width: 100px;
+      height: 100px;
+    }
+    &.c2 {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  .axis {
+    position: absolute;
+    background: #fff;
+    &.x {
+      width: 100%;
+      height: 1px;
+      top: 50%;
+    }
+    &.y {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+    }
+  }
+}
+
+// Radar Sweep Animation
+.radar-sweep {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, rgba($cyan, 0.15) 0%, transparent 20%);
+  animation: sweep 4s infinite linear;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.alert-mode .radar-sweep {
+  background: conic-gradient(from 0deg, rgba($red, 0.15) 0%, transparent 20%);
+}
+
+// Typography & Content
+.terminal-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  z-index: 2;
+  position: relative;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #475569;
+    .icon-spin {
+      color: $cyan;
+      animation: spin 8s infinite linear;
+    }
+  }
+
+  .status-pill {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 900;
+    &.nominal {
+      background: rgba($emerald, 0.1);
+      color: $emerald;
+    }
+    &.critical {
+      background: rgba($red, 0.1);
+      color: $red;
+      animation: pulse 1s infinite;
+    }
+  }
+}
+
+.data-core {
+  flex: 1;
+  z-index: 2;
+  position: relative;
+
+  .glitch-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fff;
+    font-style: italic;
+    margin: 5px 0;
+    small {
+      font-size: 1rem;
+      color: #475569;
+    }
+  }
+
+  .unit {
+    font-size: 0.55rem;
+    color: #475569;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+}
+
+.progress-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  position: relative;
+  margin-top: 1rem;
+  overflow: hidden;
+
+  .progress-fill {
+    height: 100%;
+    background: $cyan;
+    box-shadow: 0 0 15px $cyan;
+  }
+
+  .laser-head {
+    position: absolute;
+    top: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+  }
+}
+
+.alert-mode .progress-fill {
+  background: $red;
+  box-shadow: 0 0 15px $red;
+}
+
+// Telemetry Wave Animation
+.telemetry-wave {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  span {
+    width: 2px;
+    height: 8px;
+    background: $cyan;
+    border-radius: 1px;
+    animation: wave-bar 1s infinite alternate;
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-delay: $i * 0.1s;
+      }
+    }
+  }
+}
+
+// Keyframes
+@keyframes sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes wave-bar {
+  0% {
+    height: 4px;
+    opacity: 0.3;
+  }
+  100% {
+    height: 12px;
+    opacity: 1;
+  }
+}

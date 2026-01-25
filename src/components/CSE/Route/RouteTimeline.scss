@@ -1,0 +1,89 @@
+$cyan: #00e5ff;
+$emerald: #2dff8f;
+$border: rgba(255, 255, 255, 0.05);
+
+.route-nav-container {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid $border;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+
+  .header-nav {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 2rem;
+    font-size: 8px; font-weight: 900; letter-spacing: 2px; color: #475569;
+    .nav-icon { color: $cyan; }
+  }
+}
+
+.timeline-stream {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  position: relative; padding: 0 10px;
+}
+
+.waypoint-node {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  z-index: 2;
+
+  .node-outer {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px; transition: 0.4s;
+  }
+
+  .node-inner {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 900; color: #475569;
+  }
+
+  // States
+  &.completed {
+    .node-outer { border-color: rgba($emerald, 0.3); background: rgba($emerald, 0.05); }
+    .node-inner { background: $emerald; color: #000; }
+    .stop-name { color: #fff; }
+  }
+
+  &.current {
+    .node-outer { border-color: $cyan; box-shadow: 0 0 15px rgba($cyan, 0.3); }
+    .node-inner { background: rgba($cyan, 0.1); }
+    .pulse-core { width: 8px; height: 8px; background: $cyan; border-radius: 50%; box-shadow: 0 0 10px $cyan; }
+    .stop-name { color: $cyan; font-weight: 900; }
+  }
+
+  .node-info {
+    .stop-name { font-size: 10px; font-weight: 700; color: #475569; margin-bottom: 4px; max-width: 80px; }
+    .eta-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 8px; font-family: monospace; color: #64748b;
+      background: rgba(255,255,255,0.03); padding: 2px 6px; border-radius: 4px;
+    }
+  }
+}
+
+.connector-path {
+  flex: 1; height: 1px; background: rgba(255,255,255,0.05);
+  margin-top: 18px; position: relative;
+  
+  .line-fill {
+    position: absolute; left: 0; top: 0; height: 100%; width: 0;
+    background: $emerald; transition: 1s;
+    &.active { width: 100%; }
+  }
+
+  .path-arrow {
+    position: absolute; right: -8px; top: -6px;
+    font-size: 12px; color: rgba(255,255,255,0.1);
+  }
+}
+
+.timeline-footer {
+  margin-top: 2rem; padding-top: 1rem;
+  border-top: 1px dashed $border;
+  font-size: 8px; font-weight: 900; color: #334155;
+  display: flex; align-items: center; justify-content: space-between;
+}

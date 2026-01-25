@@ -1,0 +1,136 @@
+$cyan: #00e5ff;
+$emerald: #2dff8f;
+$amber: #ffb000;
+
+.diagnostic-breakdown {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.terminal-label {
+  font-size: 7px;
+  font-weight: 900;
+  color: #475569;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  &::before {
+    content: ">";
+    margin-right: 5px;
+    color: $cyan;
+  }
+}
+
+.metrics-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metric-channel {
+  .channel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+
+    .label-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #94a3b8;
+      text-transform: uppercase;
+      .channel-icon {
+        font-size: 10px;
+        opacity: 0.6;
+      }
+    }
+
+    .percentage-reading {
+      .value {
+        font-size: 11px;
+        font-weight: 900;
+        color: #fff;
+      }
+      .unit {
+        font-size: 8px;
+        color: #475569;
+        margin-left: 2px;
+      }
+    }
+  }
+}
+
+.gauge-container {
+  height: 4px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  overflow: hidden;
+
+  .gauge-grid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10%;
+    .grid-line {
+      width: 1px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .gauge-track {
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  .gauge-fill {
+    height: 100%;
+    position: relative;
+    border-radius: 10px;
+
+    &.cyan {
+      background: $cyan;
+      box-shadow: 0 0 10px rgba($cyan, 0.4);
+    }
+    &.emerald {
+      background: $emerald;
+      box-shadow: 0 0 10px rgba($emerald, 0.4);
+    }
+    &.amber {
+      background: $amber;
+      box-shadow: 0 0 10px rgba($amber, 0.4);
+    }
+
+    .energy-flow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      animation: energy-slide 2s infinite ease-in-out;
+    }
+  }
+}
+
+@keyframes energy-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

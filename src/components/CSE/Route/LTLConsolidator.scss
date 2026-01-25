@@ -1,0 +1,182 @@
+$emerald: #2dff8f;
+$dark-bg: rgba(255, 255, 255, 0.02);
+$border-soft: rgba(255, 255, 255, 0.05);
+
+.ltl-engine-card {
+  background: linear-gradient(135deg, rgba($emerald, 0.08) 0%, $dark-bg 100%);
+  border: 1px solid $border-soft;
+  border-radius: 24px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    border-color: rgba($emerald, 0.3);
+    .icon-cube {
+      transform: rotate(15deg) scale(1.1);
+    }
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+
+  .brand-zone {
+    display: flex;
+    gap: 12px;
+    .icon-cube {
+      width: 36px;
+      height: 36px;
+      background: rgba($emerald, 0.1);
+      border: 1px solid rgba($emerald, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $emerald;
+      transition: 0.4s;
+    }
+    h3 {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: #fff;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    p {
+      font-size: 0.55rem;
+      color: #475569;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+  }
+
+  .efficiency-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba($emerald, 0.1);
+    color: $emerald;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 900;
+  }
+}
+
+// Visual Load Proxy
+.visualizer-space {
+  margin-bottom: 1.5rem;
+  .truck-bed-proxy {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    border-radius: 8px;
+
+    .cargo-block {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 3px;
+      transition: 0.5s;
+
+      &.filled {
+        background: $emerald;
+        box-shadow: 0 0 10px rgba($emerald, 0.3);
+      }
+    }
+  }
+}
+
+.utilization-metrics {
+  margin-bottom: 1.5rem;
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 8px;
+    .label {
+      font-size: 0.6rem;
+      color: #475569;
+      font-weight: 800;
+    }
+    .value {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #fff;
+      font-weight: 900;
+    }
+  }
+
+  .progress-container {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      background: $emerald;
+      position: relative;
+      .shimmer-effect {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+    }
+  }
+}
+
+.action-zone {
+  .hint-text {
+    font-size: 9px;
+    color: #64748b;
+    margin-bottom: 12px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .match-button {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba($emerald, 0.3);
+    padding: 10px;
+    border-radius: 12px;
+    color: $emerald;
+    font-size: 9px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: $emerald;
+      color: #000;
+      box-shadow: 0 10px 20px rgba($emerald, 0.2);
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

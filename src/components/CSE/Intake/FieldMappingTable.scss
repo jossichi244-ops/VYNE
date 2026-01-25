@@ -1,0 +1,162 @@
+$cyan: #00e5ff;
+$emerald: #2dff8f;
+$bg-card: rgba(255, 255, 255, 0.02);
+$border: rgba(255, 255, 255, 0.05);
+
+.neural-mapping-container {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  position: relative;
+
+  .table-header-info {
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid $border;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #475569;
+
+    .header-icon {
+      color: $cyan;
+      animation: blink 2s infinite;
+    }
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  .neural-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+
+    th {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      color: #64748b;
+      font-weight: 900;
+      letter-spacing: 1px;
+      .th-content {
+        border-left: 2px solid rgba($cyan, 0.3);
+        padding-left: 8px;
+      }
+    }
+
+    .mapping-row {
+      border-bottom: 1px solid $border;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($cyan, 0.03);
+        .arrow {
+          transform: translateX(5px);
+          color: $cyan;
+        }
+      }
+
+      td {
+        padding: 1.25rem 1.5rem;
+      }
+    }
+  }
+}
+
+// System Column
+.system-cell {
+  .attr-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: $cyan;
+      box-shadow: 0 0 10px $cyan;
+    }
+    .attr-name {
+      color: $cyan;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 600;
+    }
+  }
+}
+
+// Source Column
+.source-cell {
+  .link-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94a3b8;
+    .arrow {
+      transition: 0.3s;
+      color: rgba(255, 255, 255, 0.1);
+    }
+    .excel-name {
+      font-weight: 500;
+    }
+  }
+}
+
+// Status Column
+.status-cell {
+  .status-badge-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 900;
+
+      &.mapped {
+        background: rgba($emerald, 0.1);
+        color: $emerald;
+        border: 1px solid rgba($emerald, 0.2);
+      }
+      &.auto-infer {
+        background: rgba($cyan, 0.1);
+        color: $cyan;
+        border: 1px solid rgba($cyan, 0.2);
+      }
+    }
+
+    .confidence-index {
+      font-family: monospace;
+      color: #475569;
+      font-weight: bold;
+    }
+  }
+}
+
+.table-footer {
+  padding: 1rem;
+  text-align: center;
+  font-size: 9px;
+  color: #334155;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
