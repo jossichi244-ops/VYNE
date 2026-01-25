@@ -1,0 +1,277 @@
+/* --- Variables & Tokens --- */
+:root {
+  --ex-bg-app: #0f1216; /* Nền tổng thể tối thẫm */
+  --ex-bg-panel: #1a1e26; /* Nền các khối panel */
+  --ex-bg-header: #14181f; /* Nền header */
+
+  --ex-border: 1px solid rgba(255, 255, 255, 0.08);
+  --ex-border-active: 1px solid rgba(0, 180, 216, 0.5);
+
+  --ex-primary: #00b4d8; /* Xanh Cyan cho các nút chính */
+  --ex-accent: #fca311; /* Vàng Amber cho cảnh báo/nổi bật */
+  --ex-success: #2dff8f;
+  --ex-danger: #ef233c;
+
+  --ex-text-main: #e2e8f0;
+  --ex-text-muted: #64748b;
+
+  --ex-radius: 8px; /* Bo góc nhẹ, công nghiệp hơn */
+  --ex-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  --ex-font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* --- Base Layout --- */
+.exec-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--ex-bg-app);
+  color: var(--ex-text-main);
+  font-family: var(--ex-font-sans);
+  overflow: hidden; /* Ngăn scroll trang chính, chỉ scroll từng zone */
+}
+
+/* --- Header Section --- */
+.exec-header {
+  height: 80px;
+  background-color: var(--ex-bg-header);
+  border-bottom: var(--ex-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  flex-shrink: 0;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__icon-box {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 180, 216, 0.1);
+    border: 1px solid rgba(0, 180, 216, 0.3);
+    color: var(--ex-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ex-radius);
+    font-size: 1.2rem;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+
+    .version {
+      font-size: 0.7em;
+      color: var(--ex-text-muted);
+      font-weight: 400;
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ex-text-muted);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  &__stats {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.live-dot {
+  color: var(--ex-danger);
+  animation: pulse 2s infinite;
+  display: flex;
+  align-items: center;
+}
+
+/* --- Main Grid Workspace --- */
+.exec-workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 28% 44% 28%; /* Tỷ lệ vàng cho màn hình rộng */
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100vh - 80px - 60px); /* Trừ header và footer min-height */
+  overflow: hidden;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Zones (Columns) --- */
+.exec-zone {
+  background-color: var(--ex-bg-panel);
+  border: var(--ex-border);
+  border-radius: var(--ex-radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Highlight Zone Giữa */
+  &--primary {
+    background-color: #1c212b; /* Sáng hơn 1 chút */
+    box-shadow: var(--ex-shadow);
+    border-top: 2px solid var(--ex-primary);
+  }
+
+  &__header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: var(--ex-border);
+    background: rgba(0, 0, 0, 0.1);
+
+    h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0;
+      flex: 1;
+    }
+
+    .zone-icon {
+      color: var(--ex-text-muted);
+    }
+  }
+
+  &__content {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &.scrollable {
+      overflow-y: auto;
+
+      /* Slim scrollbar */
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    }
+  }
+}
+
+/* --- Helper Classes --- */
+.zone-badge {
+  background: var(--ex-primary);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.status-alert {
+  color: var(--ex-danger);
+  font-weight: 700;
+  font-size: 0.7rem;
+  border: 1px solid var(--ex-danger);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.exec-spacer {
+  height: 1rem; /* Khoảng cách chuẩn giữa các component con */
+}
+
+/* --- Footer Section --- */
+.exec-footer {
+  background-color: var(--ex-bg-header);
+  border-top: var(--ex-border);
+  padding: 0.75rem 1.5rem;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    h4 {
+      margin: 0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ex-text-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+  }
+
+  &__table-wrapper {
+    flex: 1;
+    overflow-x: auto;
+  }
+}
+
+.exec-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
+}
+
+/* --- Animations --- */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+  .exec-zone--dispatch {
+    grid-column: 1 / 2;
+  }
+  .exec-zone--primary {
+    grid-column: 2 / 3;
+  }
+  .exec-zone--tracking {
+    grid-column: 1 / 3;
+    order: 3;
+    height: 400px;
+  }
+}

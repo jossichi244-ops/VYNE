@@ -11,6 +11,7 @@ import {
   FiX,
   FiTruck,
   FiAirplay,
+  FiZap,
 } from "react-icons/fi";
 import "../styles/navbar.scss";
 
@@ -48,6 +49,12 @@ const Navbar = () => {
       path: "/checkout",
       requiresAuth: false,
       icon: FiTruck,
+    },
+    {
+      name: "Execution Centre",
+      path: "/execution",
+      requiresAuth: false,
+      icon: FiZap,
     },
     { name: "User List", path: "/", requiresAuth: false, icon: FiUsers },
     { name: "Profile", path: "/profile", requiresAuth: true, icon: FiUser },

@@ -1,0 +1,208 @@
+$cyan: #00e5ff;
+$dark-bg: rgba(10, 15, 26, 0.9);
+$border: rgba(255, 255, 255, 0.05);
+
+.print-terminal-container {
+  background: $dark-bg;
+  border: 1px solid $border;
+  border-radius: 28px;
+  padding: 1.5rem;
+  backdrop-filter: blur(20px);
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .title-area {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    .print-icon-bg {
+      width: 40px;
+      height: 40px;
+      background: rgba($cyan, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      .icon-main {
+        color: $cyan;
+        font-size: 1.2rem;
+      }
+      .signal-ring {
+        position: absolute;
+        inset: -2px;
+        border: 1px solid $cyan;
+        border-radius: inherit;
+        opacity: 0.3;
+        animation: pulse 2s infinite;
+      }
+    }
+    h4 {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      margin: 0;
+    }
+    p {
+      font-size: 7px;
+      color: #475569;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+  }
+
+  .queue-status {
+    text-align: right;
+    .label {
+      font-size: 8px;
+      font-weight: 900;
+      color: #475569;
+      letter-spacing: 1px;
+    }
+    .count {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.5rem;
+      font-weight: 900;
+      display: block;
+    }
+  }
+}
+
+.document-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 2rem;
+
+  .matrix-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid $border;
+    border-radius: 14px;
+    padding: 12px 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+
+    .item-icon {
+      color: #475569;
+      transition: 0.3s;
+      z-index: 2;
+    }
+    .item-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: #64748b;
+      z-index: 2;
+      letter-spacing: 1px;
+    }
+    .selection-indicator {
+      width: 3px;
+      height: 0%;
+      background: $cyan;
+      transition: 0.3s;
+    }
+
+    &.active {
+      border-color: rgba($cyan, 0.3);
+      background: rgba($cyan, 0.03);
+      .item-icon {
+        color: $cyan;
+        filter: drop-shadow(0 0 5px $cyan);
+      }
+      .item-label {
+        color: #fff;
+      }
+      .selection-indicator {
+        height: 60%;
+      }
+    }
+
+    .active-bg-glow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba($cyan, 0.05), transparent);
+      z-index: 1;
+    }
+  }
+}
+
+.terminal-footer {
+  .printer-status-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 7px;
+    font-weight: 900;
+    color: #334155;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: #2dff8f;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #2dff8f;
+    }
+  }
+
+  .master-print-trigger {
+    width: 100%;
+    height: 56px;
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    color: #000;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+
+    &:disabled {
+      opacity: 0.1;
+      cursor: not-allowed;
+    }
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .stripe-shimmer {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 0, 0, 0.03) 10px,
+        rgba(0, 0, 0, 0.03) 20px
+      );
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    scale: 1;
+    opacity: 0.3;
+  }
+  100% {
+    scale: 1.3;
+    opacity: 0;
+  }
+}

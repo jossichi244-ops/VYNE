@@ -12,6 +12,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import OrderIntakeConsole from "../pages/OrderIntake/OrderIntakeConsole";
 import CheckoutPromisePage from "../pages/CheckoutPromisePage";
 import CarrierControlConsole from "../pages/CarrierControlConsole";
+import Execution from "../pages/ExecutionCenterPage";
 const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   if (!token) return <Navigate to="/login" replace />;
@@ -70,12 +71,19 @@ const AppRoutes = () => {
               </MainLayout>
             }
           />
-
           <Route
             path="/carrier-control"
             element={
               <MainLayout>
                 <CarrierControlConsole />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/execution"
+            element={
+              <MainLayout>
+                <Execution />
               </MainLayout>
             }
           />
