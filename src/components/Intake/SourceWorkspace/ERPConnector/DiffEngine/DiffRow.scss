@@ -1,0 +1,260 @@
+/* --- Variables --- */
+$diff-bg: #14181f;
+$diff-border: rgba(255, 255, 255, 0.08);
+$diff-match: #2dff8f; /* Neon Green */
+$diff-warn: #ff9f1c; /* Amber */
+$diff-crit: #ff2a6d; /* Cyber Red */
+$diff-font-mono: "JetBrains Mono", monospace;
+
+.diff-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px; /* Cố định cột đầu và cuối */
+  align-items: center;
+  gap: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid $diff-border;
+  padding: 1rem 1.5rem;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  /* --- Severity Styling (Left Border) --- */
+  position: relative;
+  border-left: 3px solid transparent;
+
+  &.match {
+    border-left-color: $diff-match;
+  }
+
+  &.mismatch {
+    background-color: rgba(255, 159, 28, 0.05); /* Slight tint for errors */
+
+    &.severity-high {
+      border-left-color: $diff-crit;
+    }
+    &.severity-med {
+      border-left-color: $diff-warn;
+    }
+  }
+}
+
+/* --- 1. Field Info --- */
+.field-info {
+  display: flex;
+  align-items: center;
+
+  .meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+  }
+
+  .field-id {
+    font-family: $diff-font-mono;
+    font-size: 0.7rem;
+    color: #64748b;
+  }
+}
+
+/* --- 2. Comparison Engine (Center) --- */
+.comparison-engine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.data-node {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .node-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+  }
+
+  .value-display {
+    background-color: #0f1216;
+    border: 1px solid $diff-border;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: $diff-font-mono;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+
+    /* Inset look */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Highlight Live Data if Mismatch */
+  &.ops-node .value-display.highlight-diff {
+    color: $diff-warn;
+    border-color: rgba(255, 159, 28, 0.3);
+    text-shadow: 0 0 8px rgba(255, 159, 28, 0.3);
+    background-color: rgba(255, 159, 28, 0.05);
+  }
+}
+
+/* Status Bridge (The icon in the middle) */
+.status-bridge {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px; /* Align with input box roughly */
+
+  .connector-line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #334155, transparent);
+    z-index: 0;
+  }
+
+  .status-indicator {
+    position: relative;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+
+    /* Match State */
+    .match & {
+      color: $diff-match;
+      border-color: rgba(45, 255, 143, 0.3);
+    }
+
+    /* Mismatch State */
+    .mismatch & {
+      color: $diff-warn;
+      border-color: $diff-warn;
+      animation: pulse-warn 2s infinite;
+    }
+
+    .severity-high & {
+      color: $diff-crit;
+      border-color: $diff-crit;
+    }
+  }
+}
+
+/* --- 3. Action Zone --- */
+.action-zone {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-sync {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  border: 1px solid $diff-warn;
+  color: $diff-warn;
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: $diff-warn;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 159, 28, 0.4);
+    transform: translateX(-2px);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.match-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* --- Animations --- */
+@keyframes pulse-warn {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 159, 28, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(255, 159, 28, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 159, 28, 0);
+  }
+}
+
+/* --- Mobile / Tablet Responsive --- */
+@media (max-width: 768px) {
+  .diff-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .comparison-engine {
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .status-bridge {
+    width: 100%;
+    height: 20px;
+    margin: 0;
+
+    .connector-line {
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, #334155, transparent);
+    }
+  }
+
+  .action-zone {
+    justify-content: stretch;
+    .btn-sync {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

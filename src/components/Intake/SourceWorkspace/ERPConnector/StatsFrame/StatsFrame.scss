@@ -1,0 +1,220 @@
+/* --- Variables --- */
+$stats-bg: rgba(26, 30, 38, 0.6);
+$stats-border: rgba(255, 255, 255, 0.08);
+$stats-primary: #00b4d8;
+$stats-warn: #fca311;
+$stats-crit: #ef233c;
+$stats-font-mono: "JetBrains Mono", monospace;
+
+.stats-glass-frame {
+  background: $stats-bg;
+  backdrop-filter: blur(12px); // Hiệu ứng làm mờ kính
+  border: $stats-border;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Stats Grid Layout --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+
+  .node-icon {
+    font-size: 1.25rem;
+    // color: $stats-text-mute;
+    opacity: 0.6;
+  }
+
+  .node-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .node-value {
+    font-family: $stats-font-mono;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .node-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  /* Variations */
+  &.warning {
+    .node-value {
+      color: $stats-warn;
+    }
+    .glow-line {
+      background: $stats-warn;
+    }
+  }
+
+  &.critical {
+    .node-value {
+      color: $stats-crit;
+    }
+    .glow-line {
+      background: $stats-crit;
+    }
+    animation: critical-pulse 2s infinite ease-in-out;
+  }
+
+  .glow-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    opacity: 0.3;
+  }
+}
+
+/* --- Health Monitor Section --- */
+.health-monitor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .health-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .health-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: $stats-primary;
+    letter-spacing: 0.05em;
+
+    .pulse-icon {
+      animation: heart-beat 1.5s infinite;
+    }
+  }
+
+  .health-percentage {
+    font-family: $stats-font-mono;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+  }
+}
+
+/* Progress Bar Engine */
+.progress-engine {
+  position: relative;
+
+  .track-bg {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .track-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0077b6, $stats-primary);
+    border-radius: 4px;
+    position: relative;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.4);
+
+    .shimmer-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      animation: shimmer 2s infinite;
+    }
+  }
+
+  .ruler-markers {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 6px;
+
+    .marker {
+      width: 1px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      &:nth-child(5n + 1) {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}
+
+/* --- Animations --- */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes heart-beat {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+@keyframes critical-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 35, 60, 0);
+  }
+  50% {
+    box-shadow: 0 0 15px 0 rgba(239, 35, 60, 0.15);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 35, 60, 0);
+  }
+}

@@ -1,0 +1,250 @@
+/* --- Variables --- */
+$conn-bg: rgba(13, 17, 23, 0.8);
+$conn-border: rgba(0, 255, 242, 0.15);
+$conn-cyan: #00f2ff;
+$conn-green: #39ff14;
+$conn-text: #94a3b8;
+$conn-font-mono: "JetBrains Mono", monospace;
+
+.conn-module {
+  position: relative;
+  background: $conn-bg;
+  border: 1px solid $conn-border;
+  border-radius: 10px;
+  padding: 1.25rem;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba($conn-cyan, 0.4);
+    box-shadow: 0 0 20px rgba($conn-cyan, 0.1);
+  }
+
+  /* Status Colors */
+  &.stable {
+    --accent: #39ff14;
+  }
+  &.warning {
+    --accent: #fca311;
+  }
+  &.error {
+    --accent: #ef233c;
+  }
+}
+
+/* Circuit Background Decor */
+.conn-circuit-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 100%;
+  opacity: 0.05;
+  background-image: radial-gradient(circle, $conn-cyan 1px, transparent 1px);
+  background-size: 15px 15px;
+  mask-image: linear-gradient(to left, black, transparent);
+  pointer-events: none;
+}
+
+.conn-main {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* 1. Hardware Column */
+.conn-hardware {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  .icon-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .icon-server {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .status-glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--accent);
+      opacity: 0.2;
+      animation: pulse-ring 2s infinite;
+    }
+  }
+
+  .status-badge {
+    font-family: $conn-font-mono;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+  }
+}
+
+/* 2. Info Column */
+.conn-info {
+  flex: 1;
+
+  .info-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+
+    .label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: $conn-text;
+      letter-spacing: 0.1em;
+    }
+
+    .protocol-tag {
+      font-size: 0.55rem;
+      background: rgba($conn-cyan, 0.1);
+      color: $conn-cyan;
+      padding: 1px 4px;
+      border-radius: 3px;
+      border: 1px solid rgba($conn-cyan, 0.2);
+    }
+  }
+
+  .provider-name {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Metrics Row */
+.conn-metrics {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+
+    .m-icon {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: $conn-text;
+      &.secure {
+        color: $conn-green;
+      }
+    }
+
+    .m-val {
+      font-family: $conn-font-mono;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .m-lbl {
+      font-size: 0.55rem;
+      color: #475569;
+      font-weight: 700;
+    }
+  }
+
+  .metric-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* 3. Visualizer Column */
+.conn-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+  padding-bottom: 10px;
+
+  .signal-bar {
+    width: 3px;
+    background: var(--accent);
+    opacity: 0.3;
+    border-radius: 1px;
+
+    &:nth-child(1) {
+      height: 30%;
+      animation: bar-up 1s infinite;
+    }
+    &:nth-child(2) {
+      height: 60%;
+      animation: bar-up 1.2s infinite 0.2s;
+    }
+    &:nth-child(3) {
+      height: 45%;
+      animation: bar-up 0.8s infinite 0.4s;
+    }
+    &:nth-child(4) {
+      height: 80%;
+      animation: bar-up 1.5s infinite 0.1s;
+    }
+  }
+
+  .wifi-icon {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-left: 4px;
+    opacity: 0.5;
+  }
+}
+
+/* --- Animations --- */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.2;
+  }
+}
+
+@keyframes bar-up {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.6);
+    opacity: 0.8;
+  }
+}

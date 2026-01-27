@@ -1,0 +1,227 @@
+/* --- Variables --- */
+$tl-bg: rgba(15, 20, 25, 0.7);
+$tl-primary: #00b4d8;
+$tl-success: #2dff8f;
+$tl-warn: #ff9f1c;
+$tl-dim: #475569;
+$tl-font-mono: "JetBrains Mono", monospace;
+
+.tl-wrapper {
+  background: $tl-bg;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  height: 100%;
+}
+
+/* 1. Header Styling */
+.tl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  .tl-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .status-text {
+      font-weight: 800;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: #fff;
+    }
+  }
+
+  .tl-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba($tl-warn, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba($tl-warn, 0.2);
+    color: $tl-warn;
+
+    .alert-icon {
+      font-size: 1.1rem;
+      animation: blink 1s infinite;
+    }
+    .alert-meta {
+      display: flex;
+      flex-direction: column;
+      .alert-label {
+        font-size: 0.55rem;
+        font-weight: 700;
+        opacity: 0.7;
+      }
+      .alert-val {
+        font-family: $tl-font-mono;
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+    }
+  }
+}
+
+/* 2. Timeline Core */
+.tl-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.tl-item {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 70px;
+
+  /* Spine & Nodes */
+  .tl-spine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 24px;
+
+    .tl-node {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid $tl-dim;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: $tl-dim;
+      z-index: 2;
+      transition: all 0.3s;
+    }
+
+    .tl-line {
+      width: 2px;
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      margin: 4px 0;
+    }
+  }
+
+  /* Content Styling */
+  .tl-content {
+    flex: 1;
+    padding-bottom: 1.5rem;
+
+    .tl-main-info {
+      .tl-name {
+        margin: 0;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #94a3b8;
+        transition: color 0.3s;
+      }
+      .tl-time {
+        font-family: $tl-font-mono;
+        font-size: 0.7rem;
+        color: #475569;
+      }
+    }
+  }
+
+  /* Status: COMPLETED */
+  &.is-done {
+    .tl-node {
+      background: $tl-success;
+      border-color: $tl-success;
+      color: #000;
+      box-shadow: 0 0 10px rgba($tl-success, 0.3);
+    }
+    .tl-line {
+      background: $tl-success;
+    }
+    .tl-name {
+      color: #e2e8f0;
+    }
+    .tl-time {
+      color: $tl-success;
+    }
+  }
+
+  /* Status: ACTIVE (Current Step) */
+  &.is-active {
+    .tl-node {
+      border-color: $tl-primary;
+      color: $tl-primary;
+      animation: pulse-border 2s infinite;
+    }
+    .tl-name {
+      color: #fff;
+      font-weight: 800;
+    }
+    .tl-active-bar {
+      height: 2px;
+      width: 30px;
+      background: $tl-primary;
+      margin-top: 8px;
+      border-radius: 2px;
+      box-shadow: 0 0 8px $tl-primary;
+    }
+  }
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba($tl-primary, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba($tl-primary, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($tl-primary, 0);
+  }
+}
+
+/* Pulse Dot in Header */
+.pulse-container {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  .pulse-dot {
+    width: 100%;
+    height: 100%;
+    background: $tl-success;
+    border-radius: 50%;
+  }
+  .pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid $tl-success;
+    border-radius: 50%;
+    animation: pulse-ring 1.5s infinite;
+  }
+}

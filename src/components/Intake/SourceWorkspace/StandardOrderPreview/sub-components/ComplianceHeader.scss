@@ -1,0 +1,185 @@
+/* --- Variables --- */
+$comp-bg: rgba(18, 22, 28, 0.9);
+$comp-border: rgba(255, 255, 255, 0.08);
+$comp-primary: #00b4d8;
+$comp-danger: #ff4d4d;
+$comp-success: #00ff88;
+$font-mono: "JetBrains Mono", monospace;
+
+.compliance-card {
+  background: $comp-bg;
+  border: 1px solid $comp-border;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $comp-primary, transparent);
+  }
+
+  &.risk-critical::before {
+    background: linear-gradient(90deg, transparent, $comp-danger, transparent);
+  }
+
+  /* 1. Header Section */
+  &__top {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid $comp-border;
+
+    .mawb-label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #64748b;
+      letter-spacing: 0.1em;
+    }
+
+    .mawb-number {
+      font-family: $font-mono;
+      font-size: 1.1rem;
+      color: #fff;
+      margin: 0;
+    }
+
+    .incoterm-badge {
+      background: $comp-primary;
+      color: #000;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba($comp-primary, 0.3);
+    }
+  }
+
+  /* 2. Content Section */
+  &__content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+/* Route Visualizer (Route flow) */
+.route-visualizer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .port-node {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+
+    .node-icon {
+      font-size: 1.25rem;
+      color: $comp-primary;
+      background: rgba($comp-primary, 0.1);
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .node-text {
+      label {
+        display: block;
+        font-size: 0.6rem;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #e2e8f0;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .transit-path {
+    display: flex;
+    align-items: center;
+    flex: 0.5;
+    opacity: 0.4;
+    .line {
+      flex: 1;
+      height: 1px;
+      border-top: 2px dashed #475569;
+    }
+    .arrow {
+      color: #475569;
+    }
+  }
+}
+
+/* Customs Status */
+.customs-status {
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  border-left: 4px solid $comp-success;
+
+  .status-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .status-icon {
+      font-size: 1.2rem;
+      color: $comp-success;
+    }
+
+    .status-info {
+      label {
+        display: block;
+        font-size: 0.6rem;
+        color: #64748b;
+        font-weight: 700;
+      }
+      p {
+        margin: 0;
+        font-family: $font-mono;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #fff;
+      }
+    }
+  }
+
+  &.is-missing {
+    border-left-color: $comp-danger;
+    background: rgba($comp-danger, 0.05);
+    .status-icon,
+    p {
+      color: $comp-danger;
+    }
+  }
+
+  /* "Dấu mộc" điện tử */
+  .verified-seal {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-15deg);
+    border: 2px solid rgba($comp-success, 0.4);
+    color: rgba($comp-success, 0.4);
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,206 @@
+/* --- Variables (Kế thừa từ hệ thống trước) --- */
+$dl-bg-dark: #0f1216;
+$dl-bg-panel: #14181f;
+$dl-border: rgba(255, 255, 255, 0.08);
+$dl-primary: #00b4d8;
+$dl-warn: #ff9f1c;
+$dl-danger: #ef233c;
+$dl-text-mute: #64748b;
+$dl-font-mono: "JetBrains Mono", monospace;
+
+.dl-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Fill container cha */
+  background-color: $dl-bg-dark;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid $dl-border;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 1. Toolbar Section --- */
+.dl-toolbar {
+  padding: 1.25rem;
+  background-color: $dl-bg-panel;
+  border-bottom: 1px solid $dl-border;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+}
+
+/* Search Module */
+.dl-search-module {
+  flex: 1;
+  max-width: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .search-icon-box {
+    position: absolute;
+    left: 12px;
+    color: $dl-text-mute;
+    font-size: 1.1rem;
+    pointer-events: none;
+    transition: color 0.3s;
+  }
+
+  input {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid $dl-border;
+    border-radius: 8px;
+    padding: 10px 12px 10px 40px; /* Chừa chỗ cho icon */
+    color: #fff;
+    font-family: $dl-font-mono;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:focus {
+      border-color: $dl-primary;
+      background-color: rgba(0, 180, 216, 0.05);
+      box-shadow: 0 0 15px rgba(0, 180, 216, 0.1);
+
+      + .search-icon-box {
+        color: $dl-primary;
+      } /* Highlight icon khi input focus */
+    }
+  }
+}
+
+/* Filter Tabs */
+.dl-filter-tabs {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: $dl-text-mute;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+
+    .tab-icon {
+      font-size: 1rem;
+      opacity: 0.7;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      min-width: 20px;
+    }
+
+    /* Hover State */
+    &:hover {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Active States */
+    &.active {
+      background-color: #2b3544;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+      &.warning {
+        background-color: rgba(255, 159, 28, 0.15);
+        color: $dl-warn;
+        .badge {
+          background: $dl-warn;
+          color: #000;
+        }
+      }
+
+      &.danger {
+        background-color: rgba(239, 35, 60, 0.15);
+        color: $dl-danger;
+        .badge {
+          background: $dl-danger;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+/* --- 2. Viewport & Scroll Area --- */
+.dl-viewport {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.1);
+
+  /* Custom Scrollbar for Webkit */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #334155;
+    border-radius: 10px;
+    border: 2px solid $dl-bg-dark; /* Tạo padding giả */
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #475569;
+  }
+}
+
+.dl-grid {
+  display: flex;
+  flex-direction: column;
+  /* DiffRow đã có border-bottom, nên không cần gap nếu muốn liền mạch */
+}
+
+.dl-empty-state {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $dl-text-mute;
+  font-family: $dl-font-mono;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+/* --- 3. Footer --- */
+.dl-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: $dl-bg-panel;
+  border-top: 1px solid $dl-border;
+  color: #475569;
+  font-size: 0.7rem;
+  font-family: $dl-font-mono;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: right;
+}
