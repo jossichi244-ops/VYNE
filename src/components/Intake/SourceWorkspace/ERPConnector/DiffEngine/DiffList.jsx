@@ -5,93 +5,131 @@ import {
   FiAlertOctagon,
   FiAlertTriangle,
   FiList,
+  FiDollarSign,
+  FiShield,
 } from "react-icons/fi";
-import "./DiffList.scss"; // Dùng chung file SCSS hoặc tách ra DiffList.scss
+import "./DiffList.scss";
 
 const DiffList = ({ data, onResolve }) => {
   const [filter, setFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // 1. Tính toán Filter & Search
+  /* ===============================
+   * 1. FILTER + SEARCH + RISK LOGIC
+   * =============================== */
   const filteredData = useMemo(() => {
     return data.filter((item) => {
-      // Logic Search
       const searchLower = searchTerm.toLowerCase();
+
       const matchesSearch =
-        item.id.toString().toLowerCase().includes(searchLower) ||
-        (item.seal && item.seal.toLowerCase().includes(searchLower));
+        item.id?.toString().toLowerCase().includes(searchLower) ||
+        item.seal?.toLowerCase().includes(searchLower) ||
+        item.bookingNo?.toLowerCase().includes(searchLower);
 
       if (!matchesSearch) return false;
 
-      // Logic Filter Tab
-      if (filter === "critical")
-        return item.severity === "high" && item.status !== "match";
-      if (filter === "mismatch") return item.status !== "match";
-      return true;
+      switch (filter) {
+        case "critical":
+          return item.riskLevel === "critical";
+        case "mismatch":
+          return item.status !== "match";
+        case "financial":
+          return item.estimatedCostImpact > 0;
+        case "customs":
+          return item.blockingCustoms === true;
+        default:
+          return true;
+      }
     });
   }, [data, filter, searchTerm]);
 
-  // 2. Tính toán số lượng cho Badges
-  const counts = useMemo(() => {
+  /* ===============================
+   * 2. COUNTERS & COST AGGREGATION
+   * =============================== */
+  const stats = useMemo(() => {
     return {
       all: data.length,
-      critical: data.filter(
-        (i) => i.severity === "high" && i.status !== "match",
-      ).length,
       mismatch: data.filter((i) => i.status !== "match").length,
+      critical: data.filter((i) => i.riskLevel === "critical").length,
+      financial: data.filter((i) => i.estimatedCostImpact > 0).length,
+      customs: data.filter((i) => i.blockingCustoms).length,
+      totalExposure: data.reduce(
+        (sum, i) => sum + (i.estimatedCostImpact || 0),
+        0,
+      ),
     };
   }, [data]);
 
   return (
     <div className="dl-wrapper">
-      {/* HEADER: TOOLBAR & CONTROLS */}
+      {/* ================= HEADER ================= */}
       <div className="dl-toolbar">
-        {/* Search Input - Terminal Style */}
+        {/* Search */}
         <div className="dl-search-module">
           <div className="search-icon-box">
             <FiSearch />
           </div>
           <input
             type="text"
-            placeholder="Search ID, Order Ref..."
+            placeholder="Search Shipment ID, Booking, Seal..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        {/* Filter Tabs - Segmented Control Style */}
+        {/* FILTER TABS */}
         <div className="dl-filter-tabs">
           <button
             className={`tab-btn ${filter === "all" ? "active" : ""}`}
             onClick={() => setFilter("all")}>
-            <FiList className="tab-icon" />
-            <span>ALL</span>
-            <span className="badge">{counts.all}</span>
+            <FiList />
+            ALL
+            <span className="badge">{stats.all}</span>
           </button>
 
           <button
-            className={`tab-btn warning ${filter === "mismatch" ? "active" : ""}`}
+            className={`tab-btn warning ${
+              filter === "mismatch" ? "active" : ""
+            }`}
             onClick={() => setFilter("mismatch")}>
-            <FiAlertTriangle className="tab-icon" />
-            <span>CONFLICTS</span>
-            {counts.mismatch > 0 && (
-              <span className="badge">{counts.mismatch}</span>
-            )}
+            <FiAlertTriangle />
+            CONFLICTS
+            <span className="badge">{stats.mismatch}</span>
           </button>
 
           <button
-            className={`tab-btn danger ${filter === "critical" ? "active" : ""}`}
+            className={`tab-btn danger ${
+              filter === "critical" ? "active" : ""
+            }`}
             onClick={() => setFilter("critical")}>
-            <FiAlertOctagon className="tab-icon" />
-            <span>CRITICAL</span>
-            {counts.critical > 0 && (
-              <span className="badge">{counts.critical}</span>
-            )}
+            <FiAlertOctagon />
+            CRITICAL
+            <span className="badge">{stats.critical}</span>
+          </button>
+
+          <button
+            className={`tab-btn money ${
+              filter === "financial" ? "active" : ""
+            }`}
+            onClick={() => setFilter("financial")}>
+            <FiDollarSign />
+            FINANCIAL
+            <span className="badge">{stats.financial}</span>
+          </button>
+
+          <button
+            className={`tab-btn customs ${
+              filter === "customs" ? "active" : ""
+            }`}
+            onClick={() => setFilter("customs")}>
+            <FiShield />
+            CUSTOMS
+            <span className="badge">{stats.customs}</span>
           </button>
         </div>
       </div>
 
-      {/* BODY: SCROLLABLE LIST */}
+      {/* ================= BODY ================= */}
       <div className="dl-viewport">
         {filteredData.length > 0 ? (
           <div className="dl-grid">
@@ -101,14 +139,19 @@ const DiffList = ({ data, onResolve }) => {
           </div>
         ) : (
           <div className="dl-empty-state">
-            <span>NO RECORDS FOUND</span>
+            <span>NO MATCHING RECORDS</span>
           </div>
         )}
       </div>
 
-      {/* FOOTER: MINI STATS */}
+      {/* ================= FOOTER ================= */}
       <div className="dl-footer">
-        Showing {filteredData.length} records • System Synced: 2 mins ago
+        <span>Showing {filteredData.length} shipments</span>
+        <span className="exposure">
+          💰 Estimated Exposure:{" "}
+          <strong>${stats.totalExposure.toLocaleString()}</strong>
+        </span>
+        <span>Last Sync: 2 mins ago</span>
       </div>
     </div>
   );

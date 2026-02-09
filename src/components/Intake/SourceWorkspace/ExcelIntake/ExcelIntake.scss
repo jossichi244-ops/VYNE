@@ -1,0 +1,307 @@
+/* --- Variables & HUD Colors --- */
+$bg-main: #0a0e14;
+$bg-panel: rgba(16, 22, 31, 0.8);
+$cyan-glow: #00f2ff;
+$amber-warn: #ffb700;
+$border-glass: rgba(255, 255, 255, 0.08);
+$font-mono: "JetBrains Mono", monospace;
+
+.logistics-intake-wrapper {
+  background-color: $bg-main;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+/* 1️⃣ UPLOAD TERMINAL: SCANNER EFFECT */
+.upload-terminal {
+  position: relative;
+  background: $bg-panel;
+  border: 1px dashed rgba($cyan-glow, 0.3);
+  border-radius: 16px;
+  padding: 3rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.dragging {
+    background: rgba($cyan-glow, 0.05);
+    border-color: $cyan-glow;
+    transform: scale(1.02);
+  }
+
+  .scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $cyan-glow, transparent);
+    box-shadow: 0 0 15px $cyan-glow;
+    animation: scan-vertical 3s infinite linear;
+    z-index: 2;
+  }
+
+  .terminal-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+
+    .upload-icon-box {
+      position: relative;
+      font-size: 3rem;
+      color: $cyan-glow;
+
+      .floating-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: blur(20px);
+        background: $cyan-glow;
+        opacity: 0.2;
+      }
+    }
+
+    .title {
+      font-family: $font-mono;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .file-limit-tag {
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      border: 1px solid $border-glass;
+      border-radius: 20px;
+      color: #64748b;
+    }
+  }
+}
+
+/* 3️⃣ AI MAPPING ENGINE: NEURAL STYLE */
+.mapping-engine-card {
+  background: $bg-panel;
+  border-radius: 20px;
+  border: 1px solid $border-glass;
+  backdrop-filter: blur(20px);
+  padding: 1.5rem;
+
+  .engine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-glass;
+
+    .header-left {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+
+      .ai-orbit {
+        position: relative;
+        .ai-icon {
+          font-size: 2rem;
+          color: $cyan-glow;
+          z-index: 2;
+          position: relative;
+        }
+        .orbit-ring {
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          width: 50px;
+          height: 50px;
+          border: 1px solid rgba($cyan-glow, 0.2);
+          border-radius: 50%;
+          animation: rotate 10s linear infinite;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 6px;
+            height: 6px;
+            background: $cyan-glow;
+            border-radius: 50%;
+            box-shadow: 0 0 10px $cyan-glow;
+          }
+        }
+      }
+    }
+
+    .ai-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba($cyan-glow, 0.1);
+      color: $cyan-glow;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      .zap-icon {
+        animation: blink 1.5s infinite;
+      }
+    }
+  }
+}
+
+/* THE MAPPING GRID */
+.mapping-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mapping-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba($cyan-glow, 0.2);
+  }
+
+  .source-col {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .file-icon {
+      color: #64748b;
+    }
+    .field-name {
+      font-family: $font-mono;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+  }
+
+  .connection-path {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+
+    .path-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+
+      .path-pulse {
+        position: absolute;
+        top: 0;
+        width: 40px;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          $cyan-glow,
+          transparent
+        );
+      }
+    }
+    .arrow-icon {
+      color: $cyan-glow;
+      margin-left: 10px;
+    }
+  }
+
+  .target-col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .std-name {
+      font-weight: 700;
+      color: $cyan-glow;
+    }
+    .confidence-score {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-left: 10px;
+    }
+  }
+
+  /* Status Themes */
+  &.warning {
+    border-left: 3px solid $amber-warn;
+    .target-col .std-name {
+      color: $amber-warn;
+    }
+    .path-pulse {
+      background: linear-gradient(90deg, transparent, $amber-warn, transparent);
+    }
+    .arrow-icon {
+      color: $amber-warn;
+    }
+  }
+}
+
+.btn-confirm-all {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1rem;
+  background: $cyan-glow;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    box-shadow: 0 0 30px rgba($cyan-glow, 0.4);
+    transform: translateY(-2px);
+  }
+}
+
+/* Animations */
+@keyframes scan-vertical {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}

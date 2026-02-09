@@ -1,0 +1,185 @@
+/* --- Variables --- */
+$customs-bg: #0d1117;
+$customs-panel: rgba(22, 27, 34, 0.9);
+$customs-border: rgba(255, 255, 255, 0.1);
+
+$status-blocked: #f85149; // Red
+$status-review: #dbab09; // Amber
+$status-cleared: #3fb950; // Green
+$font-mono: "JetBrains Mono", monospace;
+
+.customs-module {
+  background: $customs-bg;
+  padding: 2rem;
+  border-radius: 12px;
+  color: #c9d1d9;
+  font-family: "Inter", sans-serif;
+
+  h2 {
+    font-size: 1.1rem;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: "OFFICIAL AUDIT";
+      font-size: 0.6rem;
+      background: #30363d;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 15px;
+    }
+  }
+}
+
+/* ================= SUMMARY CARDS ================= */
+.compliance-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  .summary-card {
+    background: $customs-panel;
+    border: 1px solid $customs-border;
+    padding: 1.5rem;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+
+    span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #8b949e;
+      margin-bottom: 0.5rem;
+    }
+
+    strong {
+      font-family: $font-mono;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+
+    &.danger::before {
+      background: $status-blocked;
+      box-shadow: 0 0 10px $status-blocked;
+    }
+    &.warning::before {
+      background: $status-review;
+    }
+    &.critical::before {
+      background: #fff;
+    }
+  }
+}
+
+/* ================= COMPLIANCE TABLE ================= */
+.compliance-table {
+  background: $customs-panel;
+  border: 1px solid $customs-border;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+
+    th {
+      background: rgba(48, 54, 61, 0.5);
+      padding: 12px 16px;
+      text-align: left;
+      color: #8b949e;
+      border-bottom: 1px solid $customs-border;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: $font-mono;
+    }
+
+    /* Status Label Styling */
+    tr {
+      &.critical td:nth-child(5) {
+        color: $status-blocked;
+        font-weight: 800;
+        &::before {
+          content: "● ";
+          font-size: 10px;
+        }
+      }
+      &.high td:nth-child(5) {
+        color: $status-review;
+      }
+    }
+
+    /* Penalty Column */
+    td:nth-child(8) {
+      color: $status-blocked;
+      font-weight: 700;
+    }
+  }
+}
+
+/* ================= DOCUMENT ALERT CARDS ================= */
+.doc-alert-card {
+  background: rgba($status-blocked, 0.05);
+  border: 1px solid rgba($status-blocked, 0.2);
+  border-left: 4px solid $status-blocked;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  animation: slideIn 0.4s ease-out;
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    color: $status-blocked;
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    li {
+      font-size: 0.85rem;
+      color: #e6edf3;
+      margin-bottom: 4px;
+      &::marker {
+        color: $status-blocked;
+      }
+    }
+  }
+
+  span {
+    font-size: 0.85rem;
+    color: #8b949e;
+    font-style: italic;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

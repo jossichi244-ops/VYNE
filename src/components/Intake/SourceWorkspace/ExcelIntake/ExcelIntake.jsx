@@ -8,11 +8,28 @@ import {
   FiCheckCircle,
   FiZap,
 } from "react-icons/fi";
+
 import "./ExcelIntake.scss";
+
+// === Enterprise Intelligence Blocks ===
+import {
+  fileSummary,
+  // fieldMappings,
+  conflicts,
+  costScenarios,
+} from "./mockData";
+
+import FileSummary from "./components/FileSummary";
+import ConflictDetector from "./components/ConflictDetector";
+import CostImpact from "./components/CostImpact";
+import OperationalActions from "./components/OperationalActions";
+import BulkOperations from "./components/BulkOperations";
 
 const ExcelIntake = () => {
   const [isDragging, setIsDragging] = useState(false);
+  const [, setApproved] = useState(false);
 
+  // 🔹 UI Mapping (cinematic layer)
   const mappingData = [
     {
       excel: "Consignee_Name",
@@ -36,7 +53,9 @@ const ExcelIntake = () => {
 
   return (
     <div className="logistics-intake-wrapper">
-      {/* Upload Zone */}
+      {/* ======================================================
+          1️⃣ UPLOAD ZONE – FILE INTAKE TERMINAL
+      ====================================================== */}
       <motion.div
         onDragOver={() => setIsDragging(true)}
         onDragLeave={() => setIsDragging(false)}
@@ -44,7 +63,7 @@ const ExcelIntake = () => {
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.99 }}>
         <div className="terminal-inner">
-          <div className="scanner-line"></div>
+          <div className="scanner-line" />
           <div className="upload-icon-box">
             <FiUpload className="base-icon" />
             <motion.div
@@ -61,13 +80,20 @@ const ExcelIntake = () => {
         </div>
       </motion.div>
 
-      {/* AI Mapping Engine */}
+      {/* ======================================================
+          2️⃣ FILE INTELLIGENCE SUMMARY (ENTERPRISE)
+      ====================================================== */}
+      <FileSummary data={fileSummary} />
+
+      {/* ======================================================
+          3️⃣ AI FIELD MAPPING ENGINE (CINEMATIC)
+      ====================================================== */}
       <div className="mapping-engine-card">
         <div className="engine-header">
           <div className="header-left">
             <div className="ai-orbit">
               <FiCpu className="ai-icon" />
-              <div className="orbit-ring"></div>
+              <div className="orbit-ring" />
             </div>
             <div className="title-stack">
               <span className="eyebrow">Neural Mapping Engine</span>
@@ -128,9 +154,29 @@ const ExcelIntake = () => {
         </div>
 
         <div className="engine-footer">
-          <button className="btn-confirm-all">APPROVE ALL MAPPINGS</button>
+          <button className="btn-confirm-all">APPROVE FIELD MAPPINGS</button>
         </div>
       </div>
+
+      {/* ======================================================
+          4️⃣ CONFLICT / DUPLICATE DETECTOR
+      ====================================================== */}
+      <ConflictDetector issues={conflicts} />
+
+      {/* ======================================================
+          5️⃣ COST & RISK IMPACT SIMULATION
+      ====================================================== */}
+      <CostImpact scenarios={costScenarios} />
+
+      {/* ======================================================
+          6️⃣ OPERATIONAL ACTION LAYER
+      ====================================================== */}
+      <OperationalActions disabledReasons={conflicts} />
+
+      {/* ======================================================
+          7️⃣ BULK SMART OPERATIONS
+      ====================================================== */}
+      <BulkOperations onApprove={() => setApproved(true)} />
     </div>
   );
 };

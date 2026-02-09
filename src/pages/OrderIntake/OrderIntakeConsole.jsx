@@ -6,7 +6,7 @@ import { FiSave, FiZap, FiXCircle, FiCommand, FiGlobe } from "react-icons/fi";
 // Import các linh kiện đã tái thiết kế
 import IntakeHeader from "../../components/Intake/IntakeHeader";
 import SourceTabs from "../../components/Intake/SourceTabs";
-import ExcelIntake from "../../components/Intake/SourceWorkspace/ExcelIntake";
+import ExcelIntake from "../../components/Intake/SourceWorkspace/ExcelIntake/ExcelIntake";
 import ERPConnector from "../../components/Intake/SourceWorkspace/ERPConnector";
 import StandardOrderPreview from "../../components/Intake/StandardOrderPreview";
 

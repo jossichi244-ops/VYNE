@@ -1,0 +1,186 @@
+/* --- Variables & Risk Palette --- */
+$risk-bg: #0a0e14;
+$risk-panel: rgba(18, 26, 36, 0.7);
+$risk-border: rgba(255, 255, 255, 0.05);
+
+$color-critical: #ff3e3e; // Neon Red
+$color-high: #ffa500; // Electric Orange
+$color-financial: #00f2ff; // Cyan
+$color-text-dim: #94a3b8;
+
+$font-mono: "JetBrains Mono", monospace;
+
+.risk-module {
+  background: $risk-bg;
+  padding: 2rem;
+  border-radius: 16px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    color: $color-text-dim;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      background: $color-critical;
+      margin-right: 12px;
+      box-shadow: 0 0 10px $color-critical;
+    }
+  }
+}
+
+/* ================= EXECUTIVE SUMMARY GRID ================= */
+.risk-executive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.risk-card {
+  background: $risk-panel;
+  border: 1px solid $risk-border;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: $color-text-dim;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  strong {
+    font-family: $font-mono;
+    font-size: 2rem;
+    font-weight: 800;
+  }
+
+  /* Specific Card Themes */
+  &.critical {
+    border-left: 4px solid $color-critical;
+    strong {
+      color: $color-critical;
+      text-shadow: 0 0 15px rgba($color-critical, 0.4);
+    }
+  }
+
+  &.high {
+    border-left: 4px solid $color-high;
+    strong {
+      color: $color-high;
+    }
+  }
+
+  &.financial {
+    background: linear-gradient(
+      145deg,
+      $risk-panel,
+      rgba($color-financial, 0.05)
+    );
+    strong {
+      color: $color-financial;
+    }
+  }
+}
+
+/* ================= PREDICTIVE DETAIL TABLE ================= */
+.risk-table {
+  background: $risk-panel;
+  border: 1px solid $risk-border;
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+
+    thead {
+      background: rgba(255, 255, 255, 0.02);
+
+      th {
+        padding: 1rem;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: $color-text-dim;
+        border-bottom: 1px solid $risk-border;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        transition: background 0.2s;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+          padding: 1.2rem 1rem;
+          font-size: 0.85rem;
+          font-family: $font-mono;
+          color: #e2e8f0;
+        }
+      }
+
+      /* Risk Row Logic */
+      .risk-row {
+        &.critical {
+          td:first-child {
+            color: $color-critical;
+            font-weight: 700;
+          }
+          background: rgba($color-critical, 0.03);
+        }
+        &.high {
+          td:first-child {
+            color: $color-high;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Hiệu ứng nhịp đập cho dữ liệu Critical */
+@keyframes pulse-risk {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.risk-row.critical td:last-child {
+  color: $color-critical;
+  animation: pulse-risk 2s infinite ease-in-out;
+}
