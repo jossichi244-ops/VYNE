@@ -1,0 +1,125 @@
+/* Variables */
+$bg-dark: #0f172a;
+$header-bg: #1e293b;
+$border: rgba(255, 255, 255, 0.08);
+$accent: #38bdf8;
+$error: #ef4444;
+
+.data-preview-wrapper {
+  background: $bg-dark;
+  border: 1px solid $border;
+  border-radius: 12px;
+  overflow: hidden; // Bo góc cho container
+  display: flex;
+  flex-direction: column;
+  width: 100%; // Cố định chiều rộng cha
+}
+
+.preview-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid $border;
+
+  .title-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    h4 {
+      margin: 0;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      color: $accent;
+    }
+    .badge {
+      font-size: 0.6rem;
+      background: rgba($accent, 0.1);
+      color: $accent;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba($accent, 0.2);
+    }
+  }
+
+  .meta-section {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+}
+
+.table-scroll-container {
+  max-height: 500px;
+  width: 100%; // Chiều rộng cố định của "khung nhìn"
+  overflow-x: auto; // Ép buộc hiện scroll ngang khi nội dung tràn
+  overflow-y: auto; // Scroll dọc
+  position: relative;
+  display: block; // Đảm bảo container hoạt động như một khối độc lập
+  border: 1px solid $border;
+  border-radius: 0 0 12px 12px;
+  // Custom scrollbar (giữ nguyên của bạn)
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+}
+
+.preview-table {
+  border-collapse: separate;
+  border-spacing: 0;
+
+  /* THAY ĐỔI CHIẾN THUẬT Ở ĐÂY */
+  table-layout: fixed;
+  width: auto; // Thay vì max-content, dùng auto để các cột tự quyết định width
+  min-width: 100%;
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: $header-bg;
+    padding: 14px 16px;
+    border-bottom: 2px solid $border;
+  }
+
+  .col-index {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px; // Ép cứng chiều rộng
+    position: sticky;
+    left: 0;
+    z-index: 20; // Header của index phải cao nhất
+    background: $header-bg;
+    border-right: 1px solid $border;
+  }
+
+  .col-data {
+    /* ÉP CHIỀU RỘNG CỘT */
+    width: 200px;
+    min-width: 200px; // Buộc mỗi cột dữ liệu phải rộng 200px
+    max-width: 200px;
+
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+
+    .cell-content {
+      display: block; // Quan trọng để text-overflow hoạt động
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  /* Fix lỗi z-index cho body để không đè lên header khi scroll */
+  tbody td.col-index {
+    z-index: 5;
+    background: #111827;
+  }
+}

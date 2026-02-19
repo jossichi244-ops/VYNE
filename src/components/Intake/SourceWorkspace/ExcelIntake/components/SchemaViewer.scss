@@ -1,0 +1,211 @@
+/* Senior-grade Schema Inspector Styles */
+:root {
+  --ide-bg: #111827;
+  --ide-header: #1e293b;
+  --ide-border: #334155;
+  --ide-row-hover: rgba(51, 65, 85, 0.4);
+  --ide-accent: #38bdf8;
+
+  /* Type Colors */
+  --color-str: #4ade80;
+  --color-num: #fbbf24;
+  --color-enum: #a78bfa;
+  --color-date: #f472b6;
+}
+
+.json-schema-inspector {
+  background: var(--ide-bg);
+  border: 1px solid var(--ide-border);
+  border-radius: 12px;
+  font-family: "Inter", system-ui, sans-serif;
+  color: #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  .inspector-header {
+    background: var(--ide-header);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--ide-border);
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .shield-icon {
+        color: var(--ide-accent);
+        font-size: 1.5rem;
+      }
+      h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .schema-version {
+        font-size: 0.7rem;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+    }
+
+    .prop-count {
+      font-size: 0.75rem;
+      background: #000;
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: #94a3b8;
+      border: 1px solid var(--ide-border);
+    }
+  }
+
+  .inspector-viewport {
+    overflow-x: auto;
+  }
+
+  .schema-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+
+    th {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 12px 1.5rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--ide-border);
+    }
+
+    .schema-row {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      transition: background 0.15s;
+
+      &:hover {
+        background: var(--ide-row-hover);
+        .btn-goto {
+          opacity: 1;
+        }
+      }
+
+      td {
+        padding: 14px 1.5rem;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  /* Field Cell Styles */
+  .field-id {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+
+    svg {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    .field-name {
+      color: #f8fafc;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .req-star {
+      color: #ef4444;
+      margin-left: 2px;
+    }
+
+    .t-str {
+      color: var(--color-str);
+    }
+    .t-num {
+      color: var(--color-num);
+    }
+    .t-enum {
+      color: var(--color-enum);
+    }
+    .t-date {
+      color: var(--color-date);
+    }
+  }
+
+  /* Type Pill Styles */
+  .type-pill {
+    display: flex;
+    flex-direction: column;
+    .type-text {
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+    .format-text {
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+
+    .string {
+      color: var(--color-str);
+    }
+    .number,
+    .integer {
+      color: var(--color-num);
+    }
+  }
+
+  /* Constraint Tags */
+  .constraint-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .limit-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--ide-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: #94a3b8;
+
+      &.non-nullable {
+        border-color: rgba(var(--color-str), 0.3);
+        color: var(--color-str);
+      }
+    }
+  }
+
+  /* Preview Cell */
+  .enum-tags {
+    display: flex;
+    gap: 4px;
+    .e-tag {
+      background: #000;
+      border: 1px solid var(--ide-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: var(--color-enum);
+    }
+    .e-more {
+      font-size: 0.7rem;
+      color: #64748b;
+      align-self: center;
+    }
+  }
+
+  .example-text {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-style: italic;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

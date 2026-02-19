@@ -1,118 +1,141 @@
-/* --- Variables --- */
-$cost-bg: #0f172a;
-$cost-panel: rgba(30, 41, 59, 0.7);
-$cost-accent: #38bdf8; // Sky Blue
-$cost-danger: #ef4444; // Red
-$cost-success: #22c55e; // Green
-$font-mono: "JetBrains Mono", monospace;
+$bg-card: #0f172a;
+$border: rgba(255, 255, 255, 0.06);
+$text-muted: #64748b;
+$accent-blue: #38bdf8;
 
-.cost-impact {
-  background: $cost-bg;
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #f8fafc;
+// Risk Colors
+$low: #10b981;
+$medium: #f59e0b;
+$high: #ef4444;
 
-  h3 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #94a3b8;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-
-    &::before {
-      content: "SIM";
-      font-size: 0.6rem;
-      background: $cost-accent;
-      color: #000;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-right: 12px;
-      font-weight: 900;
-    }
-  }
-
-  .scenario-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-}
-
-.scenario {
-  background: $cost-panel;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
+.cost-impact-enterprise {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: 20px;
+  padding: 1.5rem;
+  color: white;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
 
-  &:hover {
-    transform: translateY(-4px);
-    border-color: rgba($cost-accent, 0.3);
-    background: rgba(30, 41, 59, 0.9);
-  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 
-  strong {
-    display: block;
-    font-size: 0.9rem;
-    color: #fff;
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-  }
-
-  /* --- Margin Visualizer --- */
-  .margin-box {
-    margin-bottom: 16px;
-
-    .label-row {
+    .title-area {
       display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-bottom: 6px;
+      align-items: center;
+      gap: 10px;
+
+      .header-icon {
+        color: $accent-blue;
+        font-size: 1.2rem;
+      }
+      h4 {
+        margin: 0;
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+        color: $text-muted;
+      }
     }
 
-    .progress-track {
-      height: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      overflow: hidden;
+    .status-pill {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
 
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, $cost-accent, $cost-success);
-        box-shadow: 0 0 10px rgba($cost-success, 0.4);
-        transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+      &.low {
+        background: rgba($low, 0.1);
+        color: $low;
+        border: 1px solid rgba($low, 0.2);
+      }
+      &.medium {
+        background: rgba($medium, 0.1);
+        color: $medium;
+        border: 1px solid rgba($medium, 0.2);
+      }
+      &.high {
+        background: rgba($high, 0.1);
+        color: $high;
+        border: 1px solid rgba($high, 0.2);
       }
     }
   }
+}
 
-  /* --- Risk Metric --- */
-  .risk-metric {
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.impact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .icon-wrapper {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    justify-content: center;
+    color: $accent-blue;
+    font-size: 1.2rem;
+    border: 1px solid $border;
+  }
 
-    .risk-label {
-      font-size: 0.75rem;
-      color: #ef4444;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+  .data-content {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      font-size: 0.7rem;
+      color: $text-muted;
+      text-transform: uppercase;
     }
-
-    .risk-value {
-      font-family: $font-mono;
-      font-size: 1.1rem;
-      color: #fff;
+    .value {
+      font-size: 1.25rem;
       font-weight: 700;
+      font-family: "JetBrains Mono", monospace;
+
+      small {
+        font-size: 0.8rem;
+        color: $text-muted;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.visual-indicator {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    &.low {
+      background: $low;
+      box-shadow: 0 0 10px $low;
+    }
+    &.medium {
+      background: $medium;
+      box-shadow: 0 0 10px $medium;
+    }
+    &.high {
+      background: $high;
+      box-shadow: 0 0 10px $high;
     }
   }
 }

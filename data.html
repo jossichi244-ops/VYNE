@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .gradient-bg {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      }
+      .border-glow {
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+      }
+    </style>
+  </head>
+  <body class="gradient-bg text-slate-300 p-8 font-sans">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-end mb-12">
+        <div>
+          <h1 class="text-4xl font-extrabold text-white tracking-tighter">
+            PHÂN TÍCH ĐỐI CHIẾU
+            <span class="text-sky-400">VYNE vs 2024 REPORT</span>
+          </h1>
+          <p class="mt-2 text-slate-400">
+            Khai thác triệt để 05 vùng thiếu hụt để tạo lợi thế cạnh tranh.
+          </p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs font-bold text-sky-500 uppercase tracking-widest"
+            >Nguồn: Bộ Công Thương & FIATA Doc</span
+          >
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-6">
+          <h2 class="text-rose-400 font-bold flex items-center gap-2">
+            <i data-lucide="alert-circle"></i> THÁCH THỨC 2024
+          </h2>
+          <div class="bg-white/5 p-5 rounded-2xl border-glow">
+            <p class="text-xs text-slate-500 mb-1">KHO BÃI</p>
+            <p class="text-sm font-bold text-white">
+              Thiếu kho lạnh ĐBSCL. Giá thuê miền Nam cao ($5.5)
+            </p>
+          </div>
+          <div class="bg-white/5 p-5 rounded-2xl border-glow">
+            <p class="text-xs text-slate-500 mb-1">CHẶNG CUỐI</p>
+            <p class="text-sm font-bold text-white">
+              Lãng phí 30% giá trị đơn hàng do điều phối kém.
+            </p>
+          </div>
+          <div class="bg-white/5 p-5 rounded-2xl border-glow">
+            <p class="text-xs text-slate-500 mb-1">NHÂN LỰC</p>
+            <p class="text-sm font-bold text-white">
+              Chỉ 7% có chuyên môn. Quá phụ thuộc vào Excel.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h2 class="text-sky-400 font-bold flex items-center gap-2">
+            <i data-lucide="zap"></i> GIẢI PHÁP VYNE
+          </h2>
+          <div class="bg-sky-500/10 p-5 rounded-2xl border border-sky-500/30">
+            <p class="text-xs text-sky-400 mb-1">STRATEGY</p>
+            <p class="text-sm font-bold text-white italic">
+              "Shared Warehousing" - Tối ưu 20% diện tích kho nhờ AI.
+            </p>
+          </div>
+          <div class="bg-sky-500/10 p-5 rounded-2xl border border-sky-500/30">
+            <p class="text-xs text-sky-400 mb-1">TECH</p>
+            <p class="text-sm font-bold text-white italic">
+              Web3 DID - Kết nối vạn xe nhỏ thành một thực thể lớn.
+            </p>
+          </div>
+          <div class="bg-sky-500/10 p-5 rounded-2xl border border-sky-500/30">
+            <p class="text-xs text-sky-400 mb-1">UX/UI</p>
+            <p class="text-sm font-bold text-white italic">
+              No-code AI - Lao động 7% vẫn vận hành được hệ thống 4.0.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <h2 class="text-emerald-400 font-bold flex items-center gap-2">
+            <i data-lucide="trending-up"></i> KẾT QUẢ KỲ VỌNG
+          </h2>
+          <div
+            class="bg-emerald-500/5 p-8 rounded-[2.5rem] border border-emerald-500/20 flex flex-col items-center justify-center text-center h-full">
+            <div class="text-5xl font-black text-emerald-500 mb-2">-20%</div>
+            <p class="text-sm text-white font-bold">Chi phí tuân thủ</p>
+            <p class="text-[10px] mt-4 text-slate-500 italic">
+              Dựa trên Quyết định 412/QĐ-TTg về cải cách thủ tục hành chính.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

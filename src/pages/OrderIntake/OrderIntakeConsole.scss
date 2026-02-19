@@ -39,9 +39,9 @@ $border: rgba(255, 255, 255, 0.06);
 }
 
 .console-grid {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 2rem;
+  // display: grid;
+  // grid-template-columns: 1fr 400px;
+  // gap: 2rem;
   margin-top: 2rem;
 
   @media (max-width: 1200px) {
