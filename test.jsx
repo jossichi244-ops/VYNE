@@ -168,7 +168,7 @@ const ExcelIntake = () => {
       insights: analysis.insights,
       relationships: analysis.relationships,
       descriptive: analysis.descriptive,
-      visualizations: analysis.advanced_analysis,
+      visualizations: analysis.visualizations,
       advanced: analysis.advanced_analysis,
       businessReport: analysis.business_report,
     };

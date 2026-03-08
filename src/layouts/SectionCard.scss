@@ -1,0 +1,97 @@
+.section-card {
+  background: rgba(22, 27, 44, 0.6); // Dark Glass
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  height: 100%; // Giúp card lấp đầy grid cell
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+  }
+
+  // Tiêu đề phân khu
+  .card-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .header-icon {
+        color: #6366f1;
+        filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.5));
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #f8fafc;
+      }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .status-tag {
+        font-size: 10px;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+
+      .expand-btn {
+        background: transparent;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  // Nội dung bên dưới - Khắc phục lỗi TL;DR
+  .card-content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto; // Cho phép cuộn bên trong card
+    max-height: 400px; // Giới hạn chiều cao để không kéo dài trang quá mức
+
+    // Tùy chỉnh Scrollbar "Cyber"
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.2);
+      border-radius: 10px;
+      &:hover {
+        background: #6366f1;
+      }
+    }
+  }
+}

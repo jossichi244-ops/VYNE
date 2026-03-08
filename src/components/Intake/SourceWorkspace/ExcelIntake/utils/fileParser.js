@@ -37,21 +37,26 @@ export const parseCleanData = async (records) => {
     throw new Error("parseCleanData() must be called with an array");
   }
 
-  const response = await fetch(`${PYTHON_BASE}/api/ingest-file`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(records),
-  });
+  try {
+    const response = await fetch(`${PYTHON_BASE}/api/ingest-file`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(records),
+    });
 
-  if (!response.ok) {
-    const err = await response.text();
-    console.error("Backend error:", err);
-    throw new Error("Processing failed");
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Backend error:", errText);
+      throw new Error(`Backend returned ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("FULL ERROR:", err);
+    throw err;
   }
-
-  return await response.json();
 };
 
 export const parseCleanJSON = async (records) => {

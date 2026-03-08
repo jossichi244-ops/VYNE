@@ -1,0 +1,133 @@
+.advanced-viz-container {
+  padding: 30px;
+  background: #080a11;
+
+  .viz-section {
+    margin-bottom: 50px;
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #6366f1;
+      font-size: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+    }
+  }
+
+  // Scenario Card Layout
+  .scenario-insight-card {
+    background: #11141d;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    .insight-header {
+      margin-bottom: 20px;
+      h4 {
+        color: #fff;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+    }
+
+    .insight-body {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr; // Biểu đồ bên trái, thông tin bên phải
+      gap: 30px;
+
+      @media (max-width: 1000px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  .info-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h6 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .narrative-block {
+      background: rgba(99, 102, 241, 0.05);
+      padding: 15px;
+      border-radius: 12px;
+      li {
+        font-size: 13px;
+        color: #cbd5e1;
+        margin-bottom: 8px;
+        line-height: 1.5;
+      }
+    }
+
+    .mini-table-scroll {
+      overflow-x: auto;
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        th {
+          color: #64748b;
+          text-align: left;
+          padding: 8px;
+          background: rgba(0, 0, 0, 0.2);
+        }
+        td {
+          color: #94a3b8;
+          padding: 8px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+      }
+    }
+  }
+
+  .story-grid {
+    display: grid;
+    gap: 12px;
+    .story-pill {
+      background: #161b26;
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid #6366f1;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+  }
+
+  .debug-footer {
+    margin-top: 60px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 0, 0, 0.02);
+    h5 {
+      color: #64748b;
+      margin-bottom: 15px;
+    }
+    .error-logs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .error-card-inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+  }
+}

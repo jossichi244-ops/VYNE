@@ -1,0 +1,228 @@
+// Variables
+$bg-dark: #080a11;
+$bg-surface: #11141d;
+$bg-card: #161b26;
+$accent-blue: #3e7bff;
+$text-main: #f1f5f9;
+$text-dim: #94a3b8;
+$border: rgba(255, 255, 255, 0.08);
+$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+.report-container {
+  background-color: $bg-dark;
+  min-height: 100vh;
+  color: $text-main;
+  font-family: "Inter", system-ui, sans-serif;
+
+  // 1. TOOLBAR
+  .report-toolbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    background: rgba($bg-surface, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid $border;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    // Segmented Control thay thế Select
+    .segmented-control {
+      display: flex;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid $border;
+
+      .segment-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+        color: $text-dim;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: $transition;
+
+        svg {
+          font-size: 14px;
+        }
+
+        &:hover {
+          color: $text-main;
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        &.active {
+          background: $accent-blue;
+          color: white;
+          box-shadow: 0 4px 12px rgba($accent-blue, 0.3);
+        }
+      }
+    }
+
+    .divider-v {
+      width: 1px;
+      height: 24px;
+      background: $border;
+    }
+
+    .live-status {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        .pulse-dot {
+          width: 6px;
+          height: 6px;
+          background: #10b981;
+          border-radius: 50%;
+          box-shadow: 0 0 8px #10b981;
+          animation: pulse 2s infinite;
+        }
+        .status-text {
+          font-size: 11px;
+          font-weight: 700;
+          color: #10b981;
+          text-transform: uppercase;
+        }
+      }
+      .timestamp {
+        font-size: 11px;
+        color: $text-dim;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+  }
+
+  // 2. CONTENT AREA
+  .report-content-canvas {
+    padding: 40px 60px;
+    max-width: 1600px;
+    margin: 0 auto;
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+
+      .title-block {
+        .breadcrumb {
+          font-size: 12px;
+          color: $accent-blue;
+          font-weight: 600;
+          margin-bottom: 8px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        h1 {
+          font-size: 32px;
+          font-weight: 800;
+          margin: 0;
+          letter-spacing: -0.5px;
+          .badge {
+            font-size: 12px;
+            vertical-align: middle;
+            background: $border;
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: $text-dim;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  // BUTTONS
+  .btn-icon-text {
+    background: transparent;
+    border: 1px solid $border;
+    color: $text-main;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    &:hover {
+      background: $border;
+    }
+  }
+
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, $accent-blue, #6366f1);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba($accent-blue, 0.2);
+    transition: $transition;
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba($accent-blue, 0.3);
+    }
+  }
+
+  .btn-outline-sq {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid $border;
+    color: $text-dim;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: $transition;
+    &:hover {
+      color: $text-main;
+      border-color: $text-dim;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+}
