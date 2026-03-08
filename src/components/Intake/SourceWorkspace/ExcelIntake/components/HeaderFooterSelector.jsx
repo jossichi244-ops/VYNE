@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FiFlag, FiAnchor, FiInfo, FiAlertCircle } from "react-icons/fi";
 import "./HeaderFooterSelector.scss";
 
